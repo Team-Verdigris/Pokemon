@@ -28,9 +28,14 @@
         const folder = 'Front';
 
         // Fetch files from GitHub API
-        fetch(`https://api.github.com/repos/${username}/${repository}/contents/${folder}`)
+        fetch(`https://api.github.com/repos/${imbadatstuff}/${Pages-Test}/contents/${Front}`)
             .then(response => response.json())
             .then(data => {
+                // Ensure data is an array
+                if (!Array.isArray(data)) {
+                    throw new Error('Data is not an array');
+                }
+
                 // Filter out non-image files
                 const imageFiles = data.filter(file => file.type === 'file' && file.name.endsWith('.png'));
 
