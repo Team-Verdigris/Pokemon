@@ -22,7 +22,9 @@
 </head>
 <body>
     <h1>Welcome to Image Viewer</h1>
-    <p>This site displays images from the "Front" folder of the Pages-Test repository in the Team-Verdigris organization.</p>
+    <p>This site displays sprites from various folders in the Pages-Test repository in the Team-Verdigris organization.</p>
+    
+    <!-- Container for displaying images -->
     <div class="container" id="imageContainer">
         <!-- Images will be dynamically loaded here -->
     </div>
@@ -31,32 +33,37 @@
         // GitHub organization and repository information
         const organization = 'Team-Verdigris';
         const repository = 'Pages-Test';
-        const folder = 'Front';
+        const folders = ['Back shiny', 'Back', 'Eggs', 'Front shiny', 'Front', 'Icons'];
 
-        // Fetch files from GitHub API
-        fetch(`https://api.github.com/repos/${organization}/${repository}/contents/${folder}`)
-            .then(response => response.json())
-            .then(data => {
-                // Ensure data is an array
-                if (!Array.isArray(data)) {
-                    throw new Error('Data is not an array');
-                }
+        // Function to fetch images from a folder
+        function fetchImagesFromFolder(folder) {
+            fetch(`https://api.github.com/repos/${organization}/${repository}/contents/${folder}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Ensure data is an array
+                    if (!Array.isArray(data)) {
+                        throw new Error('Data is not an array');
+                    }
 
-                // Filter out non-image files
-                const imageFiles = data.filter(file => file.type === 'file' && file.name.endsWith('.png'));
+                    // Filter out non-image files
+                    const imageFiles = data.filter(file => file.type === 'file' && (file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')));
 
-                // Generate <img> tags for each image file
-                const container = document.getElementById('imageContainer');
-                imageFiles.forEach(file => {
-                    const imageUrl = file.download_url;
-                    const imgElement = document.createElement('img');
-                    imgElement.src = imageUrl;
-                    imgElement.alt = file.name;
-                    imgElement.className = 'image';
-                    container.appendChild(imgElement);
-                });
-            })
-            .catch(error => console.error('Error fetching images:', error));
+                    // Generate <img> tags for each image file
+                    const container = document.getElementById('imageContainer');
+                    imageFiles.forEach(file => {
+                        const imageUrl = file.download_url;
+                        const imgElement = document.createElement('img');
+                        imgElement.src = imageUrl;
+                        imgElement.alt = file.name;
+                        imgElement.className = 'image';
+                        container.appendChild(imgElement);
+                    });
+                })
+                .catch(error => console.error(`Error fetching images from folder ${folder}:`, error));
+        }
+
+        // Fetch images from each folder
+        folders.forEach(folder => fetchImagesFromFolder(folder));
     </script>
 </body>
 </html>
