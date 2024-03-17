@@ -8,27 +8,33 @@
         .container {
             display: flex;
             flex-wrap: wrap;
+            margin-bottom: 20px;
         }
         .image {
             width: 200px;
             height: auto;
             margin: 10px;
         }
+        h1 {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
+    <h1>Welcome to Image Viewer</h1>
+    <p>This site displays images from the "Front" folder of the Pages-Test repository in the Team-Verdigris organization.</p>
     <div class="container" id="imageContainer">
         <!-- Images will be dynamically loaded here -->
     </div>
 
     <script>
-        // GitHub repository information
-        const username = 'username';
-        const repository = 'repository';
+        // GitHub organization and repository information
+        const organization = 'Team-Verdigris';
+        const repository = 'Pages-Test';
         const folder = 'Front';
 
         // Fetch files from GitHub API
-        fetch(`https://api.github.com/repos/${I'mBadAtStuff}/${Pages-Test}/contents/${Front}`)
+        fetch(`https://api.github.com/repos/${organization}/${repository}/contents/${folder}`)
             .then(response => response.json())
             .then(data => {
                 // Ensure data is an array
