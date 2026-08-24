@@ -3,67 +3,435 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Viewer</title>
+
+    <title>Team Verdigris Pokémon Image Viewer</title>
+
     <style>
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 20px;
+        * {
+            box-sizing: border-box;
         }
-        .image {
-            width: 200px;
-            height: auto;
-            margin: 10px;
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f4f6f8;
+            color: #222;
+            font-family: Arial, Helvetica, sans-serif;
         }
-        h1 {
+
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #d9dde2;
+            padding: 24px;
             text-align: center;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        header p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        main {
+            width: min(1400px, calc(100% - 32px));
+            margin: 24px auto 48px;
+        }
+
+        .controls {
+            margin-bottom: 24px;
+        }
+
+        #searchInput {
+            width: 100%;
+            max-width: 500px;
+            padding: 10px 12px;
+            border: 1px solid #c8cdd3;
+            border-radius: 6px;
+            background: #ffffff;
+            font-size: 15px;
+        }
+
+        #searchInput:focus {
+            outline: 2px solid #7da3c0;
+            outline-offset: 1px;
+        }
+
+        .folder-section {
+            margin-bottom: 36px;
+        }
+
+        .folder-header {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #d9dde2;
+        }
+
+        .folder-title {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .folder-count {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 14px;
+        }
+
+        .image-card {
+            display: flex;
+            flex-direction: column;
+            min-height: 210px;
+            padding: 12px;
+            background: #ffffff;
+            border: 1px solid #d9dde2;
+            border-radius: 8px;
+        }
+
+        .image-preview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            min-height: 150px;
+            margin-bottom: 10px;
+            background:
+                linear-gradient(45deg, #eeeeee 25%, transparent 25%),
+                linear-gradient(-45deg, #eeeeee 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #eeeeee 75%),
+                linear-gradient(-45deg, transparent 75%, #eeeeee 75%);
+            background-size: 16px 16px;
+            background-position:
+                0 0,
+                0 8px,
+                8px -8px,
+                -8px 0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 180px;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+
+        .image-name {
+            overflow: hidden;
+            color: #333;
+            font-size: 12px;
+            line-height: 1.4;
+            text-align: center;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .status {
+            padding: 16px;
+            color: #666;
+            background: #ffffff;
+            border: 1px solid #d9dde2;
+            border-radius: 6px;
+        }
+
+        .error {
+            color: #9b2727;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                width: min(100% - 20px, 1400px);
+                margin-top: 16px;
+            }
+
+            .image-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 10px;
+            }
+
+            .image-card {
+                min-height: 180px;
+                padding: 8px;
+            }
+
+            .image-preview {
+                min-height: 120px;
+            }
         }
     </style>
 </head>
+
 <body>
-    <h1>Welcome to Image Viewer</h1>
-    <p>This site displays sprites from various folders in the Pages-Test repository in the Team-Verdigris organization.</p>
-    
-    <!-- Container for displaying images -->
-    <div class="container" id="imageContainer">
-        <!-- Images will be dynamically loaded here -->
+
+<header>
+    <h1>Team Verdigris Pokémon Image Viewer</h1>
+
+    <p>
+        Artwork and sprites hosted in the Team-Verdigris / Pages-Test repository.
+    </p>
+</header>
+
+<main>
+
+    <div class="controls">
+        <input
+            type="search"
+            id="searchInput"
+            placeholder="Search by Pokémon or filename..."
+            autocomplete="off"
+        >
     </div>
 
-    <script>
-        // GitHub organization and repository information
-        const organization = 'Team-Verdigris';
-        const repository = 'Pages-Test';
-        const folders = ['Artworks', 'Back shiny', 'Back', 'Eggs', 'Front shiny', 'Front', 'Icons'];
+    <div id="content">
+        <div class="status">
+            Loading images...
+        </div>
+    </div>
 
-        // Function to fetch images from a folder
-        function fetchImagesFromFolder(folder) {
-            fetch(`https://api.github.com/repos/${organization}/${repository}/contents/${folder}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Ensure data is an array
-                    if (!Array.isArray(data)) {
-                        throw new Error('Data is not an array');
-                    }
+</main>
 
-                    // Filter out non-image files
-                    const imageFiles = data.filter(file => file.type === 'file' && (file.name.endsWith('.png') || file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')));
+<script>
+    const organization = 'Team-Verdigris';
+    const repository = 'Pages-Test';
 
-                    // Generate <img> tags for each image file
-                    const container = document.getElementById('imageContainer');
-                    imageFiles.forEach(file => {
-                        const imageUrl = file.download_url;
-                        const imgElement = document.createElement('img');
-                        imgElement.src = imageUrl;
-                        imgElement.alt = file.name;
-                        imgElement.className = 'image';
-                        container.appendChild(imgElement);
-                    });
-                })
-                .catch(error => console.error(`Error fetching images from folder ${folder}:`, error));
+    const folders = [
+        'Artworks',
+        'Back shiny',
+        'Back',
+        'Eggs',
+        'Front shiny',
+        'Front',
+        'Icons'
+    ];
+
+    const content = document.getElementById('content');
+    const searchInput = document.getElementById('searchInput');
+
+    const folderSections = new Map();
+
+
+    function isImageFile(filename) {
+        const lowerName = filename.toLowerCase();
+
+        return (
+            lowerName.endsWith('.png') ||
+            lowerName.endsWith('.jpg') ||
+            lowerName.endsWith('.jpeg')
+        );
+    }
+
+
+    function getDisplayName(filename) {
+        return filename.replace(/\.(png|jpg|jpeg)$/i, '');
+    }
+
+
+    function createFolderSection(folder) {
+        const section = document.createElement('section');
+        section.className = 'folder-section';
+
+        const header = document.createElement('div');
+        header.className = 'folder-header';
+
+        const title = document.createElement('h2');
+        title.className = 'folder-title';
+        title.textContent = folder;
+
+        const count = document.createElement('span');
+        count.className = 'folder-count';
+
+        const grid = document.createElement('div');
+        grid.className = 'image-grid';
+
+        header.appendChild(title);
+        header.appendChild(count);
+
+        section.appendChild(header);
+        section.appendChild(grid);
+
+        content.appendChild(section);
+
+        const folderData = {
+            section,
+            grid,
+            count
+        };
+
+        folderSections.set(folder, folderData);
+
+        return folderData;
+    }
+
+
+    function createImageCard(file, folder) {
+        const card = document.createElement('div');
+        card.className = 'image-card';
+
+        card.dataset.name = file.name.toLowerCase();
+        card.dataset.folder = folder.toLowerCase();
+
+        const preview = document.createElement('div');
+        preview.className = 'image-preview';
+
+        const image = document.createElement('img');
+        image.src = file.download_url;
+        image.alt = getDisplayName(file.name);
+        image.loading = 'lazy';
+
+        const filename = document.createElement('div');
+        filename.className = 'image-name';
+        filename.textContent = getDisplayName(file.name);
+        filename.title = file.name;
+
+        preview.appendChild(image);
+
+        card.appendChild(preview);
+        card.appendChild(filename);
+
+        return card;
+    }
+
+
+    async function fetchFolder(folder) {
+        const url =
+            `https://api.github.com/repos/` +
+            `${organization}/${repository}/contents/` +
+            encodeURIComponent(folder);
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error(
+                `GitHub returned ${response.status} for ${folder}`
+            );
         }
 
-        // Fetch images from each folder
-        folders.forEach(folder => fetchImagesFromFolder(folder));
-    </script>
+        const data = await response.json();
+
+        if (!Array.isArray(data)) {
+            throw new Error(
+                `Unexpected GitHub response for ${folder}`
+            );
+        }
+
+        return data
+            .filter(file =>
+                file.type === 'file' &&
+                isImageFile(file.name)
+            )
+            .sort((a, b) =>
+                a.name.localeCompare(
+                    b.name,
+                    undefined,
+                    {
+                        numeric: true,
+                        sensitivity: 'base'
+                    }
+                )
+            );
+    }
+
+
+    async function loadImages() {
+        content.innerHTML = '';
+
+        for (const folder of folders) {
+            const folderData = createFolderSection(folder);
+
+            try {
+                const files = await fetchFolder(folder);
+
+                folderData.count.textContent =
+                    `${files.length} image${files.length === 1 ? '' : 's'}`;
+
+                files.forEach(file => {
+                    folderData.grid.appendChild(
+                        createImageCard(file, folder)
+                    );
+                });
+
+                if (files.length === 0) {
+                    const message = document.createElement('div');
+                    message.className = 'status';
+                    message.textContent = 'No images found.';
+
+                    folderData.grid.appendChild(message);
+                }
+
+            } catch (error) {
+                console.error(error);
+
+                const message = document.createElement('div');
+                message.className = 'status error';
+                message.textContent =
+                    `Could not load ${folder}.`;
+
+                folderData.grid.appendChild(message);
+            }
+        }
+    }
+
+
+    function filterImages() {
+        const searchTerm =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+        folderSections.forEach(folderData => {
+            const cards =
+                folderData.grid.querySelectorAll('.image-card');
+
+            let visibleCount = 0;
+
+            cards.forEach(card => {
+                const matches =
+                    card.dataset.name.includes(searchTerm) ||
+                    card.dataset.folder.includes(searchTerm);
+
+                card.classList.toggle(
+                    'hidden',
+                    !matches
+                );
+
+                if (matches) {
+                    visibleCount++;
+                }
+            });
+
+            folderData.section.classList.toggle(
+                'hidden',
+                visibleCount === 0 && searchTerm !== ''
+            );
+        });
+    }
+
+
+    searchInput.addEventListener(
+        'input',
+        filterImages
+    );
+
+
+    loadImages();
+</script>
+
 </body>
 </html>
