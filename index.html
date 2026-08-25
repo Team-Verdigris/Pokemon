@@ -18,11 +18,9 @@
             --text: #222222;
             --muted: #6e7681;
             --accent: #315f7d;
-            --accent-soft: #e8f0f5;
             --success: #426b43;
             --success-soft: #eaf4eb;
             --danger: #a33a3a;
-            --danger-soft: #f7eaea;
         }
 
         body {
@@ -105,18 +103,6 @@
             min-width: 160px;
         }
 
-        .status {
-            padding: 16px;
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--muted);
-        }
-
-        .error {
-            color: var(--danger);
-        }
-
         .folder-section {
             margin-bottom: 34px;
         }
@@ -159,15 +145,11 @@
             padding: 10px;
         }
 
-        .asset-preview {
-            position: relative;
+        .asset-preview,
+        .pokemon-cover {
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 160px;
-            margin-bottom: 8px;
-            overflow: hidden;
-            border-radius: 5px;
             background:
                 linear-gradient(45deg, #eceff1 25%, transparent 25%),
                 linear-gradient(-45deg, #eceff1 25%, transparent 25%),
@@ -179,6 +161,14 @@
                 0 8px,
                 8px -8px,
                 -8px 0;
+        }
+
+        .asset-preview {
+            position: relative;
+            min-height: 160px;
+            margin-bottom: 8px;
+            overflow: hidden;
+            border-radius: 5px;
         }
 
         .asset-preview img {
@@ -220,12 +210,54 @@
             opacity: 0;
         }
 
-        .hover-stack:hover .normal-image {
+        .hover-stack.has-shiny:hover .normal-image {
             opacity: 0;
         }
 
-        .hover-stack:hover .shiny-image {
+        .hover-stack.has-shiny:hover .shiny-image {
             opacity: 1;
+        }
+
+        .hover-stack.missing-shiny:hover .normal-image {
+            opacity: 0.5;
+        }
+
+        .hover-indicator {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            z-index: 3;
+            display: flex;
+            width: 24px;
+            height: 24px;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            border-radius: 50%;
+            line-height: 1;
+            transition:
+                opacity 0.15s ease,
+                transform 0.15s ease;
+            transform: scale(0.85);
+        }
+
+        .shiny-indicator {
+            color: #c79600;
+            font-size: 18px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+        }
+
+        .missing-shiny-indicator {
+            color: #c62828;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .hover-stack.has-shiny:hover .shiny-indicator,
+        .hover-stack.missing-shiny:hover .missing-shiny-indicator {
+            opacity: 1;
+            transform: scale(1);
         }
 
         .toggle-wrap {
@@ -250,14 +282,18 @@
             display: none;
         }
 
-        .shiny-toggle-button {
-            align-self: center;
-            padding: 5px 10px;
+        .shiny-toggle-button,
+        .view-assets-button {
             border: 1px solid #bfc6cc;
             border-radius: 5px;
             background: #ffffff;
             cursor: pointer;
             font-size: 12px;
+        }
+
+        .shiny-toggle-button {
+            align-self: center;
+            padding: 5px 10px;
         }
 
         .pokemon-card {
@@ -266,22 +302,8 @@
         }
 
         .pokemon-cover {
-            display: flex;
-            align-items: center;
-            justify-content: center;
             min-height: 220px;
             padding: 12px;
-            background:
-                linear-gradient(45deg, #eceff1 25%, transparent 25%),
-                linear-gradient(-45deg, #eceff1 25%, transparent 25%),
-                linear-gradient(45deg, transparent 75%, #eceff1 75%),
-                linear-gradient(-45deg, transparent 75%, #eceff1 75%);
-            background-size: 16px 16px;
-            background-position:
-                0 0,
-                0 8px,
-                8px -8px,
-                -8px 0;
         }
 
         .pokemon-cover img {
@@ -319,16 +341,6 @@
             color: var(--danger);
         }
 
-        .missing-summary {
-            margin-top: 10px;
-            padding: 8px;
-            border-radius: 5px;
-            background: var(--danger-soft);
-            color: var(--danger);
-            font-size: 12px;
-            line-height: 1.4;
-        }
-
         .complete-summary {
             margin-top: 10px;
             padding: 8px;
@@ -338,44 +350,16 @@
             font-size: 12px;
         }
 
-        details {
+        .view-assets-button {
+            width: 100%;
             margin-top: 10px;
-        }
-
-        summary {
-            cursor: pointer;
+            padding: 8px 10px;
             color: var(--accent);
-            font-size: 12px;
             font-weight: bold;
         }
 
-        .details-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .detail-preview {
-            display: flex;
-            min-height: 120px;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 6px;
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            text-align: center;
-            font-size: 11px;
-        }
-
-        .detail-preview img {
-            display: block;
-            width: 100%;
-            height: 90px;
-            margin-bottom: 5px;
-            object-fit: contain;
-            image-rendering: pixelated;
+        .view-assets-button:hover {
+            background: #f5f7f9;
         }
 
         .icon-animation {
@@ -398,6 +382,116 @@
             100% {
                 background-position: right top;
             }
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.65);
+        }
+
+        .modal {
+            width: min(1000px, 100%);
+            max-height: calc(100vh - 48px);
+            overflow: auto;
+            background: var(--panel);
+            border-radius: 10px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35);
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 14px 18px;
+            background: var(--panel);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .modal-close {
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #ffffff;
+            cursor: pointer;
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 18px;
+        }
+
+        .modal-asset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+        }
+
+        .modal-asset {
+            display: flex;
+            min-height: 220px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+        }
+
+        .modal-asset-preview {
+            display: flex;
+            width: 100%;
+            min-height: 170px;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            background:
+                linear-gradient(45deg, #eceff1 25%, transparent 25%),
+                linear-gradient(-45deg, #eceff1 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #eceff1 75%),
+                linear-gradient(-45deg, transparent 75%, #eceff1 75%);
+            background-size: 16px 16px;
+            background-position:
+                0 0,
+                0 8px,
+                8px -8px,
+                -8px 0;
+            border-radius: 5px;
+        }
+
+        .modal-asset-preview img {
+            max-width: 100%;
+            max-height: 190px;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+
+        .modal-asset-label {
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .modal-asset-missing {
+            color: var(--muted);
+            font-size: 12px;
         }
 
         .hidden {
@@ -426,6 +520,18 @@
             .pokemon-grid {
                 grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
                 gap: 10px;
+            }
+
+            .modal-backdrop {
+                padding: 10px;
+            }
+
+            .modal {
+                max-height: calc(100vh - 20px);
+            }
+
+            .modal-asset-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -496,6 +602,37 @@
 
 </main>
 
+<div
+    id="assetModal"
+    class="modal-backdrop hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalTitle"
+>
+    <div class="modal">
+        <div class="modal-header">
+            <h2
+                id="modalTitle"
+                class="modal-title"
+            ></h2>
+
+            <button
+                id="modalClose"
+                class="modal-close"
+                type="button"
+                aria-label="Close"
+            >
+                ×
+            </button>
+        </div>
+
+        <div
+            id="modalBody"
+            class="modal-body"
+        ></div>
+    </div>
+</div>
+
 <script>
     const organization = 'Team-Verdigris';
     const repository = 'Pokemon';
@@ -549,9 +686,7 @@
         'frontShiny',
         'back',
         'backShiny',
-        'icon',
-        'egg',
-        'shadow'
+        'icon'
     ];
 
     const content =
@@ -568,6 +703,18 @@
 
     const iconMode =
         document.getElementById('iconMode');
+
+    const assetModal =
+        document.getElementById('assetModal');
+
+    const modalTitle =
+        document.getElementById('modalTitle');
+
+    const modalBody =
+        document.getElementById('modalBody');
+
+    const modalClose =
+        document.getElementById('modalClose');
 
     const folderData = {};
 
@@ -664,73 +811,53 @@
 
         pokemonData.clear();
 
-        const results =
-            await Promise.allSettled(
-                folderConfig.map(
-                    async config => {
-                        const files =
-                            await fetchFolder(
-                                config.folder
+        await Promise.allSettled(
+            folderConfig.map(
+                async config => {
+                    const files =
+                        await fetchFolder(
+                            config.folder
+                        );
+
+                    folderData[config.key] =
+                        files;
+
+                    files.forEach(file => {
+                        const pokemonName =
+                            normalizePokemonName(
+                                file.name
                             );
 
-                        folderData[config.key] =
-                            files;
+                        if (
+                            !pokemonData.has(
+                                pokemonName
+                            )
+                        ) {
+                            pokemonData.set(
+                                pokemonName,
+                                {
+                                    name: pokemonName,
+                                    assets: {}
+                                }
+                            );
+                        }
 
-                        files.forEach(file => {
-                            const pokemonName =
-                                normalizePokemonName(
-                                    file.name
-                                );
-
-                            if (
-                                !pokemonData.has(
-                                    pokemonName
-                                )
-                            ) {
-                                pokemonData.set(
-                                    pokemonName,
-                                    {
-                                        name: pokemonName,
-                                        assets: {}
-                                    }
-                                );
-                            }
-
-                            pokemonData
-                                .get(pokemonName)
-                                .assets[config.key] =
-                                file;
-                        });
-                    }
-                )
-            );
-
-        const failed =
-            results
-                .map(
-                    (result, index) => ({
-                        result,
-                        config:
-                            folderConfig[index]
-                    })
-                )
-                .filter(item =>
-                    item.result.status ===
-                    'rejected'
-                );
-
-        if (failed.length > 0) {
-            console.error(
-                'Some folders failed to load:',
-                failed
-            );
-        }
+                        pokemonData
+                            .get(pokemonName)
+                            .assets[config.key] =
+                            file;
+                    });
+                }
+            )
+        );
 
         render();
     }
 
 
     function render() {
+        closeAssetModal();
+
         if (
             viewMode.value ===
             'pokemon'
@@ -1107,6 +1234,10 @@
             }
 
             if (shinyFile) {
+                stack.classList.add(
+                    'has-shiny'
+                );
+
                 const shiny =
                     createImageElement(
                         shinyFile,
@@ -1118,6 +1249,46 @@
 
                 stack.appendChild(
                     shiny
+                );
+
+                const star =
+                    document.createElement(
+                        'div'
+                    );
+
+                star.className =
+                    'hover-indicator shiny-indicator';
+
+                star.textContent =
+                    '★';
+
+                star.title =
+                    'Shiny';
+
+                stack.appendChild(
+                    star
+                );
+            } else {
+                stack.classList.add(
+                    'missing-shiny'
+                );
+
+                const missingIndicator =
+                    document.createElement(
+                        'div'
+                    );
+
+                missingIndicator.className =
+                    'hover-indicator missing-shiny-indicator';
+
+                missingIndicator.textContent =
+                    '⊘';
+
+                missingIndicator.title =
+                    'No shiny sprite';
+
+                stack.appendChild(
+                    missingIndicator
                 );
             }
 
@@ -1252,36 +1423,45 @@
             nameElement
         );
 
-        if (!normalFile) {
-            const warning =
-                document.createElement(
-                    'div'
+        /*
+         * In Hover mode, missing shiny is indicated
+         * by the faded sprite and red ⊘ instead of
+         * additional text underneath the card.
+         */
+        if (
+            mode !== 'hover'
+        ) {
+            if (!normalFile) {
+                const warning =
+                    document.createElement(
+                        'div'
+                    );
+
+                warning.className =
+                    'asset-warning';
+
+                warning.textContent =
+                    'Missing normal';
+
+                card.appendChild(
+                    warning
                 );
+            } else if (!shinyFile) {
+                const warning =
+                    document.createElement(
+                        'div'
+                    );
 
-            warning.className =
-                'asset-warning';
+                warning.className =
+                    'asset-warning';
 
-            warning.textContent =
-                'Missing normal';
+                warning.textContent =
+                    'Missing shiny';
 
-            card.appendChild(
-                warning
-            );
-        } else if (!shinyFile) {
-            const warning =
-                document.createElement(
-                    'div'
+                card.appendChild(
+                    warning
                 );
-
-            warning.className =
-                'asset-warning';
-
-            warning.textContent =
-                'Missing shiny';
-
-            card.appendChild(
-                warning
-            );
+            }
         }
 
         return card;
@@ -1339,10 +1519,8 @@
 
             let scale =
                 Math.min(
-                    maxWidth /
-                        frameWidth,
-                    maxHeight /
-                        frameHeight
+                    maxWidth / frameWidth,
+                    maxHeight / frameHeight
                 );
 
             if (
@@ -1514,7 +1692,8 @@
         assetList.className =
             'asset-list';
 
-        const missing = [];
+        let missingRequired =
+            0;
 
         expectedPokemonAssets.forEach(
             key => {
@@ -1551,9 +1730,7 @@
                 );
 
                 if (!exists) {
-                    missing.push(
-                        config.label
-                    );
+                    missingRequired++;
                 }
             }
         );
@@ -1566,37 +1743,9 @@
             assetList
         );
 
-        if (missing.length > 0) {
-            const summary =
-                document.createElement(
-                    'div'
-                );
-
-            summary.className =
-                'missing-summary';
-
-            const strong =
-                document.createElement(
-                    'strong'
-                );
-
-            strong.textContent =
-                'Missing: ';
-
-            summary.appendChild(
-                strong
-            );
-
-            summary.appendChild(
-                document.createTextNode(
-                    missing.join(', ')
-                )
-            );
-
-            body.appendChild(
-                summary
-            );
-        } else {
+        if (
+            missingRequired === 0
+        ) {
             const summary =
                 document.createElement(
                     'div'
@@ -1606,107 +1755,38 @@
                 'complete-summary';
 
             summary.textContent =
-                'All expected image types exist.';
+                'All required image types exist.';
 
             body.appendChild(
                 summary
             );
         }
 
-        const details =
+        const button =
             document.createElement(
-                'details'
+                'button'
             );
 
-        const detailsSummary =
-            document.createElement(
-                'summary'
-            );
+        button.className =
+            'view-assets-button';
 
-        detailsSummary.textContent =
-            'View all assets';
+        button.type =
+            'button';
 
-        const detailGrid =
-            document.createElement(
-                'div'
-            );
+        button.textContent =
+            'View All Assets';
 
-        detailGrid.className =
-            'details-grid';
-
-        folderConfig.forEach(
-            config => {
-                const file =
-                    entry.assets[
-                        config.key
-                    ];
-
-                if (!file) {
-                    return;
-                }
-
-                const item =
-                    document.createElement(
-                        'div'
-                    );
-
-                item.className =
-                    'detail-preview';
-
-                let display;
-
-                if (
-                    config.key ===
-                        'icon' &&
-                    iconMode.value ===
-                        'animated'
-                ) {
-                    display =
-                        createAnimatedIcon(
-                            file,
-                            90,
-                            90
-                        );
-                } else {
-                    display =
-                        createImageElement(
-                            file,
-                            `${entry.name} ${config.label}`
-                        );
-                }
-
-                const label =
-                    document.createElement(
-                        'div'
-                    );
-
-                label.textContent =
-                    config.label;
-
-                item.appendChild(
-                    display
-                );
-
-                item.appendChild(
-                    label
-                );
-
-                detailGrid.appendChild(
-                    item
+        button.addEventListener(
+            'click',
+            () => {
+                openAssetModal(
+                    entry
                 );
             }
         );
 
-        details.appendChild(
-            detailsSummary
-        );
-
-        details.appendChild(
-            detailGrid
-        );
-
         body.appendChild(
-            details
+            button
         );
 
         card.appendChild(
@@ -1718,6 +1798,142 @@
         );
 
         return card;
+    }
+
+
+    function openAssetModal(
+        entry
+    ) {
+        modalTitle.textContent =
+            entry.name;
+
+        modalBody.innerHTML = '';
+
+        const grid =
+            document.createElement(
+                'div'
+            );
+
+        grid.className =
+            'modal-asset-grid';
+
+        /*
+         * Popup shows every configured asset,
+         * including Egg and Shadow.
+         */
+        folderConfig.forEach(
+            config => {
+                const item =
+                    document.createElement(
+                        'div'
+                    );
+
+                item.className =
+                    'modal-asset';
+
+                const preview =
+                    document.createElement(
+                        'div'
+                    );
+
+                preview.className =
+                    'modal-asset-preview';
+
+                const file =
+                    entry.assets[
+                        config.key
+                    ];
+
+                if (file) {
+                    let display;
+
+                    if (
+                        config.key ===
+                            'icon' &&
+                        iconMode.value ===
+                            'animated'
+                    ) {
+                        display =
+                            createAnimatedIcon(
+                                file,
+                                170,
+                                170
+                            );
+                    } else {
+                        display =
+                            createImageElement(
+                                file,
+                                `${entry.name} ${config.label}`
+                            );
+                    }
+
+                    preview.appendChild(
+                        display
+                    );
+                } else {
+                    const missing =
+                        document.createElement(
+                            'div'
+                        );
+
+                    missing.className =
+                        'modal-asset-missing';
+
+                    missing.textContent =
+                        'Not available';
+
+                    preview.appendChild(
+                        missing
+                    );
+                }
+
+                const label =
+                    document.createElement(
+                        'div'
+                    );
+
+                label.className =
+                    'modal-asset-label';
+
+                label.textContent =
+                    config.label;
+
+                item.appendChild(
+                    preview
+                );
+
+                item.appendChild(
+                    label
+                );
+
+                grid.appendChild(
+                    item
+                );
+            }
+        );
+
+        modalBody.appendChild(
+            grid
+        );
+
+        assetModal.classList.remove(
+            'hidden'
+        );
+
+        document.body.style.overflow =
+            'hidden';
+    }
+
+
+    function closeAssetModal() {
+        assetModal.classList.add(
+            'hidden'
+        );
+
+        modalBody.innerHTML = '';
+
+        document.body.style.overflow =
+            '';
     }
 
 
@@ -1760,6 +1976,38 @@
             });
     }
 
+
+    modalClose.addEventListener(
+        'click',
+        closeAssetModal
+    );
+
+    assetModal.addEventListener(
+        'click',
+        event => {
+            if (
+                event.target ===
+                assetModal
+            ) {
+                closeAssetModal();
+            }
+        }
+    );
+
+    document.addEventListener(
+        'keydown',
+        event => {
+            if (
+                event.key ===
+                    'Escape' &&
+                !assetModal.classList.contains(
+                    'hidden'
+                )
+            ) {
+                closeAssetModal();
+            }
+        }
+    );
 
     searchInput.addEventListener(
         'input',
