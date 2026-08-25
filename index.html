@@ -1564,62 +1564,162 @@
        GITHUB LOADING
        ============================================================= */
 
-    async function fetchFolder(config) {
+    /*
+     * Load the repository file tree in ONE GitHub API request.
+     *
+     * The previous version made one GitHub API request per asset folder.
+     * On mobile networks, many users can share the same public IP address,
+     * which makes GitHub's unauthenticated API rate limit easier to hit.
+     *
+     * A single recursive tree request is both faster and much less likely
+     * to fail because of rate limiting.
+     */
+    async function fetchRepositoryTree() {
         const url =
             `https://api.github.com/repos/` +
-            `${organization}/${repository}/contents/` +
-            encodeURIComponent(
-                config.folder
-            );
+            `${organization}/${repository}/git/trees/main?recursive=1`;
 
         const response =
-            await fetch(url);
-
-        /*
-         * Optional folders are permitted to not exist.
-         */
-        if (
-            response.status === 404 &&
-            config.unused
-        ) {
-            return [];
-        }
+            await fetch(
+                url,
+                {
+                    headers: {
+                        'Accept':
+                            'application/vnd.github+json'
+                    }
+                }
+            );
 
         if (!response.ok) {
+            let detail = '';
+
+            try {
+                const data =
+                    await response.json();
+
+                if (data && data.message) {
+                    detail =
+                        `: ${data.message}`;
+                }
+            } catch (error) {
+            }
+
             throw new Error(
-                `GitHub returned ${response.status} ` +
-                `for ${config.folder}`
+                `GitHub returned ${response.status}${detail}`
             );
         }
 
         const data =
             await response.json();
 
-        if (!Array.isArray(data)) {
+        if (
+            !data ||
+            !Array.isArray(data.tree)
+        ) {
             throw new Error(
-                `Unexpected response for ${config.folder}`
+                'Unexpected GitHub repository tree response.'
             );
         }
 
-        return data
-            .filter(file =>
-                file.type === 'file' &&
-                isImageFile(file.name)
+        if (data.truncated) {
+            console.warn(
+                'GitHub returned a truncated repository tree.'
+            );
+        }
+
+        return data.tree;
+    }
+
+
+    function buildFolderDataFromTree(
+        tree
+    ) {
+        folderConfig.forEach(
+            config => {
+                rawFolderData[
+                    config.key
+                ] = [];
+            }
+        );
+
+        tree
+            .filter(item =>
+                item.type === 'blob' &&
+                isImageFile(
+                    item.path || ''
+                )
             )
-            .map(file => ({
-                ...file,
-                parsed:
-                    parsePokemonFilename(
-                        file.name
-                    )
-            }))
-            .sort(
+            .forEach(item => {
+                const matchingConfig =
+                    folderConfig.find(
+                        config => {
+                            const prefix =
+                                `${config.folder}/`;
+
+                            return (
+                                item.path
+                                    .toLowerCase()
+                                    .startsWith(
+                                        prefix.toLowerCase()
+                                    ) &&
+                                !item.path
+                                    .substring(
+                                        prefix.length
+                                    )
+                                    .includes('/')
+                            );
+                        }
+                    );
+
+                if (!matchingConfig) {
+                    return;
+                }
+
+                const filename =
+                    item.path.substring(
+                        item.path.lastIndexOf('/') + 1
+                    );
+
+                const encodedPath =
+                    item.path
+                        .split('/')
+                        .map(
+                            part =>
+                                encodeURIComponent(
+                                    part
+                                )
+                        )
+                        .join('/');
+
+                rawFolderData[
+                    matchingConfig.key
+                ].push({
+                    name: filename,
+                    path: item.path,
+                    type: 'file',
+                    download_url:
+                        `https://raw.githubusercontent.com/` +
+                        `${organization}/${repository}/main/${encodedPath}`,
+                    parsed:
+                        parsePokemonFilename(
+                            filename
+                        )
+                });
+            });
+
+        Object.keys(
+            rawFolderData
+        ).forEach(key => {
+            rawFolderData[
+                key
+            ].sort(
                 (a, b) =>
                     compareNames(
                         a.name,
                         b.name
                     )
             );
+        });
     }
 
 
@@ -1627,41 +1727,102 @@
         content.innerHTML =
             '<div class="status">Loading assets...</div>';
 
-        const results =
-            await Promise.allSettled(
-                folderConfig.map(
-                    async config => {
-                        rawFolderData[
-                            config.key
-                        ] =
-                            await fetchFolder(
-                                config
-                            );
-                    }
-                )
+        try {
+            const tree =
+                await fetchRepositoryTree();
+
+            buildFolderDataFromTree(
+                tree
             );
 
-        results.forEach(
-            (result, index) => {
-                if (
-                    result.status ===
-                    'rejected'
-                ) {
-                    console.error(
-                        folderConfig[index]
-                            .folder,
-                        result.reason
-                    );
+            const totalLoaded =
+                Object.values(
+                    rawFolderData
+                ).reduce(
+                    (sum, files) =>
+                        sum +
+                        files.length,
+                    0
+                );
 
-                    rawFolderData[
-                        folderConfig[index]
-                            .key
-                    ] = [];
-                }
+            if (totalLoaded === 0) {
+                throw new Error(
+                    'The repository loaded, but no configured image assets were found.'
+                );
             }
-        );
 
-        render();
+            render();
+
+        } catch (error) {
+            console.error(
+                'Could not load Pokémon assets:',
+                error
+            );
+
+            content.innerHTML = '';
+
+            const status =
+                document.createElement(
+                    'div'
+                );
+
+            status.className =
+                'status';
+
+            const title =
+                document.createElement(
+                    'strong'
+                );
+
+            title.textContent =
+                'Could not load Pokémon assets.';
+
+            const message =
+                document.createElement(
+                    'div'
+                );
+
+            message.style.marginTop =
+                '6px';
+
+            message.textContent =
+                (
+                    error &&
+                    error.message
+                )
+                    ? error.message
+                    : 'Unknown loading error.';
+
+            const hint =
+                document.createElement(
+                    'div'
+                );
+
+            hint.style.marginTop =
+                '8px';
+
+            hint.style.color =
+                'var(--muted)';
+
+            hint.textContent =
+                'Try refreshing the page. If this persists, GitHub may be temporarily rate-limiting requests from your network.';
+
+            status.appendChild(
+                title
+            );
+
+            status.appendChild(
+                message
+            );
+
+            status.appendChild(
+                hint
+            );
+
+            content.appendChild(
+                status
+            );
+        }
     }
 
 
@@ -3333,8 +3494,15 @@
         if (
             grid.children.length === 0
         ) {
-            content.innerHTML =
-                '<div class="status">No Pokémon match the current progress filter.</div>';
+            if (
+                allRecords.length === 0
+            ) {
+                content.innerHTML =
+                    '<div class="status">No Pokémon asset records were loaded. Refresh the page or check the GitHub loading error in the browser console.</div>';
+            } else {
+                content.innerHTML =
+                    '<div class="status">No Pokémon match the current progress filter.</div>';
+            }
 
             return;
         }
