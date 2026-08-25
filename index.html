@@ -765,6 +765,15 @@
         .copyable-image,
         .icon-animation.copyable-image {
             cursor: copy;
+
+            /*
+             * Keep the native mobile long-press image menu available.
+             * This is useful on iOS/other browsers that do not allow
+             * websites to write image data directly to the clipboard.
+             */
+            -webkit-touch-callout: default;
+            user-select: auto;
+            -webkit-user-select: auto;
         }
 
         .copyable-image:hover {
@@ -2166,17 +2175,9 @@
         file,
         label
     ) {
-        try {
-            if (
-                !navigator.clipboard ||
-                typeof ClipboardItem ===
-                    'undefined'
-            ) {
-                throw new Error(
-                    'Image clipboard is not supported in this browser.'
-                );
-            }
+        let pngBlob = null;
 
+        try {
             const response =
                 await fetch(
                     file.download_url
@@ -2191,20 +2192,344 @@
             const sourceBlob =
                 await response.blob();
 
-            const pngBlob =
+            pngBlob =
                 await convertBlobToPng(
                     sourceBlob
                 );
 
-            await navigator.clipboard.write([
-                new ClipboardItem({
-                    'image/png': pngBlob
-                })
-            ]);
+            /*
+             * 1. Preferred: copy the actual image.
+             */
+            if (
+                navigator.clipboard &&
+                typeof ClipboardItem !==
+                    'undefined'
+            ) {
+                try {
+                    await navigator.clipboard.write([
+                        new ClipboardItem({
+                            'image/png':
+                                pngBlob
+                        })
+                    ]);
+
+                    showCopyToast(
+                        `Copied ${label} to clipboard`
+                    );
+
+                    return;
+
+                } catch (clipboardError) {
+                    console.warn(
+                        'Direct image clipboard write failed:',
+                        clipboardError
+                    );
+                }
+            }
+
+            /*
+             * 2. Fallback: copy the image URL as text.
+             *
+             * This is much more widely supported on mobile than
+             * writing image data to the clipboard.
+             */
+            if (
+                navigator.clipboard &&
+                navigator.clipboard.writeText
+            ) {
+                try {
+                    await navigator.clipboard.writeText(
+                        file.download_url
+                    );
+
+                    showCopyToast(
+                        'Image copy is unavailable here. Copied the image link instead — press and hold the image for Copy/Save Image.'
+                    );
+
+                    return;
+
+                } catch (linkClipboardError) {
+                    console.warn(
+                        'Text clipboard fallback failed:',
+                        linkClipboardError
+                    );
+                }
+            }
+
+            /*
+             * 3. Final fallback: open the mobile share sheet.
+             */
+            if (
+                navigator.share &&
+                typeof File !==
+                    'undefined'
+            ) {
+                const safeName =
+                    `${label}`
+                        .replace(
+                            /[^a-z0-9._-]+/gi,
+                            '_'
+                        )
+                        .replace(
+                            /^_+|_+$/g,
+                            ''
+                        ) ||
+                    'pokemon_image';
+
+                const imageFile =
+                    new File(
+                        [pngBlob],
+                        `${safeName}.png`,
+                        {
+                            type:
+                                'image/png'
+                        }
+                    );
+
+                const shareData = {
+                    files: [
+                        imageFile
+                    ],
+                    title:
+                        label
+                };
+
+                if (
+                    !navigator.canShare ||
+                    navigator.canShare(
+                        shareData
+                    )
+                ) {
+                    try {
+                        await navigator.share(
+                            shareData
+                        );
+
+                        return;
+
+                    } catch (shareError) {
+                        if (
+                            shareError &&
+                            shareError.name ===
+                                'AbortError'
+                        ) {
+                            return;
+                        }
+
+                        console.warn(
+                            'Image sharing fallback failed:',
+                            shareError
+                        );
+                    }
+                }
+            }
+
+            /*
+             * No programmatic copy/share route remains.
+             * Native long-press stays enabled on the image itself.
+             */
+            showCopyToast(
+                'Copy and share are unavailable in this browser. Press and hold the image to use the browser’s Copy/Save Image menu.',
+                true
+            );
+
+        } catch (error) {
+            console.error(
+                'Image copy failed:',
+                error
+            );
+
+            /*
+             * If the image itself could not be fetched/converted,
+             * still try to copy its link before giving up.
+             */
+            if (
+                navigator.clipboard &&
+                navigator.clipboard.writeText
+            ) {
+                try {
+                    await navigator.clipboard.writeText(
+                        file.download_url
+                    );
+
+                    showCopyToast(
+                        'Could not copy the image itself. Copied the image link instead — press and hold the image for Copy/Save Image.'
+                    );
+
+                    return;
+
+                } catch (linkClipboardError) {
+                    console.warn(
+                        'Text clipboard fallback after image failure failed:',
+                        linkClipboardError
+                    );
+                }
+            }
+
+            if (
+                navigator.share
+            ) {
+                try {
+                    await navigator.share({
+                        title:
+                            label,
+                        url:
+                            file.download_url
+                    });
+
+                    return;
+
+                } catch (shareError) {
+                    if (
+                        shareError &&
+                        shareError.name ===
+                            'AbortError'
+                    ) {
+                        return;
+                    }
+
+                    console.warn(
+                        'URL sharing fallback failed:',
+                        shareError
+                    );
+                }
+            }
 
             showCopyToast(
-                `Copied ${label} to clipboard`
+                'Could not copy this image or link. Press and hold the image to use the browser’s image menu.',
+                true
             );
+        }
+    }
+
+            const sourceBlob =
+                await response.blob();
+
+            pngBlob =
+                await convertBlobToPng(
+                    sourceBlob
+                );
+
+            /*
+             * Desktop Chromium and some Android browsers support
+             * writing image/png directly to the system clipboard.
+             *
+             * iOS browsers commonly do not support this part of the
+             * Async Clipboard API even though text clipboard access
+             * exists, so failure here is handled with a mobile fallback.
+             */
+            if (
+                navigator.clipboard &&
+                typeof ClipboardItem !==
+                    'undefined'
+            ) {
+                try {
+                    await navigator.clipboard.write([
+                        new ClipboardItem({
+                            'image/png':
+                                pngBlob
+                        })
+                    ]);
+
+                    showCopyToast(
+                        `Copied ${label} to clipboard`
+                    );
+
+                    return;
+
+                } catch (clipboardError) {
+                    console.warn(
+                        'Direct image clipboard write failed:',
+                        clipboardError
+                    );
+                }
+            }
+
+            /*
+             * Mobile fallback:
+             * use the native share sheet with the image as a file.
+             *
+             * This is supported by many mobile Safari/Chrome versions
+             * where direct image clipboard writing is unavailable.
+             */
+            if (
+                navigator.share &&
+                typeof File !==
+                    'undefined'
+            ) {
+                const safeName =
+                    `${label}`
+                        .replace(
+                            /[^a-z0-9._-]+/gi,
+                            '_'
+                        )
+                        .replace(
+                            /^_+|_+$/g,
+                            ''
+                        ) ||
+                    'pokemon_image';
+
+                const imageFile =
+                    new File(
+                        [pngBlob],
+                        `${safeName}.png`,
+                        {
+                            type:
+                                'image/png'
+                        }
+                    );
+
+                const shareData = {
+                    files: [
+                        imageFile
+                    ],
+                    title:
+                        label
+                };
+
+                if (
+                    !navigator.canShare ||
+                    navigator.canShare(
+                        shareData
+                    )
+                ) {
+                    try {
+                        await navigator.share(
+                            shareData
+                        );
+
+                        showCopyToast(
+                            'Image clipboard is not supported here — opened the mobile share sheet instead'
+                        );
+
+                        return;
+
+                    } catch (shareError) {
+                        if (
+                            shareError &&
+                            shareError.name ===
+                                'AbortError'
+                        ) {
+                            return;
+                        }
+
+                        console.warn(
+                            'Image sharing fallback failed:',
+                            shareError
+                        );
+                    }
+                }
+            }
+
+            /*
+             * Final mobile fallback:
+             * leave the image's native long-press menu enabled.
+             */
+            showCopyToast(
+                'This browser blocks image clipboard access. Press and hold the image to use the browser’s Copy/Save Image menu.',
+                true
+            );
+
         } catch (error) {
             console.error(
                 'Image copy failed:',
@@ -2212,7 +2537,7 @@
             );
 
             showCopyToast(
-                'Could not copy image to clipboard',
+                'Could not prepare the image. Press and hold it to use the browser’s image menu.',
                 true
             );
         }
@@ -2229,7 +2554,7 @@
         );
 
         element.title =
-            'Click to copy image';
+            'Click to copy image; on mobile, press and hold if needed';
 
         element.addEventListener(
             'click',
