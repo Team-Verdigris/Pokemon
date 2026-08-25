@@ -413,7 +413,6 @@
         }
 
         .pokemon-card.colored {
-            border: 2px solid rgb(var(--pokemon-accent));
             background:
                 linear-gradient(
                     180deg,
@@ -450,10 +449,6 @@
             padding: 12px;
         }
 
-        .pokemon-card.colored .pokemon-body {
-            border-top:
-                3px solid rgb(var(--pokemon-accent));
-        }
 
         .pokemon-title-row {
             display: flex;
@@ -682,6 +677,90 @@
         }
 
         /* =========================================================
+           PROGRESS / MODAL NAVIGATION / ADDITIONAL ART
+           ========================================================= */
+
+        .progress-summary {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 8px 0 10px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .progress-track {
+            height: 6px;
+            flex: 1;
+            overflow: hidden;
+            border-radius: 999px;
+            background: #e4e8ec;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: inherit;
+            background: var(--success);
+        }
+
+        .modal-variant-nav {
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-section-title {
+            margin: 0 0 9px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .modal-variant-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .modal-variant-button {
+            padding: 6px 9px;
+            border: 1px solid #bfc6cc;
+            border-radius: 5px;
+            background: #ffffff;
+            cursor: pointer;
+            color: var(--text);
+            font-size: 11px;
+        }
+
+        .modal-variant-button:hover:not(:disabled) {
+            background: #f5f7f9;
+        }
+
+        .modal-variant-button.active,
+        .modal-variant-button:disabled {
+            border-color: var(--accent);
+            background: #e8f0f5;
+            color: var(--accent);
+            cursor: default;
+            font-weight: bold;
+        }
+
+        .additional-art-section {
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
+        }
+
+        .additional-art-label {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 10px;
+            text-align: center;
+        }
+
+        /* =========================================================
            RESPONSIVE
            ========================================================= */
 
@@ -793,8 +872,41 @@
             <label for="cardStyle">Card Style</label>
 
             <select id="cardStyle">
-                <option value="neutral" selected>Neutral</option>
-                <option value="pokemon">Pokémon Colors</option>
+                <option value="neutral">Neutral</option>
+                <option value="pokemon" selected>Pokémon Colors</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="sortMode">Sort</label>
+
+            <select id="sortMode">
+                <option value="name" selected>Name A–Z</option>
+                <option value="progressAsc">Progress: Least → Most</option>
+                <option value="progressDesc">Progress: Most → Least</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="progressFilter">Graphic Progress</label>
+
+            <select id="progressFilter">
+                <option value="all" selected>All</option>
+                <option value="incomplete">Incomplete only</option>
+                <option value="complete">Complete only</option>
+                <option value="0">0 / 6 complete</option>
+                <option value="1">1 / 6 complete</option>
+                <option value="2">2 / 6 complete</option>
+                <option value="3">3 / 6 complete</option>
+                <option value="4">4 / 6 complete</option>
+                <option value="5">5 / 6 complete</option>
+                <option value="6">6 / 6 complete</option>
+                <option value="missing:artwork">Missing Artwork</option>
+                <option value="missing:front">Missing Front</option>
+                <option value="missing:frontShiny">Missing Front Shiny</option>
+                <option value="missing:back">Missing Back</option>
+                <option value="missing:backShiny">Missing Back Shiny</option>
+                <option value="missing:icon">Missing Icon</option>
             </select>
         </div>
 
@@ -999,6 +1111,12 @@
     const cardStyle =
         document.getElementById('cardStyle');
 
+    const sortMode =
+        document.getElementById('sortMode');
+
+    const progressFilter =
+        document.getElementById('progressFilter');
+
     const hideUnusedAssets =
         document.getElementById('hideUnusedAssets');
 
@@ -1084,42 +1202,63 @@
                 );
         }
 
-        let isFemale =
-            false;
+        /*
+         * Naming rules:
+         *
+         * MON                -> base
+         * MON_1              -> Form 1
+         * MON_female         -> female variant
+         * MON_1_female       -> female Form 1
+         * MON_old            -> archived base
+         * MON_ALT            -> Additional Art for MON
+         * MON_1_ALT          -> Additional Art for Form 1
+         * MON_female_ALT     -> Additional Art for female variant
+         *
+         * Any suffix token that is not a number, "female", or
+         * the already-stripped "old" is Additional Art.
+         */
+        const parts =
+            stem.split('_');
 
-        if (/_female$/i.test(stem)) {
-            isFemale = true;
-
-            stem =
-                stem.replace(
-                    /_female$/i,
-                    ''
-                );
-        }
+        const baseName =
+            parts.shift() || stem;
 
         let formNumber =
             null;
 
-        const formMatch =
-            stem.match(
-                /_(\d+)$/
-            );
+        let isFemale =
+            false;
 
-        if (formMatch) {
+        const additionalParts =
+            [];
+
+        if (
+            parts.length > 0 &&
+            /^\d+$/.test(parts[0])
+        ) {
             formNumber =
-                Number(
-                    formMatch[1]
-                );
-
-            stem =
-                stem.replace(
-                    /_(\d+)$/,
-                    ''
-                );
+                Number(parts.shift());
         }
 
-        const baseName =
-            stem;
+        if (
+            parts.length > 0 &&
+            /^female$/i.test(parts[0])
+        ) {
+            isFemale = true;
+            parts.shift();
+        }
+
+        additionalParts.push(
+            ...parts
+        );
+
+        const additionalArtLabel =
+            additionalParts.length > 0
+                ? additionalParts.join('_')
+                : null;
+
+        const isAdditionalArt =
+            additionalArtLabel !== null;
 
         let variantId =
             baseName;
@@ -1145,6 +1284,8 @@
             formNumber,
             isFemale,
             isOld,
+            isAdditionalArt,
+            additionalArtLabel,
             variantId
         };
     }
@@ -1401,16 +1542,45 @@
                                 id,
                                 parsed:
                                     file.parsed,
-                                assets: {}
+                                assets: {},
+                                additionalArt: {}
                             }
                         );
                     }
 
-                    records
-                        .get(id)
-                        .assets[
+                    const record =
+                        records.get(id);
+
+                    if (
+                        file.parsed
+                            .isAdditionalArt
+                    ) {
+                        if (
+                            !record.additionalArt[
+                                config.key
+                            ]
+                        ) {
+                            record.additionalArt[
+                                config.key
+                            ] = [];
+                        }
+
+                        record.additionalArt[
+                            config.key
+                        ].push(file);
+                    } else {
+                        record.assets[
                             config.key
                         ] = file;
+
+                        /*
+                         * Prefer the canonical filename as the record's
+                         * parsed identity rather than an Additional Art
+                         * filename encountered first.
+                         */
+                        record.parsed =
+                            file.parsed;
+                    }
                 });
             });
 
@@ -1425,6 +1595,134 @@
                         getDisplayName(b)
                     )
             );
+    }
+
+
+    function getRecordProgress(record) {
+        const required =
+            getRequiredConfig();
+
+        const complete =
+            required.filter(
+                config =>
+                    Boolean(
+                        record.assets[
+                            config.key
+                        ]
+                    )
+            ).length;
+
+        return {
+            complete,
+            total: required.length,
+            percent:
+                required.length === 0
+                    ? 100
+                    : Math.round(
+                        complete /
+                        required.length *
+                        100
+                    )
+        };
+    }
+
+
+    function recordMatchesProgressFilter(
+        record
+    ) {
+        const filter =
+            progressFilter.value;
+
+        if (filter === 'all') {
+            return true;
+        }
+
+        const progress =
+            getRecordProgress(
+                record
+            );
+
+        if (filter === 'complete') {
+            return (
+                progress.complete ===
+                progress.total
+            );
+        }
+
+        if (filter === 'incomplete') {
+            return (
+                progress.complete <
+                progress.total
+            );
+        }
+
+        if (/^\d+$/.test(filter)) {
+            return (
+                progress.complete ===
+                Number(filter)
+            );
+        }
+
+        if (
+            filter.startsWith(
+                'missing:'
+            )
+        ) {
+            const key =
+                filter.substring(
+                    'missing:'.length
+                );
+
+            return !Boolean(
+                record.assets[key]
+            );
+        }
+
+        return true;
+    }
+
+
+    function sortPokemonRecords(
+        records
+    ) {
+        return [...records].sort(
+            (a, b) => {
+                if (
+                    sortMode.value ===
+                    'progressAsc'
+                ) {
+                    const difference =
+                        getRecordProgress(a)
+                            .complete -
+                        getRecordProgress(b)
+                            .complete;
+
+                    if (difference !== 0) {
+                        return difference;
+                    }
+                }
+
+                if (
+                    sortMode.value ===
+                    'progressDesc'
+                ) {
+                    const difference =
+                        getRecordProgress(b)
+                            .complete -
+                        getRecordProgress(a)
+                            .complete;
+
+                    if (difference !== 0) {
+                        return difference;
+                    }
+                }
+
+                return compareNames(
+                    getDisplayName(a),
+                    getDisplayName(b)
+                );
+            }
+        );
     }
 
 
@@ -1913,9 +2211,17 @@
                 'Front',
                 getActiveFiles(
                     'front'
+                ).filter(
+                    file =>
+                        !file.parsed
+                            .isAdditionalArt
                 ),
                 getActiveFiles(
                     'frontShiny'
+                ).filter(
+                    file =>
+                        !file.parsed
+                            .isAdditionalArt
                 )
             );
         }
@@ -1934,9 +2240,17 @@
                 'Back',
                 getActiveFiles(
                     'back'
+                ).filter(
+                    file =>
+                        !file.parsed
+                            .isAdditionalArt
                 ),
                 getActiveFiles(
                     'backShiny'
+                ).filter(
+                    file =>
+                        !file.parsed
+                            .isAdditionalArt
                 )
             );
         }
@@ -2547,7 +2861,7 @@
     function renderPokemonView() {
         content.innerHTML = '';
 
-        const records =
+        const allRecords =
             buildPokemonRecords();
 
         const grid =
@@ -2562,6 +2876,16 @@
             formMode.value ===
             'separate'
         ) {
+            const records =
+                sortPokemonRecords(
+                    allRecords.filter(
+                        record =>
+                            recordMatchesProgressFilter(
+                                record
+                            )
+                    )
+                );
+
             records.forEach(
                 record => {
                     grid.appendChild(
@@ -2572,9 +2896,26 @@
                 }
             );
         } else {
-            const groups =
+            let groups =
                 groupPokemonRecords(
-                    records
+                    allRecords
+                );
+
+            groups =
+                groups.filter(
+                    group =>
+                        getGroupRecords(group)
+                            .some(
+                                record =>
+                                    recordMatchesProgressFilter(
+                                        record
+                                    )
+                            )
+                );
+
+            groups =
+                sortPokemonGroups(
+                    groups
                 );
 
             groups.forEach(
@@ -2586,6 +2927,15 @@
                     );
                 }
             );
+        }
+
+        if (
+            grid.children.length === 0
+        ) {
+            content.innerHTML =
+                '<div class="status">No Pokémon match the current progress filter.</div>';
+
+            return;
         }
 
         content.appendChild(
@@ -2653,14 +3003,78 @@
                             )
                     };
                 }
-            )
-            .sort(
-                (a, b) =>
-                    compareNames(
-                        a.baseName,
-                        b.baseName
-                    )
             );
+    }
+
+
+    function getGroupRecords(group) {
+        return [
+            group.primary,
+            ...group.alternates
+        ];
+    }
+
+
+    function getGroupProgress(group) {
+        const progressValues =
+            getGroupRecords(group)
+                .map(
+                    record =>
+                        getRecordProgress(
+                            record
+                        )
+                );
+
+        return progressValues.reduce(
+            (worst, current) =>
+                current.complete <
+                worst.complete
+                    ? current
+                    : worst,
+            progressValues[0]
+        );
+    }
+
+
+    function sortPokemonGroups(groups) {
+        return [...groups].sort(
+            (a, b) => {
+                if (
+                    sortMode.value ===
+                    'progressAsc'
+                ) {
+                    const difference =
+                        getGroupProgress(a)
+                            .complete -
+                        getGroupProgress(b)
+                            .complete;
+
+                    if (difference !== 0) {
+                        return difference;
+                    }
+                }
+
+                if (
+                    sortMode.value ===
+                    'progressDesc'
+                ) {
+                    const difference =
+                        getGroupProgress(b)
+                            .complete -
+                        getGroupProgress(a)
+                            .complete;
+
+                    if (difference !== 0) {
+                        return difference;
+                    }
+                }
+
+                return compareNames(
+                    a.baseName,
+                    b.baseName
+                );
+            }
+        );
     }
 
 
@@ -2687,7 +3101,11 @@
         const card =
             createPokemonCardShell(
                 group.primary,
-                group.baseName
+                group.baseName,
+                getGroupProgress(group),
+                group.alternates.length > 0
+                    ? 'Lowest form progress'
+                    : 'Graphic progress'
             );
 
         card.dataset.search +=
@@ -2793,7 +3211,9 @@
 
     function createPokemonCardShell(
         record,
-        forcedTitle = null
+        forcedTitle = null,
+        progressOverride = null,
+        progressLabel = 'Graphic progress'
     ) {
         const card =
             document.createElement(
@@ -3007,7 +3427,7 @@
                 'complete-summary';
 
             complete.textContent =
-                'All required image types exist.';
+                '🎉 All graphics complete!';
 
             body.appendChild(
                 complete
@@ -3073,6 +3493,127 @@
             'style'
         );
 
+        const siblingRecords =
+            sortPokemonRecords(
+                buildPokemonRecords()
+                    .filter(
+                        sibling =>
+                            sibling.parsed
+                                .baseName ===
+                            record.parsed
+                                .baseName
+                    )
+            );
+
+        if (
+            siblingRecords.length > 1
+        ) {
+            const nav =
+                document.createElement(
+                    'div'
+                );
+
+            nav.className =
+                'modal-variant-nav';
+
+            const heading =
+                document.createElement(
+                    'div'
+                );
+
+            heading.className =
+                'modal-section-title';
+
+            heading.textContent =
+                'Forms';
+
+            const list =
+                document.createElement(
+                    'div'
+                );
+
+            list.className =
+                'modal-variant-list';
+
+            siblingRecords.forEach(
+                sibling => {
+                    const button =
+                        document.createElement(
+                            'button'
+                        );
+
+                    button.type =
+                        'button';
+
+                    button.className =
+                        'modal-variant-button';
+
+                    const label =
+                        getVariantLabel(
+                            sibling.parsed
+                        ) ||
+                        'Base';
+
+                    const progress =
+                        getRecordProgress(
+                            sibling
+                        );
+
+                    button.textContent =
+                        `${label} · ${progress.complete}/${progress.total}`;
+
+                    if (
+                        sibling.id ===
+                        record.id
+                    ) {
+                        button.classList.add(
+                            'active'
+                        );
+
+                        button.disabled =
+                            true;
+                    } else {
+                        button.onclick =
+                            () =>
+                                openAssetModal(
+                                    sibling
+                                );
+                    }
+
+                    list.appendChild(
+                        button
+                    );
+                }
+            );
+
+            nav.appendChild(
+                heading
+            );
+
+            nav.appendChild(
+                list
+            );
+
+            modalBody.appendChild(
+                nav
+            );
+        }
+
+        const coreHeading =
+            document.createElement(
+                'div'
+            );
+
+        coreHeading.className =
+            'modal-section-title';
+
+        coreHeading.textContent =
+            'Assets';
+
+        modalBody.appendChild(
+            coreHeading
+        );
+
         const grid =
             document.createElement(
                 'div'
@@ -3081,12 +3622,6 @@
         grid.className =
             'modal-asset-grid';
 
-        /*
-         * Uses visible config, meaning unused folders are hidden
-         * from the popup when Hide non-sprite assets is ON.
-         *
-         * Egg remains visible.
-         */
         getVisibleFolderConfig()
             .forEach(config => {
                 const item =
@@ -3180,6 +3715,156 @@
         modalBody.appendChild(
             grid
         );
+
+        const additionalItems =
+            [];
+
+        getVisibleFolderConfig()
+            .forEach(config => {
+                const files =
+                    record.additionalArt[
+                        config.key
+                    ] || [];
+
+                files.forEach(
+                    file => {
+                        additionalItems.push({
+                            config,
+                            file
+                        });
+                    }
+                );
+            });
+
+        if (
+            additionalItems.length > 0
+        ) {
+            const section =
+                document.createElement(
+                    'div'
+                );
+
+            section.className =
+                'additional-art-section';
+
+            const heading =
+                document.createElement(
+                    'div'
+                );
+
+            heading.className =
+                'modal-section-title';
+
+            heading.textContent =
+                `Additional Art (${additionalItems.length})`;
+
+            const additionalGrid =
+                document.createElement(
+                    'div'
+                );
+
+            additionalGrid.className =
+                'modal-asset-grid';
+
+            additionalItems.forEach(
+                ({ config, file }) => {
+                    const item =
+                        document.createElement(
+                            'div'
+                        );
+
+                    item.className =
+                        'modal-asset';
+
+                    const preview =
+                        document.createElement(
+                            'div'
+                        );
+
+                    preview.className =
+                        'modal-asset-preview checkerboard';
+
+                    let display;
+
+                    if (
+                        config.key ===
+                            'icon' &&
+                        iconMode.value ===
+                            'animated'
+                    ) {
+                        display =
+                            createAnimatedIcon(
+                                file,
+                                170,
+                                170
+                            );
+                    } else {
+                        display =
+                            createImageElement(
+                                file,
+                                file.name
+                            );
+                    }
+
+                    preview.appendChild(
+                        display
+                    );
+
+                    const label =
+                        document.createElement(
+                            'div'
+                        );
+
+                    label.className =
+                        'modal-asset-label';
+
+                    label.textContent =
+                        config.label;
+
+                    const detail =
+                        document.createElement(
+                            'div'
+                        );
+
+                    detail.className =
+                        'additional-art-label';
+
+                    detail.textContent =
+                        file.parsed
+                            .additionalArtLabel ||
+                        file.parsed
+                            .originalStem;
+
+                    item.appendChild(
+                        preview
+                    );
+
+                    item.appendChild(
+                        label
+                    );
+
+                    item.appendChild(
+                        detail
+                    );
+
+                    additionalGrid.appendChild(
+                        item
+                    );
+                }
+            );
+
+            section.appendChild(
+                heading
+            );
+
+            section.appendChild(
+                additionalGrid
+            );
+
+            modalBody.appendChild(
+                section
+            );
+        }
 
         assetModal.classList.remove(
             'hidden'
@@ -3312,7 +3997,9 @@
         shinyMode,
         iconMode,
         formMode,
-        cardStyle
+        cardStyle,
+        sortMode,
+        progressFilter
     ].forEach(
         element =>
             element.addEventListener(
