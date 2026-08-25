@@ -4,65 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Team Verdigris Pokémon Image Viewer</title>
+    <title>Team Verdigris Pokémon Asset Viewer</title>
 
     <style>
         * {
             box-sizing: border-box;
         }
 
+        :root {
+            --bg: #f4f6f8;
+            --panel: #ffffff;
+            --border: #d8dde3;
+            --text: #222222;
+            --muted: #6e7681;
+            --accent: #315f7d;
+            --accent-soft: #e8f0f5;
+            --success: #426b43;
+            --success-soft: #eaf4eb;
+            --danger: #a33a3a;
+            --danger-soft: #f7eaea;
+        }
+
         body {
             margin: 0;
-            padding: 0;
-            background: #f4f6f8;
-            color: #222;
+            background: var(--bg);
+            color: var(--text);
             font-family: Arial, Helvetica, sans-serif;
         }
 
         header {
-            background: #ffffff;
-            border-bottom: 1px solid #d9dde2;
-            padding: 24px;
-            text-align: center;
+            background: var(--panel);
+            border-bottom: 1px solid var(--border);
+            padding: 22px 24px;
         }
 
-        header h1 {
-            margin: 0 0 8px;
+        .header-inner {
+            width: min(1500px, calc(100% - 20px));
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin: 0 0 6px;
             font-size: 28px;
         }
 
-        header p {
+        .subtitle {
             margin: 0;
-            color: #666;
+            color: var(--muted);
             font-size: 14px;
         }
 
         main {
-            width: min(1400px, calc(100% - 32px));
-            margin: 24px auto 48px;
+            width: min(1500px, calc(100% - 32px));
+            margin: 22px auto 48px;
         }
 
-        .controls {
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: end;
             margin-bottom: 24px;
+            padding: 16px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 10px;
         }
 
-        #searchInput {
-            width: 100%;
-            max-width: 500px;
-            padding: 10px 12px;
-            border: 1px solid #c8cdd3;
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .control-group label {
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        input[type="search"],
+        select {
+            min-height: 38px;
+            padding: 8px 10px;
+            border: 1px solid #c7ccd2;
             border-radius: 6px;
             background: #ffffff;
-            font-size: 15px;
+            color: var(--text);
+            font-size: 14px;
         }
 
-        #searchInput:focus {
-            outline: 2px solid #7da3c0;
-            outline-offset: 1px;
+        input[type="search"] {
+            width: 320px;
+            max-width: 70vw;
+        }
+
+        select {
+            min-width: 160px;
+        }
+
+        .status {
+            padding: 16px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--muted);
+        }
+
+        .error {
+            color: var(--danger);
         }
 
         .folder-section {
-            margin-bottom: 36px;
+            margin-bottom: 34px;
         }
 
         .folder-header {
@@ -71,108 +127,305 @@
             gap: 10px;
             margin-bottom: 12px;
             padding-bottom: 8px;
-            border-bottom: 1px solid #d9dde2;
+            border-bottom: 1px solid var(--border);
         }
 
         .folder-title {
             margin: 0;
-            font-size: 21px;
+            font-size: 20px;
         }
 
         .folder-count {
-            color: #777;
+            color: var(--muted);
             font-size: 13px;
         }
 
-        .image-grid {
+        .asset-grid,
+        .pokemon-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
             gap: 14px;
         }
 
-        .image-card {
-            display: flex;
-            flex-direction: column;
-            min-height: 210px;
-            padding: 12px;
-            background: #ffffff;
-            border: 1px solid #d9dde2;
+        .asset-card,
+        .pokemon-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
             border-radius: 8px;
+            overflow: hidden;
         }
 
-        .image-preview {
+        .asset-card {
+            padding: 10px;
+        }
+
+        .asset-preview {
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            flex: 1;
-            min-height: 150px;
-            margin-bottom: 10px;
+            min-height: 160px;
+            margin-bottom: 8px;
+            overflow: hidden;
+            border-radius: 5px;
             background:
-                linear-gradient(45deg, #eeeeee 25%, transparent 25%),
-                linear-gradient(-45deg, #eeeeee 25%, transparent 25%),
-                linear-gradient(45deg, transparent 75%, #eeeeee 75%),
-                linear-gradient(-45deg, transparent 75%, #eeeeee 75%);
+                linear-gradient(45deg, #eceff1 25%, transparent 25%),
+                linear-gradient(-45deg, #eceff1 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #eceff1 75%),
+                linear-gradient(-45deg, transparent 75%, #eceff1 75%);
             background-size: 16px 16px;
             background-position:
                 0 0,
                 0 8px,
                 8px -8px,
                 -8px 0;
-            border-radius: 5px;
-            overflow: hidden;
         }
 
-        .image-preview img {
+        .asset-preview img {
             max-width: 100%;
             max-height: 180px;
             object-fit: contain;
             image-rendering: pixelated;
         }
 
-        .image-name {
+        .asset-name {
             overflow: hidden;
-            color: #333;
-            font-size: 12px;
-            line-height: 1.4;
-            text-align: center;
             text-overflow: ellipsis;
             white-space: nowrap;
+            text-align: center;
+            font-size: 12px;
         }
 
-        .status {
-            padding: 16px;
-            color: #666;
-            background: #ffffff;
-            border: 1px solid #d9dde2;
-            border-radius: 6px;
+        .asset-warning {
+            margin-top: 5px;
+            color: var(--danger);
+            font-size: 11px;
+            text-align: center;
         }
 
-        .error {
-            color: #9b2727;
+        .hover-stack {
+            position: relative;
+            width: 100%;
+            min-height: 160px;
         }
 
-        .hidden {
+        .hover-stack img {
+            position: absolute;
+            inset: 50% auto auto 50%;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.15s ease;
+        }
+
+        .hover-stack .shiny-image {
+            opacity: 0;
+        }
+
+        .hover-stack:hover .normal-image {
+            opacity: 0;
+        }
+
+        .hover-stack:hover .shiny-image {
+            opacity: 1;
+        }
+
+        .toggle-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .toggle-stack {
+            position: relative;
+            min-height: 150px;
+        }
+
+        .toggle-stack img {
+            position: absolute;
+            inset: 50% auto auto 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .toggle-stack .shiny-image {
             display: none;
         }
 
-        @media (max-width: 600px) {
+        .shiny-toggle-button {
+            align-self: center;
+            padding: 5px 10px;
+            border: 1px solid #bfc6cc;
+            border-radius: 5px;
+            background: #ffffff;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .pokemon-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pokemon-cover {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 220px;
+            padding: 12px;
+            background:
+                linear-gradient(45deg, #eceff1 25%, transparent 25%),
+                linear-gradient(-45deg, #eceff1 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #eceff1 75%),
+                linear-gradient(-45deg, transparent 75%, #eceff1 75%);
+            background-size: 16px 16px;
+            background-position:
+                0 0,
+                0 8px,
+                8px -8px,
+                -8px 0;
+        }
+
+        .pokemon-cover img {
+            max-width: 100%;
+            max-height: 220px;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+
+        .pokemon-body {
+            padding: 12px;
+        }
+
+        .pokemon-name {
+            margin: 0 0 10px;
+            font-size: 16px;
+        }
+
+        .asset-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px 8px;
+            margin-bottom: 10px;
+        }
+
+        .asset-status {
+            font-size: 12px;
+        }
+
+        .asset-status.exists {
+            color: var(--success);
+        }
+
+        .asset-status.missing {
+            color: var(--danger);
+        }
+
+        .missing-summary {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            background: var(--danger-soft);
+            color: var(--danger);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .complete-summary {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 5px;
+            background: var(--success-soft);
+            color: var(--success);
+            font-size: 12px;
+        }
+
+        details {
+            margin-top: 10px;
+        }
+
+        summary {
+            cursor: pointer;
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .detail-preview {
+            display: flex;
+            min-height: 120px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 6px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            text-align: center;
+            font-size: 11px;
+        }
+
+        .detail-preview img {
+            display: block;
+            width: 100%;
+            height: 90px;
+            margin-bottom: 5px;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+
+        .icon-animation {
+            display: inline-block;
+            flex: 0 0 auto;
+            background-repeat: no-repeat;
+            background-position: left top;
+            background-size: 200% 100%;
+            image-rendering: pixelated;
+            animation: icon-two-frame-animation 0.5s steps(1, end) infinite;
+        }
+
+        @keyframes icon-two-frame-animation {
+            0%,
+            49.999% {
+                background-position: left top;
+            }
+
+            50%,
+            100% {
+                background-position: right top;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 700px) {
             main {
-                width: min(100% - 20px, 1400px);
-                margin-top: 16px;
+                width: calc(100% - 20px);
             }
 
-            .image-grid {
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            .toolbar {
+                align-items: stretch;
+            }
+
+            input[type="search"] {
+                width: 100%;
+                max-width: none;
+            }
+
+            .control-group {
+                flex: 1 1 100%;
+            }
+
+            .asset-grid,
+            .pokemon-grid {
+                grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
                 gap: 10px;
-            }
-
-            .image-card {
-                min-height: 180px;
-                padding: 8px;
-            }
-
-            .image-preview {
-                min-height: 120px;
             }
         }
     </style>
@@ -181,27 +434,63 @@
 <body>
 
 <header>
-    <h1>Team Verdigris Pokémon Image Viewer</h1>
+    <div class="header-inner">
+        <h1>Team Verdigris Pokémon Asset Viewer</h1>
 
-    <p>
-        Artwork and sprites hosted in the Team-Verdigris / Pages-Test repository.
-    </p>
+        <p class="subtitle">
+            Browse artwork and sprites from the Team-Verdigris / Pokemon repository.
+        </p>
+    </div>
 </header>
 
 <main>
 
-    <div class="controls">
-        <input
-            type="search"
-            id="searchInput"
-            placeholder="Search by Pokémon or filename..."
-            autocomplete="off"
-        >
+    <div class="toolbar">
+
+        <div class="control-group">
+            <label for="searchInput">Search</label>
+
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="Search Pokémon or filename..."
+                autocomplete="off"
+            >
+        </div>
+
+        <div class="control-group">
+            <label for="viewMode">View</label>
+
+            <select id="viewMode">
+                <option value="folder">By Folder</option>
+                <option value="pokemon">By Pokémon</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="shinyMode">Shiny Display</label>
+
+            <select id="shinyMode">
+                <option value="separate">Separate</option>
+                <option value="hover">Hover</option>
+                <option value="toggle">Toggle</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="iconMode">Icon Display</label>
+
+            <select id="iconMode">
+                <option value="sheet">Sheet</option>
+                <option value="animated">GIF</option>
+            </select>
+        </div>
+
     </div>
 
     <div id="content">
         <div class="status">
-            Loading images...
+            Loading assets...
         </div>
     </div>
 
@@ -209,103 +498,125 @@
 
 <script>
     const organization = 'Team-Verdigris';
-    const repository = 'Pages-Test';
+    const repository = 'Pokemon';
 
-    const folders = [
-        'Artworks',
-        'Back shiny',
-        'Back',
-        'Eggs',
-        'Front shiny',
-        'Front',
-        'Icons'
+    const folderConfig = [
+        {
+            key: 'artwork',
+            folder: 'Artworks',
+            label: 'Artwork'
+        },
+        {
+            key: 'backShiny',
+            folder: 'Back shiny',
+            label: 'Back Shiny'
+        },
+        {
+            key: 'back',
+            folder: 'Back',
+            label: 'Back'
+        },
+        {
+            key: 'egg',
+            folder: 'Eggs',
+            label: 'Egg'
+        },
+        {
+            key: 'frontShiny',
+            folder: 'Front shiny',
+            label: 'Front Shiny'
+        },
+        {
+            key: 'front',
+            folder: 'Front',
+            label: 'Front'
+        },
+        {
+            key: 'icon',
+            folder: 'Icons',
+            label: 'Icon'
+        },
+        {
+            key: 'shadow',
+            folder: 'Shadow',
+            label: 'Shadow'
+        }
     ];
 
-    const content = document.getElementById('content');
-    const searchInput = document.getElementById('searchInput');
+    const expectedPokemonAssets = [
+        'artwork',
+        'front',
+        'frontShiny',
+        'back',
+        'backShiny',
+        'icon',
+        'egg',
+        'shadow'
+    ];
 
-    const folderSections = new Map();
+    const content =
+        document.getElementById('content');
+
+    const searchInput =
+        document.getElementById('searchInput');
+
+    const viewMode =
+        document.getElementById('viewMode');
+
+    const shinyMode =
+        document.getElementById('shinyMode');
+
+    const iconMode =
+        document.getElementById('iconMode');
+
+    const folderData = {};
+
+    const pokemonData =
+        new Map();
 
 
     function isImageFile(filename) {
-        const lowerName = filename.toLowerCase();
+        const lower =
+            filename.toLowerCase();
 
         return (
-            lowerName.endsWith('.png') ||
-            lowerName.endsWith('.jpg') ||
-            lowerName.endsWith('.jpeg')
+            lower.endsWith('.png') ||
+            lower.endsWith('.jpg') ||
+            lower.endsWith('.jpeg')
         );
     }
 
 
-    function getDisplayName(filename) {
-        return filename.replace(/\.(png|jpg|jpeg)$/i, '');
+    function stripExtension(filename) {
+        return filename.replace(
+            /\.(png|jpg|jpeg)$/i,
+            ''
+        );
     }
 
 
-    function createFolderSection(folder) {
-        const section = document.createElement('section');
-        section.className = 'folder-section';
-
-        const header = document.createElement('div');
-        header.className = 'folder-header';
-
-        const title = document.createElement('h2');
-        title.className = 'folder-title';
-        title.textContent = folder;
-
-        const count = document.createElement('span');
-        count.className = 'folder-count';
-
-        const grid = document.createElement('div');
-        grid.className = 'image-grid';
-
-        header.appendChild(title);
-        header.appendChild(count);
-
-        section.appendChild(header);
-        section.appendChild(grid);
-
-        content.appendChild(section);
-
-        const folderData = {
-            section,
-            grid,
-            count
-        };
-
-        folderSections.set(folder, folderData);
-
-        return folderData;
+    function normalizePokemonName(filename) {
+        return stripExtension(filename).trim();
     }
 
 
-    function createImageCard(file, folder) {
-        const card = document.createElement('div');
-        card.className = 'image-card';
+    function comparePokemonNames(a, b) {
+        return a.localeCompare(
+            b,
+            undefined,
+            {
+                numeric: true,
+                sensitivity: 'base'
+            }
+        );
+    }
 
-        card.dataset.name = file.name.toLowerCase();
-        card.dataset.folder = folder.toLowerCase();
 
-        const preview = document.createElement('div');
-        preview.className = 'image-preview';
-
-        const image = document.createElement('img');
-        image.src = file.download_url;
-        image.alt = getDisplayName(file.name);
-        image.loading = 'lazy';
-
-        const filename = document.createElement('div');
-        filename.className = 'image-name';
-        filename.textContent = getDisplayName(file.name);
-        filename.title = file.name;
-
-        preview.appendChild(image);
-
-        card.appendChild(preview);
-        card.appendChild(filename);
-
-        return card;
+    function getConfig(key) {
+        return folderConfig.find(
+            config =>
+                config.key === key
+        );
     }
 
 
@@ -315,7 +626,8 @@
             `${organization}/${repository}/contents/` +
             encodeURIComponent(folder);
 
-        const response = await fetch(url);
+        const response =
+            await fetch(url);
 
         if (!response.ok) {
             throw new Error(
@@ -323,7 +635,8 @@
             );
         }
 
-        const data = await response.json();
+        const data =
+            await response.json();
 
         if (!Array.isArray(data)) {
             throw new Error(
@@ -337,100 +650,1139 @@
                 isImageFile(file.name)
             )
             .sort((a, b) =>
-                a.name.localeCompare(
-                    b.name,
-                    undefined,
-                    {
-                        numeric: true,
-                        sensitivity: 'base'
-                    }
+                comparePokemonNames(
+                    a.name,
+                    b.name
                 )
             );
     }
 
 
-    async function loadImages() {
-        content.innerHTML = '';
+    async function loadAllData() {
+        content.innerHTML =
+            '<div class="status">Loading assets...</div>';
 
-        for (const folder of folders) {
-            const folderData = createFolderSection(folder);
+        pokemonData.clear();
 
-            try {
-                const files = await fetchFolder(folder);
+        const results =
+            await Promise.allSettled(
+                folderConfig.map(
+                    async config => {
+                        const files =
+                            await fetchFolder(
+                                config.folder
+                            );
 
-                folderData.count.textContent =
-                    `${files.length} image${files.length === 1 ? '' : 's'}`;
+                        folderData[config.key] =
+                            files;
 
-                files.forEach(file => {
-                    folderData.grid.appendChild(
-                        createImageCard(file, folder)
-                    );
-                });
+                        files.forEach(file => {
+                            const pokemonName =
+                                normalizePokemonName(
+                                    file.name
+                                );
 
-                if (files.length === 0) {
-                    const message = document.createElement('div');
-                    message.className = 'status';
-                    message.textContent = 'No images found.';
+                            if (
+                                !pokemonData.has(
+                                    pokemonName
+                                )
+                            ) {
+                                pokemonData.set(
+                                    pokemonName,
+                                    {
+                                        name: pokemonName,
+                                        assets: {}
+                                    }
+                                );
+                            }
 
-                    folderData.grid.appendChild(message);
-                }
+                            pokemonData
+                                .get(pokemonName)
+                                .assets[config.key] =
+                                file;
+                        });
+                    }
+                )
+            );
 
-            } catch (error) {
-                console.error(error);
+        const failed =
+            results
+                .map(
+                    (result, index) => ({
+                        result,
+                        config:
+                            folderConfig[index]
+                    })
+                )
+                .filter(item =>
+                    item.result.status ===
+                    'rejected'
+                );
 
-                const message = document.createElement('div');
-                message.className = 'status error';
-                message.textContent =
-                    `Could not load ${folder}.`;
+        if (failed.length > 0) {
+            console.error(
+                'Some folders failed to load:',
+                failed
+            );
+        }
 
-                folderData.grid.appendChild(message);
-            }
+        render();
+    }
+
+
+    function render() {
+        if (
+            viewMode.value ===
+            'pokemon'
+        ) {
+            renderPokemonView();
+        } else {
+            renderFolderView();
         }
     }
 
 
-    function filterImages() {
-        const searchTerm =
+    function renderFolderView() {
+        content.innerHTML = '';
+
+        const mode =
+            shinyMode.value;
+
+        if (mode === 'separate') {
+            folderConfig.forEach(
+                config => {
+                    renderFolderSection(
+                        config.label,
+                        folderData[
+                            config.key
+                        ] || [],
+                        config.key
+                    );
+                }
+            );
+
+            applySearch();
+            return;
+        }
+
+        renderFolderSectionWithShinyPair(
+            'Front',
+            folderData.front || [],
+            folderData.frontShiny || [],
+            mode
+        );
+
+        renderFolderSectionWithShinyPair(
+            'Back',
+            folderData.back || [],
+            folderData.backShiny || [],
+            mode
+        );
+
+        folderConfig
+            .filter(config =>
+                ![
+                    'front',
+                    'frontShiny',
+                    'back',
+                    'backShiny'
+                ].includes(
+                    config.key
+                )
+            )
+            .forEach(
+                config => {
+                    renderFolderSection(
+                        config.label,
+                        folderData[
+                            config.key
+                        ] || [],
+                        config.key
+                    );
+                }
+            );
+
+        applySearch();
+    }
+
+
+    function renderFolderSection(
+        label,
+        files,
+        configKey
+    ) {
+        const section =
+            document.createElement(
+                'section'
+            );
+
+        section.className =
+            'folder-section';
+
+        const header =
+            document.createElement(
+                'div'
+            );
+
+        header.className =
+            'folder-header';
+
+        const title =
+            document.createElement(
+                'h2'
+            );
+
+        title.className =
+            'folder-title';
+
+        title.textContent =
+            label;
+
+        const count =
+            document.createElement(
+                'span'
+            );
+
+        count.className =
+            'folder-count';
+
+        count.textContent =
+            `${files.length} image` +
+            `${files.length === 1 ? '' : 's'}`;
+
+        const grid =
+            document.createElement(
+                'div'
+            );
+
+        grid.className =
+            'asset-grid';
+
+        files.forEach(file => {
+            grid.appendChild(
+                createBasicAssetCard(
+                    file,
+                    configKey
+                )
+            );
+        });
+
+        header.appendChild(title);
+        header.appendChild(count);
+
+        section.appendChild(header);
+        section.appendChild(grid);
+
+        content.appendChild(section);
+    }
+
+
+    function renderFolderSectionWithShinyPair(
+        label,
+        normalFiles,
+        shinyFiles,
+        mode
+    ) {
+        const normalMap =
+            new Map(
+                normalFiles.map(
+                    file => [
+                        normalizePokemonName(
+                            file.name
+                        ),
+                        file
+                    ]
+                )
+            );
+
+        const shinyMap =
+            new Map(
+                shinyFiles.map(
+                    file => [
+                        normalizePokemonName(
+                            file.name
+                        ),
+                        file
+                    ]
+                )
+            );
+
+        const allNames =
+            Array.from(
+                new Set([
+                    ...normalMap.keys(),
+                    ...shinyMap.keys()
+                ])
+            ).sort(
+                comparePokemonNames
+            );
+
+        const section =
+            document.createElement(
+                'section'
+            );
+
+        section.className =
+            'folder-section';
+
+        const header =
+            document.createElement(
+                'div'
+            );
+
+        header.className =
+            'folder-header';
+
+        const title =
+            document.createElement(
+                'h2'
+            );
+
+        title.className =
+            'folder-title';
+
+        title.textContent =
+            label;
+
+        const count =
+            document.createElement(
+                'span'
+            );
+
+        count.className =
+            'folder-count';
+
+        count.textContent =
+            `${allNames.length} Pokémon`;
+
+        const grid =
+            document.createElement(
+                'div'
+            );
+
+        grid.className =
+            'asset-grid';
+
+        allNames.forEach(name => {
+            grid.appendChild(
+                createPairedAssetCard(
+                    name,
+                    normalMap.get(name),
+                    shinyMap.get(name),
+                    mode
+                )
+            );
+        });
+
+        header.appendChild(title);
+        header.appendChild(count);
+
+        section.appendChild(header);
+        section.appendChild(grid);
+
+        content.appendChild(section);
+    }
+
+
+    function createBasicAssetCard(
+        file,
+        assetType
+    ) {
+        const card =
+            document.createElement(
+                'div'
+            );
+
+        card.className =
+            'asset-card';
+
+        card.dataset.search =
+            file.name.toLowerCase();
+
+        const preview =
+            document.createElement(
+                'div'
+            );
+
+        preview.className =
+            'asset-preview';
+
+        let display;
+
+        if (
+            assetType === 'icon' &&
+            iconMode.value ===
+            'animated'
+        ) {
+            display =
+                createAnimatedIcon(
+                    file,
+                    150,
+                    150
+                );
+        } else {
+            display =
+                createImageElement(
+                    file,
+                    file.name
+                );
+        }
+
+        const name =
+            document.createElement(
+                'div'
+            );
+
+        name.className =
+            'asset-name';
+
+        name.textContent =
+            normalizePokemonName(
+                file.name
+            );
+
+        preview.appendChild(
+            display
+        );
+
+        card.appendChild(
+            preview
+        );
+
+        card.appendChild(
+            name
+        );
+
+        return card;
+    }
+
+
+    function createPairedAssetCard(
+        name,
+        normalFile,
+        shinyFile,
+        mode
+    ) {
+        const card =
+            document.createElement(
+                'div'
+            );
+
+        card.className =
+            'asset-card';
+
+        card.dataset.search =
+            name.toLowerCase();
+
+        const preview =
+            document.createElement(
+                'div'
+            );
+
+        preview.className =
+            'asset-preview';
+
+        if (mode === 'hover') {
+            const stack =
+                document.createElement(
+                    'div'
+                );
+
+            stack.className =
+                'hover-stack';
+
+            if (normalFile) {
+                const normal =
+                    createImageElement(
+                        normalFile,
+                        `${name} normal`
+                    );
+
+                normal.className =
+                    'normal-image';
+
+                stack.appendChild(
+                    normal
+                );
+            }
+
+            if (shinyFile) {
+                const shiny =
+                    createImageElement(
+                        shinyFile,
+                        `${name} shiny`
+                    );
+
+                shiny.className =
+                    'shiny-image';
+
+                stack.appendChild(
+                    shiny
+                );
+            }
+
+            preview.appendChild(
+                stack
+            );
+        }
+
+        if (mode === 'toggle') {
+            const wrap =
+                document.createElement(
+                    'div'
+                );
+
+            wrap.className =
+                'toggle-wrap';
+
+            const stack =
+                document.createElement(
+                    'div'
+                );
+
+            stack.className =
+                'toggle-stack';
+
+            let normal = null;
+            let shiny = null;
+
+            if (normalFile) {
+                normal =
+                    createImageElement(
+                        normalFile,
+                        `${name} normal`
+                    );
+
+                normal.className =
+                    'normal-image';
+
+                stack.appendChild(
+                    normal
+                );
+            }
+
+            if (shinyFile) {
+                shiny =
+                    createImageElement(
+                        shinyFile,
+                        `${name} shiny`
+                    );
+
+                shiny.className =
+                    'shiny-image';
+
+                stack.appendChild(
+                    shiny
+                );
+            }
+
+            wrap.appendChild(
+                stack
+            );
+
+            if (
+                normalFile &&
+                shinyFile
+            ) {
+                const button =
+                    document.createElement(
+                        'button'
+                    );
+
+                button.className =
+                    'shiny-toggle-button';
+
+                button.textContent =
+                    'Show Shiny';
+
+                let showingShiny =
+                    false;
+
+                button.addEventListener(
+                    'click',
+                    event => {
+                        event.stopPropagation();
+
+                        showingShiny =
+                            !showingShiny;
+
+                        normal.style.display =
+                            showingShiny
+                                ? 'none'
+                                : '';
+
+                        shiny.style.display =
+                            showingShiny
+                                ? 'block'
+                                : 'none';
+
+                        button.textContent =
+                            showingShiny
+                                ? 'Show Normal'
+                                : 'Show Shiny';
+                    }
+                );
+
+                wrap.appendChild(
+                    button
+                );
+            }
+
+            preview.appendChild(
+                wrap
+            );
+        }
+
+        const nameElement =
+            document.createElement(
+                'div'
+            );
+
+        nameElement.className =
+            'asset-name';
+
+        nameElement.textContent =
+            name;
+
+        card.appendChild(
+            preview
+        );
+
+        card.appendChild(
+            nameElement
+        );
+
+        if (!normalFile) {
+            const warning =
+                document.createElement(
+                    'div'
+                );
+
+            warning.className =
+                'asset-warning';
+
+            warning.textContent =
+                'Missing normal';
+
+            card.appendChild(
+                warning
+            );
+        } else if (!shinyFile) {
+            const warning =
+                document.createElement(
+                    'div'
+                );
+
+            warning.className =
+                'asset-warning';
+
+            warning.textContent =
+                'Missing shiny';
+
+            card.appendChild(
+                warning
+            );
+        }
+
+        return card;
+    }
+
+
+    function createImageElement(
+        file,
+        alt
+    ) {
+        const image =
+            document.createElement(
+                'img'
+            );
+
+        image.src =
+            file.download_url;
+
+        image.alt =
+            alt;
+
+        image.loading =
+            'lazy';
+
+        return image;
+    }
+
+
+    function createAnimatedIcon(
+        file,
+        maxWidth,
+        maxHeight
+    ) {
+        const wrapper =
+            document.createElement(
+                'div'
+            );
+
+        const loader =
+            new Image();
+
+        loader.onload = () => {
+            const frameWidth =
+                loader.naturalWidth / 2;
+
+            const frameHeight =
+                loader.naturalHeight;
+
+            if (
+                frameWidth <= 0 ||
+                frameHeight <= 0
+            ) {
+                return;
+            }
+
+            let scale =
+                Math.min(
+                    maxWidth /
+                        frameWidth,
+                    maxHeight /
+                        frameHeight
+                );
+
+            if (
+                !Number.isFinite(scale) ||
+                scale <= 0
+            ) {
+                scale = 1;
+            }
+
+            const width =
+                Math.max(
+                    1,
+                    Math.floor(
+                        frameWidth *
+                        scale
+                    )
+                );
+
+            const height =
+                Math.max(
+                    1,
+                    Math.floor(
+                        frameHeight *
+                        scale
+                    )
+                );
+
+            wrapper.style.width =
+                `${width}px`;
+
+            wrapper.style.height =
+                `${height}px`;
+
+            wrapper.style.backgroundImage =
+                `url("${file.download_url}")`;
+
+            wrapper.className =
+                'icon-animation';
+        };
+
+        loader.src =
+            file.download_url;
+
+        return wrapper;
+    }
+
+
+    function renderPokemonView() {
+        content.innerHTML = '';
+
+        const grid =
+            document.createElement(
+                'div'
+            );
+
+        grid.className =
+            'pokemon-grid';
+
+        const pokemon =
+            Array.from(
+                pokemonData.values()
+            ).sort(
+                (a, b) =>
+                    comparePokemonNames(
+                        a.name,
+                        b.name
+                    )
+            );
+
+        pokemon.forEach(entry => {
+            grid.appendChild(
+                createPokemonCard(
+                    entry
+                )
+            );
+        });
+
+        content.appendChild(
+            grid
+        );
+
+        applySearch();
+    }
+
+
+    function createPokemonCard(
+        entry
+    ) {
+        const card =
+            document.createElement(
+                'article'
+            );
+
+        card.className =
+            'pokemon-card';
+
+        card.dataset.search =
+            entry.name.toLowerCase();
+
+        const cover =
+            document.createElement(
+                'div'
+            );
+
+        cover.className =
+            'pokemon-cover';
+
+        const coverFile =
+            entry.assets.artwork ||
+            entry.assets.front ||
+            entry.assets.icon ||
+            entry.assets.back;
+
+        if (coverFile) {
+            let coverDisplay;
+
+            if (
+                coverFile ===
+                entry.assets.icon &&
+                iconMode.value ===
+                'animated'
+            ) {
+                coverDisplay =
+                    createAnimatedIcon(
+                        coverFile,
+                        200,
+                        200
+                    );
+            } else {
+                coverDisplay =
+                    createImageElement(
+                        coverFile,
+                        entry.name
+                    );
+            }
+
+            cover.appendChild(
+                coverDisplay
+            );
+        } else {
+            cover.textContent =
+                'No preview';
+        }
+
+        const body =
+            document.createElement(
+                'div'
+            );
+
+        body.className =
+            'pokemon-body';
+
+        const title =
+            document.createElement(
+                'h2'
+            );
+
+        title.className =
+            'pokemon-name';
+
+        title.textContent =
+            entry.name;
+
+        const assetList =
+            document.createElement(
+                'div'
+            );
+
+        assetList.className =
+            'asset-list';
+
+        const missing = [];
+
+        expectedPokemonAssets.forEach(
+            key => {
+                const config =
+                    getConfig(key);
+
+                const exists =
+                    Boolean(
+                        entry.assets[key]
+                    );
+
+                const status =
+                    document.createElement(
+                        'div'
+                    );
+
+                status.className =
+                    `asset-status ` +
+                    `${
+                        exists
+                            ? 'exists'
+                            : 'missing'
+                    }`;
+
+                status.textContent =
+                    `${
+                        exists
+                            ? '✓'
+                            : '✗'
+                    } ${config.label}`;
+
+                assetList.appendChild(
+                    status
+                );
+
+                if (!exists) {
+                    missing.push(
+                        config.label
+                    );
+                }
+            }
+        );
+
+        body.appendChild(
+            title
+        );
+
+        body.appendChild(
+            assetList
+        );
+
+        if (missing.length > 0) {
+            const summary =
+                document.createElement(
+                    'div'
+                );
+
+            summary.className =
+                'missing-summary';
+
+            const strong =
+                document.createElement(
+                    'strong'
+                );
+
+            strong.textContent =
+                'Missing: ';
+
+            summary.appendChild(
+                strong
+            );
+
+            summary.appendChild(
+                document.createTextNode(
+                    missing.join(', ')
+                )
+            );
+
+            body.appendChild(
+                summary
+            );
+        } else {
+            const summary =
+                document.createElement(
+                    'div'
+                );
+
+            summary.className =
+                'complete-summary';
+
+            summary.textContent =
+                'All expected image types exist.';
+
+            body.appendChild(
+                summary
+            );
+        }
+
+        const details =
+            document.createElement(
+                'details'
+            );
+
+        const detailsSummary =
+            document.createElement(
+                'summary'
+            );
+
+        detailsSummary.textContent =
+            'View all assets';
+
+        const detailGrid =
+            document.createElement(
+                'div'
+            );
+
+        detailGrid.className =
+            'details-grid';
+
+        folderConfig.forEach(
+            config => {
+                const file =
+                    entry.assets[
+                        config.key
+                    ];
+
+                if (!file) {
+                    return;
+                }
+
+                const item =
+                    document.createElement(
+                        'div'
+                    );
+
+                item.className =
+                    'detail-preview';
+
+                let display;
+
+                if (
+                    config.key ===
+                        'icon' &&
+                    iconMode.value ===
+                        'animated'
+                ) {
+                    display =
+                        createAnimatedIcon(
+                            file,
+                            90,
+                            90
+                        );
+                } else {
+                    display =
+                        createImageElement(
+                            file,
+                            `${entry.name} ${config.label}`
+                        );
+                }
+
+                const label =
+                    document.createElement(
+                        'div'
+                    );
+
+                label.textContent =
+                    config.label;
+
+                item.appendChild(
+                    display
+                );
+
+                item.appendChild(
+                    label
+                );
+
+                detailGrid.appendChild(
+                    item
+                );
+            }
+        );
+
+        details.appendChild(
+            detailsSummary
+        );
+
+        details.appendChild(
+            detailGrid
+        );
+
+        body.appendChild(
+            details
+        );
+
+        card.appendChild(
+            cover
+        );
+
+        card.appendChild(
+            body
+        );
+
+        return card;
+    }
+
+
+    function applySearch() {
+        const query =
             searchInput.value
                 .trim()
                 .toLowerCase();
 
-        folderSections.forEach(folderData => {
-            const cards =
-                folderData.grid.querySelectorAll('.image-card');
-
-            let visibleCount = 0;
-
-            cards.forEach(card => {
+        document
+            .querySelectorAll(
+                '.asset-card, .pokemon-card'
+            )
+            .forEach(card => {
                 const matches =
-                    card.dataset.name.includes(searchTerm) ||
-                    card.dataset.folder.includes(searchTerm);
+                    card.dataset.search
+                        .includes(query);
 
                 card.classList.toggle(
                     'hidden',
                     !matches
                 );
-
-                if (matches) {
-                    visibleCount++;
-                }
             });
 
-            folderData.section.classList.toggle(
-                'hidden',
-                visibleCount === 0 && searchTerm !== ''
-            );
-        });
+        document
+            .querySelectorAll(
+                '.folder-section'
+            )
+            .forEach(section => {
+                const visibleCards =
+                    section.querySelectorAll(
+                        '.asset-card:not(.hidden)'
+                    );
+
+                section.classList.toggle(
+                    'hidden',
+                    query !== '' &&
+                    visibleCards.length === 0
+                );
+            });
     }
 
 
     searchInput.addEventListener(
         'input',
-        filterImages
+        applySearch
+    );
+
+    viewMode.addEventListener(
+        'change',
+        render
+    );
+
+    shinyMode.addEventListener(
+        'change',
+        render
+    );
+
+    iconMode.addEventListener(
+        'change',
+        render
     );
 
 
-    loadImages();
+    loadAllData();
 </script>
 
 </body>
