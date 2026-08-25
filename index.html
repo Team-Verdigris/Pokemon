@@ -20,7 +20,7 @@
             --accent: #315f7d;
             --success: #426b43;
             --success-soft: #eaf4eb;
-            --danger: #a33a3a;
+            --danger: #b12c2c;
         }
 
         body {
@@ -28,6 +28,12 @@
             background: var(--bg);
             color: var(--text);
             font-family: Arial, Helvetica, sans-serif;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
         }
 
         header {
@@ -57,6 +63,10 @@
             margin: 22px auto 48px;
         }
 
+        /* =========================================================
+           TOOLBAR
+           ========================================================= */
+
         .toolbar {
             display: flex;
             flex-wrap: wrap;
@@ -75,7 +85,7 @@
             gap: 6px;
         }
 
-        .control-group label {
+        .control-group > label:first-child {
             color: var(--muted);
             font-size: 12px;
             font-weight: bold;
@@ -95,13 +105,69 @@
         }
 
         input[type="search"] {
-            width: 320px;
+            width: 300px;
             max-width: 70vw;
         }
 
         select {
-            min-width: 160px;
+            min-width: 145px;
         }
+
+        .toggle-group {
+            display: flex;
+            min-height: 38px;
+            align-items: center;
+            gap: 8px;
+            padding: 0 10px;
+            border: 1px solid #c7ccd2;
+            border-radius: 6px;
+            background: #ffffff;
+        }
+
+        .toggle-group input {
+            margin: 0;
+        }
+
+        .toggle-group label {
+            cursor: pointer;
+            color: var(--text);
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        /* =========================================================
+           COMMON
+           ========================================================= */
+
+        .status {
+            padding: 16px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--muted);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .checkerboard {
+            background:
+                linear-gradient(45deg, #eceff1 25%, transparent 25%),
+                linear-gradient(-45deg, #eceff1 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #eceff1 75%),
+                linear-gradient(-45deg, transparent 75%, #eceff1 75%);
+            background-size: 16px 16px;
+            background-position:
+                0 0,
+                0 8px,
+                8px -8px,
+                -8px 0;
+        }
+
+        /* =========================================================
+           FOLDER VIEW
+           ========================================================= */
 
         .folder-section {
             margin-bottom: 34px;
@@ -145,27 +211,12 @@
             padding: 10px;
         }
 
-        .asset-preview,
-        .pokemon-cover {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background:
-                linear-gradient(45deg, #eceff1 25%, transparent 25%),
-                linear-gradient(-45deg, #eceff1 25%, transparent 25%),
-                linear-gradient(45deg, transparent 75%, #eceff1 75%),
-                linear-gradient(-45deg, transparent 75%, #eceff1 75%);
-            background-size: 16px 16px;
-            background-position:
-                0 0,
-                0 8px,
-                8px -8px,
-                -8px 0;
-        }
-
         .asset-preview {
             position: relative;
+            display: flex;
             min-height: 160px;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 8px;
             overflow: hidden;
             border-radius: 5px;
@@ -193,6 +244,23 @@
             text-align: center;
         }
 
+        .archived-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            z-index: 4;
+            padding: 3px 6px;
+            border-radius: 4px;
+            background: rgba(130, 36, 36, 0.9);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* =========================================================
+           SHINY HOVER
+           ========================================================= */
+
         .hover-stack {
             position: relative;
             width: 100%;
@@ -203,7 +271,7 @@
             position: absolute;
             inset: 50% auto auto 50%;
             transform: translate(-50%, -50%);
-            transition: opacity 0.15s ease;
+            transition: opacity 0.16s ease;
         }
 
         .hover-stack .shiny-image {
@@ -219,39 +287,41 @@
         }
 
         .hover-stack.missing-shiny:hover .normal-image {
-            opacity: 0.5;
+            opacity: 0.48;
         }
 
         .hover-indicator {
             position: absolute;
             top: 8px;
             left: 8px;
-            z-index: 3;
+            z-index: 5;
             display: flex;
-            width: 24px;
-            height: 24px;
+            width: 25px;
+            height: 25px;
             align-items: center;
             justify-content: center;
             opacity: 0;
             pointer-events: none;
-            border-radius: 50%;
             line-height: 1;
+            transform: scale(0.8);
             transition:
-                opacity 0.15s ease,
-                transform 0.15s ease;
-            transform: scale(0.85);
+                opacity 0.16s ease,
+                transform 0.16s ease;
         }
 
         .shiny-indicator {
-            color: #c79600;
-            font-size: 18px;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+            color: #e4b216;
+            font-size: 21px;
+            text-shadow:
+                0 1px 2px rgba(0, 0, 0, 0.45),
+                0 0 3px rgba(255, 255, 255, 0.8);
         }
 
         .missing-shiny-indicator {
-            color: #c62828;
-            font-size: 22px;
+            color: #d12626;
+            font-size: 25px;
             font-weight: bold;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
         }
 
         .hover-stack.has-shiny:hover .shiny-indicator,
@@ -260,11 +330,15 @@
             transform: scale(1);
         }
 
+        /* =========================================================
+           SHINY TOGGLE
+           ========================================================= */
+
         .toggle-wrap {
             display: flex;
+            width: 100%;
             flex-direction: column;
             gap: 8px;
-            width: 100%;
         }
 
         .toggle-stack {
@@ -283,84 +357,23 @@
         }
 
         .shiny-toggle-button,
-        .view-assets-button {
+        .view-assets-button,
+        .alternate-form-button {
             border: 1px solid #bfc6cc;
             border-radius: 5px;
             background: #ffffff;
             cursor: pointer;
-            font-size: 12px;
         }
 
         .shiny-toggle-button {
             align-self: center;
             padding: 5px 10px;
-        }
-
-        .pokemon-card {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .pokemon-cover {
-            min-height: 220px;
-            padding: 12px;
-        }
-
-        .pokemon-cover img {
-            max-width: 100%;
-            max-height: 220px;
-            object-fit: contain;
-            image-rendering: pixelated;
-        }
-
-        .pokemon-body {
-            padding: 12px;
-        }
-
-        .pokemon-name {
-            margin: 0 0 10px;
-            font-size: 16px;
-        }
-
-        .asset-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 5px 8px;
-            margin-bottom: 10px;
-        }
-
-        .asset-status {
             font-size: 12px;
         }
 
-        .asset-status.exists {
-            color: var(--success);
-        }
-
-        .asset-status.missing {
-            color: var(--danger);
-        }
-
-        .complete-summary {
-            margin-top: 10px;
-            padding: 8px;
-            border-radius: 5px;
-            background: var(--success-soft);
-            color: var(--success);
-            font-size: 12px;
-        }
-
-        .view-assets-button {
-            width: 100%;
-            margin-top: 10px;
-            padding: 8px 10px;
-            color: var(--accent);
-            font-weight: bold;
-        }
-
-        .view-assets-button:hover {
-            background: #f5f7f9;
-        }
+        /* =========================================================
+           ICON ANIMATION
+           ========================================================= */
 
         .icon-animation {
             display: inline-block;
@@ -384,6 +397,173 @@
             }
         }
 
+        /* =========================================================
+           POKEMON VIEW
+           ========================================================= */
+
+        .pokemon-card {
+            --pokemon-main: 255, 255, 255;
+            --pokemon-accent: 216, 221, 227;
+
+            display: flex;
+            flex-direction: column;
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .pokemon-card.colored {
+            border: 2px solid rgb(var(--pokemon-accent));
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(var(--pokemon-main), 0.22),
+                    rgba(255, 255, 255, 0.96) 48%
+                );
+            box-shadow:
+                0 3px 12px rgba(var(--pokemon-accent), 0.12);
+        }
+
+        .pokemon-cover {
+            position: relative;
+            display: flex;
+            min-height: 220px;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+        }
+
+        .pokemon-card.colored .pokemon-cover {
+            background-color:
+                rgba(var(--pokemon-main), 0.11);
+        }
+
+        .pokemon-cover img {
+            max-width: 100%;
+            max-height: 220px;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+
+        .pokemon-body {
+            flex: 1;
+            padding: 12px;
+        }
+
+        .pokemon-card.colored .pokemon-body {
+            border-top:
+                3px solid rgb(var(--pokemon-accent));
+        }
+
+        .pokemon-title-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 10px;
+        }
+
+        .pokemon-name {
+            min-width: 0;
+            margin: 0;
+            overflow: hidden;
+            font-size: 16px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .variant-badge {
+            flex: 0 0 auto;
+            padding: 2px 5px;
+            border-radius: 4px;
+            background: #eef1f4;
+            color: var(--muted);
+            font-size: 9px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .variant-badge.old {
+            background: #f3dddd;
+            color: #922c2c;
+        }
+
+        .asset-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px 8px;
+            margin-bottom: 10px;
+        }
+
+        .asset-status {
+            font-size: 12px;
+        }
+
+        .asset-status.exists {
+            color: var(--success);
+        }
+
+        .asset-status.missing {
+            color: var(--danger);
+        }
+
+        .complete-summary {
+            margin-top: 8px;
+            padding: 7px 8px;
+            border-radius: 5px;
+            background: var(--success-soft);
+            color: var(--success);
+            font-size: 11px;
+        }
+
+        .view-assets-button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px 10px;
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .view-assets-button:hover,
+        .alternate-form-button:hover {
+            background: #f5f7f9;
+        }
+
+        /* =========================================================
+           GROUPED FORMS
+           ========================================================= */
+
+        .alternate-forms {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .alternate-forms-title {
+            margin: 0 0 7px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .alternate-form-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .alternate-form-button {
+            padding: 5px 7px;
+            color: var(--text);
+            font-size: 10px;
+        }
+
+        /* =========================================================
+           MODAL
+           ========================================================= */
+
         .modal-backdrop {
             position: fixed;
             inset: 0;
@@ -392,11 +572,14 @@
             align-items: center;
             justify-content: center;
             padding: 24px;
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(0, 0, 0, 0.67);
         }
 
         .modal {
-            width: min(1000px, 100%);
+            --pokemon-main: 255, 255, 255;
+            --pokemon-accent: 216, 221, 227;
+
+            width: min(1100px, 100%);
             max-height: calc(100vh - 48px);
             overflow: auto;
             background: var(--panel);
@@ -404,10 +587,14 @@
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35);
         }
 
+        .modal.colored {
+            border: 3px solid rgb(var(--pokemon-accent));
+        }
+
         .modal-header {
             position: sticky;
             top: 0;
-            z-index: 2;
+            z-index: 10;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -415,6 +602,17 @@
             padding: 14px 18px;
             background: var(--panel);
             border-bottom: 1px solid var(--border);
+        }
+
+        .modal.colored .modal-header {
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(var(--pokemon-main), 0.24),
+                    #ffffff
+                );
+            border-bottom:
+                3px solid rgb(var(--pokemon-accent));
         }
 
         .modal-title {
@@ -462,17 +660,6 @@
             align-items: center;
             justify-content: center;
             margin-bottom: 8px;
-            background:
-                linear-gradient(45deg, #eceff1 25%, transparent 25%),
-                linear-gradient(-45deg, #eceff1 25%, transparent 25%),
-                linear-gradient(45deg, transparent 75%, #eceff1 75%),
-                linear-gradient(-45deg, transparent 75%, #eceff1 75%);
-            background-size: 16px 16px;
-            background-position:
-                0 0,
-                0 8px,
-                8px -8px,
-                -8px 0;
             border-radius: 5px;
         }
 
@@ -494,9 +681,9 @@
             font-size: 12px;
         }
 
-        .hidden {
-            display: none !important;
-        }
+        /* =========================================================
+           RESPONSIVE
+           ========================================================= */
 
         @media (max-width: 700px) {
             main {
@@ -518,7 +705,8 @@
 
             .asset-grid,
             .pokemon-grid {
-                grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+                grid-template-columns:
+                    repeat(auto-fill, minmax(145px, 1fr));
                 gap: 10px;
             }
 
@@ -544,7 +732,7 @@
         <h1>Team Verdigris Pokémon Asset Viewer</h1>
 
         <p class="subtitle">
-            Browse artwork and sprites from the Team-Verdigris / Pokemon repository.
+            Browse and audit Pokémon artwork and sprites.
         </p>
     </div>
 </header>
@@ -568,8 +756,8 @@
             <label for="viewMode">View</label>
 
             <select id="viewMode">
+                <option value="pokemon" selected>By Pokémon</option>
                 <option value="folder">By Folder</option>
-                <option value="pokemon">By Pokémon</option>
             </select>
         </div>
 
@@ -577,8 +765,8 @@
             <label for="shinyMode">Shiny Display</label>
 
             <select id="shinyMode">
+                <option value="hover" selected>Hover</option>
                 <option value="separate">Separate</option>
-                <option value="hover">Hover</option>
                 <option value="toggle">Toggle</option>
             </select>
         </div>
@@ -587,9 +775,58 @@
             <label for="iconMode">Icon Display</label>
 
             <select id="iconMode">
+                <option value="animated" selected>GIF</option>
                 <option value="sheet">Sheet</option>
-                <option value="animated">GIF</option>
             </select>
+        </div>
+
+        <div class="control-group">
+            <label for="formMode">Forms</label>
+
+            <select id="formMode">
+                <option value="separate" selected>Separate</option>
+                <option value="grouped">Group Under Pokémon</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label for="cardStyle">Card Style</label>
+
+            <select id="cardStyle">
+                <option value="neutral" selected>Neutral</option>
+                <option value="pokemon">Pokémon Colors</option>
+            </select>
+        </div>
+
+        <div class="control-group">
+            <label>Unused Assets</label>
+
+            <div class="toggle-group">
+                <input
+                    id="hideUnusedAssets"
+                    type="checkbox"
+                    checked
+                >
+
+                <label for="hideUnusedAssets">
+                    Hide non-sprite assets
+                </label>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>Archived Files</label>
+
+            <div class="toggle-group">
+                <input
+                    id="showOldFiles"
+                    type="checkbox"
+                >
+
+                <label for="showOldFiles">
+                    Show _OLD
+                </label>
+            </div>
         </div>
 
     </div>
@@ -609,8 +846,12 @@
     aria-modal="true"
     aria-labelledby="modalTitle"
 >
-    <div class="modal">
+    <div
+        id="modalWindow"
+        class="modal"
+    >
         <div class="modal-header">
+
             <h2
                 id="modalTitle"
                 class="modal-title"
@@ -624,6 +865,7 @@
             >
                 ×
             </button>
+
         </div>
 
         <div
@@ -634,60 +876,107 @@
 </div>
 
 <script>
+    /* =============================================================
+       REPOSITORY
+       ============================================================= */
+
     const organization = 'Team-Verdigris';
     const repository = 'Pokemon';
+
+
+    /* =============================================================
+       ASSET CONFIGURATION
+
+       Set unused: true for folders that should disappear when
+       "Hide non-sprite assets" is enabled.
+
+       Egg remains a normal visible asset, but it does NOT count
+       toward the required sprite checklist.
+
+       If another unused folder exists later, just add it here.
+       ============================================================= */
 
     const folderConfig = [
         {
             key: 'artwork',
             folder: 'Artworks',
-            label: 'Artwork'
-        },
-        {
-            key: 'backShiny',
-            folder: 'Back shiny',
-            label: 'Back Shiny'
-        },
-        {
-            key: 'back',
-            folder: 'Back',
-            label: 'Back'
-        },
-        {
-            key: 'egg',
-            folder: 'Eggs',
-            label: 'Egg'
-        },
-        {
-            key: 'frontShiny',
-            folder: 'Front shiny',
-            label: 'Front Shiny'
+            label: 'Artwork',
+            required: true,
+            unused: false
         },
         {
             key: 'front',
             folder: 'Front',
-            label: 'Front'
+            label: 'Front',
+            required: true,
+            unused: false
+        },
+        {
+            key: 'frontShiny',
+            folder: 'Front shiny',
+            label: 'Front Shiny',
+            required: true,
+            unused: false
+        },
+        {
+            key: 'back',
+            folder: 'Back',
+            label: 'Back',
+            required: true,
+            unused: false
+        },
+        {
+            key: 'backShiny',
+            folder: 'Back shiny',
+            label: 'Back Shiny',
+            required: true,
+            unused: false
         },
         {
             key: 'icon',
             folder: 'Icons',
-            label: 'Icon'
+            label: 'Icon',
+            required: true,
+            unused: false
         },
+        {
+            key: 'egg',
+            folder: 'Eggs',
+            label: 'Egg',
+            required: false,
+            unused: false
+        },
+
+        /*
+         * Unused / utility assets.
+         */
         {
             key: 'shadow',
             folder: 'Shadow',
-            label: 'Shadow'
+            label: 'Shadow',
+            required: false,
+            unused: true
+        },
+        {
+            key: 'return',
+            folder: 'Return',
+            label: 'Return',
+            required: false,
+            unused: true
+        },
+        {
+            key: 'officialBackup',
+            folder: 'Official Backup',
+            label: 'Official Backup',
+            required: false,
+            unused: true
         }
     ];
 
-    const expectedPokemonAssets = [
-        'artwork',
-        'front',
-        'frontShiny',
-        'back',
-        'backShiny',
-        'icon'
-    ];
+
+    /* =============================================================
+       ELEMENTS
+       ============================================================= */
 
     const content =
         document.getElementById('content');
@@ -704,8 +993,23 @@
     const iconMode =
         document.getElementById('iconMode');
 
+    const formMode =
+        document.getElementById('formMode');
+
+    const cardStyle =
+        document.getElementById('cardStyle');
+
+    const hideUnusedAssets =
+        document.getElementById('hideUnusedAssets');
+
+    const showOldFiles =
+        document.getElementById('showOldFiles');
+
     const assetModal =
         document.getElementById('assetModal');
+
+    const modalWindow =
+        document.getElementById('modalWindow');
 
     const modalTitle =
         document.getElementById('modalTitle');
@@ -716,38 +1020,181 @@
     const modalClose =
         document.getElementById('modalClose');
 
-    const folderData = {};
 
-    const pokemonData =
+    /* =============================================================
+       DATA
+       ============================================================= */
+
+    const rawFolderData = {};
+
+    const paletteCache =
         new Map();
 
 
-    function isImageFile(filename) {
-        const lower =
-            filename.toLowerCase();
+    /* =============================================================
+       FILE / NAME PARSING
+       ============================================================= */
 
-        return (
-            lower.endsWith('.png') ||
-            lower.endsWith('.jpg') ||
-            lower.endsWith('.jpeg')
+    function isImageFile(filename) {
+        return /\.(png|jpe?g)$/i.test(
+            filename
         );
     }
 
 
     function stripExtension(filename) {
         return filename.replace(
-            /\.(png|jpg|jpeg)$/i,
+            /\.(png|jpe?g)$/i,
             ''
         );
     }
 
 
-    function normalizePokemonName(filename) {
-        return stripExtension(filename).trim();
+    /*
+     * Recognized examples:
+     *
+     * PIKACHU
+     * PIKACHU_female
+     * DEOXYS_1
+     * DEOXYS_2
+     * DEOXYS_1_female
+     * PIKACHU_old
+     * PIKACHU_OLD
+     * DEOXYS_1_old
+     */
+    function parsePokemonFilename(filename) {
+        const originalStem =
+            stripExtension(
+                filename
+            );
+
+        let stem =
+            originalStem;
+
+        let isOld =
+            false;
+
+        if (/_old$/i.test(stem)) {
+            isOld = true;
+
+            stem =
+                stem.replace(
+                    /_old$/i,
+                    ''
+                );
+        }
+
+        let isFemale =
+            false;
+
+        if (/_female$/i.test(stem)) {
+            isFemale = true;
+
+            stem =
+                stem.replace(
+                    /_female$/i,
+                    ''
+                );
+        }
+
+        let formNumber =
+            null;
+
+        const formMatch =
+            stem.match(
+                /_(\d+)$/
+            );
+
+        if (formMatch) {
+            formNumber =
+                Number(
+                    formMatch[1]
+                );
+
+            stem =
+                stem.replace(
+                    /_(\d+)$/,
+                    ''
+                );
+        }
+
+        const baseName =
+            stem;
+
+        let variantId =
+            baseName;
+
+        if (formNumber !== null) {
+            variantId +=
+                `_${formNumber}`;
+        }
+
+        if (isFemale) {
+            variantId +=
+                '_female';
+        }
+
+        if (isOld) {
+            variantId +=
+                '_old';
+        }
+
+        return {
+            originalStem,
+            baseName,
+            formNumber,
+            isFemale,
+            isOld,
+            variantId
+        };
     }
 
 
-    function comparePokemonNames(a, b) {
+    function getVariantLabel(parsed) {
+        const parts = [];
+
+        if (
+            parsed.formNumber !== null
+        ) {
+            parts.push(
+                `Form ${parsed.formNumber}`
+            );
+        }
+
+        if (parsed.isFemale) {
+            parts.push(
+                'Female'
+            );
+        }
+
+        if (parsed.isOld) {
+            parts.push(
+                'OLD'
+            );
+        }
+
+        return parts.join(' · ');
+    }
+
+
+    function getDisplayName(record) {
+        const variant =
+            getVariantLabel(
+                record.parsed
+            );
+
+        if (!variant) {
+            return record.parsed.baseName;
+        }
+
+        return (
+            `${record.parsed.baseName} — ` +
+            variant
+        );
+    }
+
+
+    function compareNames(a, b) {
         return a.localeCompare(
             b,
             undefined,
@@ -759,6 +1206,10 @@
     }
 
 
+    /* =============================================================
+       CONFIG HELPERS
+       ============================================================= */
+
     function getConfig(key) {
         return folderConfig.find(
             config =>
@@ -767,18 +1218,54 @@
     }
 
 
-    async function fetchFolder(folder) {
+    function getVisibleFolderConfig() {
+        return folderConfig.filter(
+            config =>
+                !(
+                    hideUnusedAssets.checked &&
+                    config.unused
+                )
+        );
+    }
+
+
+    function getRequiredConfig() {
+        return folderConfig.filter(
+            config =>
+                config.required
+        );
+    }
+
+
+    /* =============================================================
+       GITHUB LOADING
+       ============================================================= */
+
+    async function fetchFolder(config) {
         const url =
             `https://api.github.com/repos/` +
             `${organization}/${repository}/contents/` +
-            encodeURIComponent(folder);
+            encodeURIComponent(
+                config.folder
+            );
 
         const response =
             await fetch(url);
 
+        /*
+         * Optional folders are permitted to not exist.
+         */
+        if (
+            response.status === 404 &&
+            config.unused
+        ) {
+            return [];
+        }
+
         if (!response.ok) {
             throw new Error(
-                `GitHub returned ${response.status} for ${folder}`
+                `GitHub returned ${response.status} ` +
+                `for ${config.folder}`
             );
         }
 
@@ -787,7 +1274,7 @@
 
         if (!Array.isArray(data)) {
             throw new Error(
-                `Unexpected GitHub response for ${folder}`
+                `Unexpected response for ${config.folder}`
             );
         }
 
@@ -796,11 +1283,19 @@
                 file.type === 'file' &&
                 isImageFile(file.name)
             )
-            .sort((a, b) =>
-                comparePokemonNames(
-                    a.name,
-                    b.name
-                )
+            .map(file => ({
+                ...file,
+                parsed:
+                    parsePokemonFilename(
+                        file.name
+                    )
+            }))
+            .sort(
+                (a, b) =>
+                    compareNames(
+                        a.name,
+                        b.name
+                    )
             );
     }
 
@@ -809,664 +1304,133 @@
         content.innerHTML =
             '<div class="status">Loading assets...</div>';
 
-        pokemonData.clear();
-
-        await Promise.allSettled(
-            folderConfig.map(
-                async config => {
-                    const files =
-                        await fetchFolder(
-                            config.folder
-                        );
-
-                    folderData[config.key] =
-                        files;
-
-                    files.forEach(file => {
-                        const pokemonName =
-                            normalizePokemonName(
-                                file.name
+        const results =
+            await Promise.allSettled(
+                folderConfig.map(
+                    async config => {
+                        rawFolderData[
+                            config.key
+                        ] =
+                            await fetchFolder(
+                                config
                             );
+                    }
+                )
+            );
 
-                        if (
-                            !pokemonData.has(
-                                pokemonName
-                            )
-                        ) {
-                            pokemonData.set(
-                                pokemonName,
-                                {
-                                    name: pokemonName,
-                                    assets: {}
-                                }
-                            );
-                        }
+        results.forEach(
+            (result, index) => {
+                if (
+                    result.status ===
+                    'rejected'
+                ) {
+                    console.error(
+                        folderConfig[index]
+                            .folder,
+                        result.reason
+                    );
 
-                        pokemonData
-                            .get(pokemonName)
-                            .assets[config.key] =
-                            file;
-                    });
+                    rawFolderData[
+                        folderConfig[index]
+                            .key
+                    ] = [];
                 }
-            )
+            }
         );
 
         render();
     }
 
 
-    function render() {
-        closeAssetModal();
+    /* =============================================================
+       ACTIVE FILES
+       ============================================================= */
+
+    function getActiveFiles(
+        assetKey
+    ) {
+        let files =
+            rawFolderData[
+                assetKey
+            ] || [];
 
         if (
-            viewMode.value ===
-            'pokemon'
+            !showOldFiles.checked
         ) {
-            renderPokemonView();
-        } else {
-            renderFolderView();
+            files =
+                files.filter(
+                    file =>
+                        !file.parsed.isOld
+                );
         }
+
+        return files;
     }
 
 
-    function renderFolderView() {
-        content.innerHTML = '';
+    /*
+     * Creates one record for each exact visual variant.
+     *
+     * Example:
+     *
+     * PIKACHU
+     * PIKACHU_female
+     * DEOXYS_1
+     *
+     * each becomes its own record.
+     */
+    function buildPokemonRecords() {
+        const records =
+            new Map();
 
-        const mode =
-            shinyMode.value;
-
-        if (mode === 'separate') {
-            folderConfig.forEach(
-                config => {
-                    renderFolderSection(
-                        config.label,
-                        folderData[
-                            config.key
-                        ] || [],
-                        config.key
-                    );
-                }
-            );
-
-            applySearch();
-            return;
-        }
-
-        renderFolderSectionWithShinyPair(
-            'Front',
-            folderData.front || [],
-            folderData.frontShiny || [],
-            mode
-        );
-
-        renderFolderSectionWithShinyPair(
-            'Back',
-            folderData.back || [],
-            folderData.backShiny || [],
-            mode
-        );
-
-        folderConfig
-            .filter(config =>
-                ![
-                    'front',
-                    'frontShiny',
-                    'back',
-                    'backShiny'
-                ].includes(
+        getVisibleFolderConfig()
+            .forEach(config => {
+                getActiveFiles(
                     config.key
-                )
-            )
-            .forEach(
-                config => {
-                    renderFolderSection(
-                        config.label,
-                        folderData[
-                            config.key
-                        ] || [],
-                        config.key
-                    );
-                }
-            );
-
-        applySearch();
-    }
-
-
-    function renderFolderSection(
-        label,
-        files,
-        configKey
-    ) {
-        const section =
-            document.createElement(
-                'section'
-            );
-
-        section.className =
-            'folder-section';
-
-        const header =
-            document.createElement(
-                'div'
-            );
-
-        header.className =
-            'folder-header';
-
-        const title =
-            document.createElement(
-                'h2'
-            );
-
-        title.className =
-            'folder-title';
-
-        title.textContent =
-            label;
-
-        const count =
-            document.createElement(
-                'span'
-            );
-
-        count.className =
-            'folder-count';
-
-        count.textContent =
-            `${files.length} image` +
-            `${files.length === 1 ? '' : 's'}`;
-
-        const grid =
-            document.createElement(
-                'div'
-            );
-
-        grid.className =
-            'asset-grid';
-
-        files.forEach(file => {
-            grid.appendChild(
-                createBasicAssetCard(
-                    file,
-                    configKey
-                )
-            );
-        });
-
-        header.appendChild(title);
-        header.appendChild(count);
-
-        section.appendChild(header);
-        section.appendChild(grid);
-
-        content.appendChild(section);
-    }
-
-
-    function renderFolderSectionWithShinyPair(
-        label,
-        normalFiles,
-        shinyFiles,
-        mode
-    ) {
-        const normalMap =
-            new Map(
-                normalFiles.map(
-                    file => [
-                        normalizePokemonName(
-                            file.name
-                        ),
-                        file
-                    ]
-                )
-            );
-
-        const shinyMap =
-            new Map(
-                shinyFiles.map(
-                    file => [
-                        normalizePokemonName(
-                            file.name
-                        ),
-                        file
-                    ]
-                )
-            );
-
-        const allNames =
-            Array.from(
-                new Set([
-                    ...normalMap.keys(),
-                    ...shinyMap.keys()
-                ])
-            ).sort(
-                comparePokemonNames
-            );
-
-        const section =
-            document.createElement(
-                'section'
-            );
-
-        section.className =
-            'folder-section';
-
-        const header =
-            document.createElement(
-                'div'
-            );
-
-        header.className =
-            'folder-header';
-
-        const title =
-            document.createElement(
-                'h2'
-            );
-
-        title.className =
-            'folder-title';
-
-        title.textContent =
-            label;
-
-        const count =
-            document.createElement(
-                'span'
-            );
-
-        count.className =
-            'folder-count';
-
-        count.textContent =
-            `${allNames.length} Pokémon`;
-
-        const grid =
-            document.createElement(
-                'div'
-            );
-
-        grid.className =
-            'asset-grid';
-
-        allNames.forEach(name => {
-            grid.appendChild(
-                createPairedAssetCard(
-                    name,
-                    normalMap.get(name),
-                    shinyMap.get(name),
-                    mode
-                )
-            );
-        });
-
-        header.appendChild(title);
-        header.appendChild(count);
-
-        section.appendChild(header);
-        section.appendChild(grid);
-
-        content.appendChild(section);
-    }
-
-
-    function createBasicAssetCard(
-        file,
-        assetType
-    ) {
-        const card =
-            document.createElement(
-                'div'
-            );
-
-        card.className =
-            'asset-card';
-
-        card.dataset.search =
-            file.name.toLowerCase();
-
-        const preview =
-            document.createElement(
-                'div'
-            );
-
-        preview.className =
-            'asset-preview';
-
-        let display;
-
-        if (
-            assetType === 'icon' &&
-            iconMode.value ===
-            'animated'
-        ) {
-            display =
-                createAnimatedIcon(
-                    file,
-                    150,
-                    150
-                );
-        } else {
-            display =
-                createImageElement(
-                    file,
-                    file.name
-                );
-        }
-
-        const name =
-            document.createElement(
-                'div'
-            );
-
-        name.className =
-            'asset-name';
-
-        name.textContent =
-            normalizePokemonName(
-                file.name
-            );
-
-        preview.appendChild(
-            display
-        );
-
-        card.appendChild(
-            preview
-        );
-
-        card.appendChild(
-            name
-        );
-
-        return card;
-    }
-
-
-    function createPairedAssetCard(
-        name,
-        normalFile,
-        shinyFile,
-        mode
-    ) {
-        const card =
-            document.createElement(
-                'div'
-            );
-
-        card.className =
-            'asset-card';
-
-        card.dataset.search =
-            name.toLowerCase();
-
-        const preview =
-            document.createElement(
-                'div'
-            );
-
-        preview.className =
-            'asset-preview';
-
-        if (mode === 'hover') {
-            const stack =
-                document.createElement(
-                    'div'
-                );
-
-            stack.className =
-                'hover-stack';
-
-            if (normalFile) {
-                const normal =
-                    createImageElement(
-                        normalFile,
-                        `${name} normal`
-                    );
-
-                normal.className =
-                    'normal-image';
-
-                stack.appendChild(
-                    normal
-                );
-            }
-
-            if (shinyFile) {
-                stack.classList.add(
-                    'has-shiny'
-                );
-
-                const shiny =
-                    createImageElement(
-                        shinyFile,
-                        `${name} shiny`
-                    );
-
-                shiny.className =
-                    'shiny-image';
-
-                stack.appendChild(
-                    shiny
-                );
-
-                const star =
-                    document.createElement(
-                        'div'
-                    );
-
-                star.className =
-                    'hover-indicator shiny-indicator';
-
-                star.textContent =
-                    '★';
-
-                star.title =
-                    'Shiny';
-
-                stack.appendChild(
-                    star
-                );
-            } else {
-                stack.classList.add(
-                    'missing-shiny'
-                );
-
-                const missingIndicator =
-                    document.createElement(
-                        'div'
-                    );
-
-                missingIndicator.className =
-                    'hover-indicator missing-shiny-indicator';
-
-                missingIndicator.textContent =
-                    '⊘';
-
-                missingIndicator.title =
-                    'No shiny sprite';
-
-                stack.appendChild(
-                    missingIndicator
-                );
-            }
-
-            preview.appendChild(
-                stack
-            );
-        }
-
-        if (mode === 'toggle') {
-            const wrap =
-                document.createElement(
-                    'div'
-                );
-
-            wrap.className =
-                'toggle-wrap';
-
-            const stack =
-                document.createElement(
-                    'div'
-                );
-
-            stack.className =
-                'toggle-stack';
-
-            let normal = null;
-            let shiny = null;
-
-            if (normalFile) {
-                normal =
-                    createImageElement(
-                        normalFile,
-                        `${name} normal`
-                    );
-
-                normal.className =
-                    'normal-image';
-
-                stack.appendChild(
-                    normal
-                );
-            }
-
-            if (shinyFile) {
-                shiny =
-                    createImageElement(
-                        shinyFile,
-                        `${name} shiny`
-                    );
-
-                shiny.className =
-                    'shiny-image';
-
-                stack.appendChild(
-                    shiny
-                );
-            }
-
-            wrap.appendChild(
-                stack
-            );
-
-            if (
-                normalFile &&
-                shinyFile
-            ) {
-                const button =
-                    document.createElement(
-                        'button'
-                    );
-
-                button.className =
-                    'shiny-toggle-button';
-
-                button.textContent =
-                    'Show Shiny';
-
-                let showingShiny =
-                    false;
-
-                button.addEventListener(
-                    'click',
-                    event => {
-                        event.stopPropagation();
-
-                        showingShiny =
-                            !showingShiny;
-
-                        normal.style.display =
-                            showingShiny
-                                ? 'none'
-                                : '';
-
-                        shiny.style.display =
-                            showingShiny
-                                ? 'block'
-                                : 'none';
-
-                        button.textContent =
-                            showingShiny
-                                ? 'Show Normal'
-                                : 'Show Shiny';
+                ).forEach(file => {
+                    const id =
+                        file.parsed
+                            .variantId;
+
+                    if (
+                        !records.has(id)
+                    ) {
+                        records.set(
+                            id,
+                            {
+                                id,
+                                parsed:
+                                    file.parsed,
+                                assets: {}
+                            }
+                        );
                     }
-                );
 
-                wrap.appendChild(
-                    button
-                );
-            }
+                    records
+                        .get(id)
+                        .assets[
+                            config.key
+                        ] = file;
+                });
+            });
 
-            preview.appendChild(
-                wrap
+        return Array
+            .from(
+                records.values()
+            )
+            .sort(
+                (a, b) =>
+                    compareNames(
+                        getDisplayName(a),
+                        getDisplayName(b)
+                    )
             );
-        }
-
-        const nameElement =
-            document.createElement(
-                'div'
-            );
-
-        nameElement.className =
-            'asset-name';
-
-        nameElement.textContent =
-            name;
-
-        card.appendChild(
-            preview
-        );
-
-        card.appendChild(
-            nameElement
-        );
-
-        /*
-         * In Hover mode, missing shiny is indicated
-         * by the faded sprite and red ⊘ instead of
-         * additional text underneath the card.
-         */
-        if (
-            mode !== 'hover'
-        ) {
-            if (!normalFile) {
-                const warning =
-                    document.createElement(
-                        'div'
-                    );
-
-                warning.className =
-                    'asset-warning';
-
-                warning.textContent =
-                    'Missing normal';
-
-                card.appendChild(
-                    warning
-                );
-            } else if (!shinyFile) {
-                const warning =
-                    document.createElement(
-                        'div'
-                    );
-
-                warning.className =
-                    'asset-warning';
-
-                warning.textContent =
-                    'Missing shiny';
-
-                card.appendChild(
-                    warning
-                );
-            }
-        }
-
-        return card;
     }
 
+
+    /* =============================================================
+       IMAGE HELPERS
+       ============================================================= */
 
     function createImageElement(
         file,
@@ -1503,63 +1467,71 @@
         const loader =
             new Image();
 
-        loader.onload = () => {
-            const frameWidth =
-                loader.naturalWidth / 2;
+        loader.crossOrigin =
+            'anonymous';
 
-            const frameHeight =
-                loader.naturalHeight;
+        loader.onload =
+            () => {
+                const frameWidth =
+                    loader.naturalWidth /
+                    2;
 
-            if (
-                frameWidth <= 0 ||
-                frameHeight <= 0
-            ) {
-                return;
-            }
+                const frameHeight =
+                    loader.naturalHeight;
 
-            let scale =
-                Math.min(
-                    maxWidth / frameWidth,
-                    maxHeight / frameHeight
-                );
+                if (
+                    frameWidth <= 0 ||
+                    frameHeight <= 0
+                ) {
+                    return;
+                }
 
-            if (
-                !Number.isFinite(scale) ||
-                scale <= 0
-            ) {
-                scale = 1;
-            }
+                let scale =
+                    Math.min(
+                        maxWidth /
+                            frameWidth,
+                        maxHeight /
+                            frameHeight
+                    );
 
-            const width =
-                Math.max(
-                    1,
-                    Math.floor(
-                        frameWidth *
-                        scale
-                    )
-                );
+                if (
+                    !Number.isFinite(scale) ||
+                    scale <= 0
+                ) {
+                    scale = 1;
+                }
 
-            const height =
-                Math.max(
-                    1,
-                    Math.floor(
-                        frameHeight *
-                        scale
-                    )
-                );
+                const width =
+                    Math.max(
+                        1,
+                        Math.floor(
+                            frameWidth *
+                            scale
+                        )
+                    );
 
-            wrapper.style.width =
-                `${width}px`;
+                const height =
+                    Math.max(
+                        1,
+                        Math.floor(
+                            frameHeight *
+                            scale
+                        )
+                    );
 
-            wrapper.style.height =
-                `${height}px`;
+                wrapper.style.width =
+                    `${width}px`;
 
-            wrapper.style.backgroundImage =
-                `url("${file.download_url}")`;
+                wrapper.style.height =
+                    `${height}px`;
 
-            wrapper.className =
-                'icon-animation';
-        };
+                wrapper.style
+                    .backgroundImage =
+                    `url("${file.download_url}")`;
+
+                wrapper.className =
+                    'icon-animation';
+            };
 
         loader.src =
             file.download_url;
@@ -1568,8 +1540,1015 @@
     }
 
 
+    /* =============================================================
+       AUTOMATIC POKEMON COLORS
+       ============================================================= */
+
+    async function getArtworkPalette(
+        file
+    ) {
+        if (!file) {
+            return null;
+        }
+
+        if (
+            paletteCache.has(
+                file.download_url
+            )
+        ) {
+            return paletteCache.get(
+                file.download_url
+            );
+        }
+
+        const promise =
+            new Promise(
+                resolve => {
+                    const image =
+                        new Image();
+
+                    image.crossOrigin =
+                        'anonymous';
+
+                    image.onload = () => {
+                        try {
+                            const canvas =
+                                document
+                                    .createElement(
+                                        'canvas'
+                                    );
+
+                            canvas.width =
+                                40;
+
+                            canvas.height =
+                                40;
+
+                            const ctx =
+                                canvas
+                                    .getContext(
+                                        '2d',
+                                        {
+                                            willReadFrequently:
+                                                true
+                                        }
+                                    );
+
+                            ctx.drawImage(
+                                image,
+                                0,
+                                0,
+                                40,
+                                40
+                            );
+
+                            const pixels =
+                                ctx.getImageData(
+                                    0,
+                                    0,
+                                    40,
+                                    40
+                                ).data;
+
+                            const buckets =
+                                new Map();
+
+                            for (
+                                let i = 0;
+                                i < pixels.length;
+                                i += 4
+                            ) {
+                                const r =
+                                    pixels[i];
+
+                                const g =
+                                    pixels[i + 1];
+
+                                const b =
+                                    pixels[i + 2];
+
+                                const a =
+                                    pixels[i + 3];
+
+                                if (a < 100) {
+                                    continue;
+                                }
+
+                                const luminance =
+                                    (
+                                        r +
+                                        g +
+                                        b
+                                    ) / 3;
+
+                                /*
+                                 * Ignore near-white and
+                                 * near-black pixels.
+                                 */
+                                if (
+                                    luminance > 244 ||
+                                    luminance < 18
+                                ) {
+                                    continue;
+                                }
+
+                                const qr =
+                                    Math.round(
+                                        r / 32
+                                    ) * 32;
+
+                                const qg =
+                                    Math.round(
+                                        g / 32
+                                    ) * 32;
+
+                                const qb =
+                                    Math.round(
+                                        b / 32
+                                    ) * 32;
+
+                                const key =
+                                    `${qr},${qg},${qb}`;
+
+                                buckets.set(
+                                    key,
+                                    (
+                                        buckets.get(
+                                            key
+                                        ) || 0
+                                    ) + 1
+                                );
+                            }
+
+                            const ranked =
+                                Array.from(
+                                    buckets.entries()
+                                )
+                                .sort(
+                                    (a, b) =>
+                                        b[1] -
+                                        a[1]
+                                )
+                                .map(
+                                    entry =>
+                                        entry[0]
+                                            .split(',')
+                                            .map(Number)
+                                );
+
+                            if (
+                                ranked.length === 0
+                            ) {
+                                resolve(null);
+                                return;
+                            }
+
+                            const main =
+                                ranked[0];
+
+                            let accent =
+                                ranked.find(
+                                    color =>
+                                        colorDistance(
+                                            main,
+                                            color
+                                        ) > 90
+                                );
+
+                            if (!accent) {
+                                accent =
+                                    createAccentColor(
+                                        main
+                                    );
+                            }
+
+                            resolve({
+                                main,
+                                accent
+                            });
+
+                        } catch (error) {
+                            console.warn(
+                                'Could not sample artwork colors:',
+                                error
+                            );
+
+                            resolve(null);
+                        }
+                    };
+
+                    image.onerror =
+                        () => resolve(null);
+
+                    image.src =
+                        file.download_url;
+                }
+            );
+
+        paletteCache.set(
+            file.download_url,
+            promise
+        );
+
+        return promise;
+    }
+
+
+    function colorDistance(
+        a,
+        b
+    ) {
+        return Math.sqrt(
+            Math.pow(
+                a[0] - b[0],
+                2
+            ) +
+            Math.pow(
+                a[1] - b[1],
+                2
+            ) +
+            Math.pow(
+                a[2] - b[2],
+                2
+            )
+        );
+    }
+
+
+    function createAccentColor(
+        color
+    ) {
+        const average =
+            (
+                color[0] +
+                color[1] +
+                color[2]
+            ) / 3;
+
+        if (average > 140) {
+            return color.map(
+                value =>
+                    Math.max(
+                        0,
+                        Math.round(
+                            value * 0.62
+                        )
+                    )
+            );
+        }
+
+        return color.map(
+            value =>
+                Math.min(
+                    255,
+                    Math.round(
+                        value +
+                        (
+                            255 - value
+                        ) * 0.38
+                    )
+                )
+        );
+    }
+
+
+    async function applyPokemonColors(
+        element,
+        record
+    ) {
+        if (
+            cardStyle.value !==
+            'pokemon'
+        ) {
+            return;
+        }
+
+        const source =
+            record.assets.artwork ||
+            record.assets.front;
+
+        const palette =
+            await getArtworkPalette(
+                source
+            );
+
+        if (!palette) {
+            return;
+        }
+
+        element.style.setProperty(
+            '--pokemon-main',
+            palette.main.join(',')
+        );
+
+        element.style.setProperty(
+            '--pokemon-accent',
+            palette.accent.join(',')
+        );
+
+        element.classList.add(
+            'colored'
+        );
+    }
+
+
+    /* =============================================================
+       RENDER
+       ============================================================= */
+
+    function render() {
+        closeAssetModal();
+
+        if (
+            viewMode.value ===
+            'pokemon'
+        ) {
+            renderPokemonView();
+        } else {
+            renderFolderView();
+        }
+    }
+
+
+    /* =============================================================
+       FOLDER VIEW
+       ============================================================= */
+
+    function renderFolderView() {
+        content.innerHTML = '';
+
+        const visibleConfig =
+            getVisibleFolderConfig();
+
+        if (
+            shinyMode.value ===
+            'separate'
+        ) {
+            visibleConfig.forEach(
+                config => {
+                    renderFolderSection(
+                        config,
+                        getActiveFiles(
+                            config.key
+                        )
+                    );
+                }
+            );
+
+            applySearch();
+            return;
+        }
+
+        /*
+         * Paired front and shiny-front.
+         */
+        if (
+            visibleConfig.some(
+                config =>
+                    config.key ===
+                    'front'
+            )
+        ) {
+            renderPairedFolderSection(
+                'Front',
+                getActiveFiles(
+                    'front'
+                ),
+                getActiveFiles(
+                    'frontShiny'
+                )
+            );
+        }
+
+        /*
+         * Paired back and shiny-back.
+         */
+        if (
+            visibleConfig.some(
+                config =>
+                    config.key ===
+                    'back'
+            )
+        ) {
+            renderPairedFolderSection(
+                'Back',
+                getActiveFiles(
+                    'back'
+                ),
+                getActiveFiles(
+                    'backShiny'
+                )
+            );
+        }
+
+        visibleConfig
+            .filter(
+                config =>
+                    ![
+                        'front',
+                        'frontShiny',
+                        'back',
+                        'backShiny'
+                    ].includes(
+                        config.key
+                    )
+            )
+            .forEach(
+                config => {
+                    renderFolderSection(
+                        config,
+                        getActiveFiles(
+                            config.key
+                        )
+                    );
+                }
+            );
+
+        applySearch();
+    }
+
+
+    function renderFolderSection(
+        config,
+        files
+    ) {
+        const section =
+            document.createElement(
+                'section'
+            );
+
+        section.className =
+            'folder-section';
+
+        const header =
+            document.createElement(
+                'div'
+            );
+
+        header.className =
+            'folder-header';
+
+        const title =
+            document.createElement(
+                'h2'
+            );
+
+        title.className =
+            'folder-title';
+
+        title.textContent =
+            config.label;
+
+        const count =
+            document.createElement(
+                'span'
+            );
+
+        count.className =
+            'folder-count';
+
+        count.textContent =
+            `${files.length} image` +
+            `${files.length === 1 ? '' : 's'}`;
+
+        const grid =
+            document.createElement(
+                'div'
+            );
+
+        grid.className =
+            'asset-grid';
+
+        files.forEach(
+            file => {
+                grid.appendChild(
+                    createBasicAssetCard(
+                        file,
+                        config.key
+                    )
+                );
+            }
+        );
+
+        header.appendChild(
+            title
+        );
+
+        header.appendChild(
+            count
+        );
+
+        section.appendChild(
+            header
+        );
+
+        section.appendChild(
+            grid
+        );
+
+        content.appendChild(
+            section
+        );
+    }
+
+
+    function createBasicAssetCard(
+        file,
+        assetType
+    ) {
+        const card =
+            document.createElement(
+                'div'
+            );
+
+        card.className =
+            'asset-card';
+
+        card.dataset.search =
+            (
+                file.name +
+                ' ' +
+                file.parsed.baseName
+            ).toLowerCase();
+
+        const preview =
+            document.createElement(
+                'div'
+            );
+
+        preview.className =
+            'asset-preview checkerboard';
+
+        let display;
+
+        if (
+            assetType === 'icon' &&
+            iconMode.value ===
+            'animated'
+        ) {
+            display =
+                createAnimatedIcon(
+                    file,
+                    150,
+                    150
+                );
+        } else {
+            display =
+                createImageElement(
+                    file,
+                    file.name
+                );
+        }
+
+        preview.appendChild(
+            display
+        );
+
+        if (
+            file.parsed.isOld
+        ) {
+            const badge =
+                document.createElement(
+                    'div'
+                );
+
+            badge.className =
+                'archived-badge';
+
+            badge.textContent =
+                'OLD';
+
+            preview.appendChild(
+                badge
+            );
+        }
+
+        const name =
+            document.createElement(
+                'div'
+            );
+
+        name.className =
+            'asset-name';
+
+        name.textContent =
+            file.parsed
+                .originalStem;
+
+        card.appendChild(
+            preview
+        );
+
+        card.appendChild(
+            name
+        );
+
+        return card;
+    }
+
+
+    function renderPairedFolderSection(
+        label,
+        normalFiles,
+        shinyFiles
+    ) {
+        const normalMap =
+            new Map(
+                normalFiles.map(
+                    file => [
+                        file.parsed
+                            .variantId,
+                        file
+                    ]
+                )
+            );
+
+        const shinyMap =
+            new Map(
+                shinyFiles.map(
+                    file => [
+                        file.parsed
+                            .variantId,
+                        file
+                    ]
+                )
+            );
+
+        const names =
+            Array.from(
+                new Set([
+                    ...normalMap.keys(),
+                    ...shinyMap.keys()
+                ])
+            ).sort(
+                compareNames
+            );
+
+        const section =
+            document.createElement(
+                'section'
+            );
+
+        section.className =
+            'folder-section';
+
+        const header =
+            document.createElement(
+                'div'
+            );
+
+        header.className =
+            'folder-header';
+
+        const title =
+            document.createElement(
+                'h2'
+            );
+
+        title.className =
+            'folder-title';
+
+        title.textContent =
+            label;
+
+        const count =
+            document.createElement(
+                'span'
+            );
+
+        count.className =
+            'folder-count';
+
+        count.textContent =
+            `${names.length} Pokémon`;
+
+        const grid =
+            document.createElement(
+                'div'
+            );
+
+        grid.className =
+            'asset-grid';
+
+        names.forEach(
+            name => {
+                grid.appendChild(
+                    createPairedAssetCard(
+                        name,
+                        normalMap.get(
+                            name
+                        ),
+                        shinyMap.get(
+                            name
+                        )
+                    )
+                );
+            }
+        );
+
+        header.appendChild(
+            title
+        );
+
+        header.appendChild(
+            count
+        );
+
+        section.appendChild(
+            header
+        );
+
+        section.appendChild(
+            grid
+        );
+
+        content.appendChild(
+            section
+        );
+    }
+
+
+    function createPairedAssetCard(
+        id,
+        normalFile,
+        shinyFile
+    ) {
+        const source =
+            normalFile ||
+            shinyFile;
+
+        const parsed =
+            source.parsed;
+
+        const card =
+            document.createElement(
+                'div'
+            );
+
+        card.className =
+            'asset-card';
+
+        card.dataset.search =
+            (
+                id +
+                ' ' +
+                parsed.baseName
+            ).toLowerCase();
+
+        const preview =
+            document.createElement(
+                'div'
+            );
+
+        preview.className =
+            'asset-preview checkerboard';
+
+        if (
+            shinyMode.value ===
+            'hover'
+        ) {
+            const stack =
+                document.createElement(
+                    'div'
+                );
+
+            stack.className =
+                'hover-stack';
+
+            if (normalFile) {
+                const normal =
+                    createImageElement(
+                        normalFile,
+                        `${id} normal`
+                    );
+
+                normal.className =
+                    'normal-image';
+
+                stack.appendChild(
+                    normal
+                );
+            }
+
+            if (shinyFile) {
+                stack.classList.add(
+                    'has-shiny'
+                );
+
+                const shiny =
+                    createImageElement(
+                        shinyFile,
+                        `${id} shiny`
+                    );
+
+                shiny.className =
+                    'shiny-image';
+
+                stack.appendChild(
+                    shiny
+                );
+
+                const star =
+                    document.createElement(
+                        'div'
+                    );
+
+                star.className =
+                    'hover-indicator shiny-indicator';
+
+                star.textContent =
+                    '★';
+
+                stack.appendChild(
+                    star
+                );
+            } else {
+                stack.classList.add(
+                    'missing-shiny'
+                );
+
+                const missing =
+                    document.createElement(
+                        'div'
+                    );
+
+                missing.className =
+                    'hover-indicator missing-shiny-indicator';
+
+                missing.textContent =
+                    '⊘';
+
+                stack.appendChild(
+                    missing
+                );
+            }
+
+            preview.appendChild(
+                stack
+            );
+        }
+
+
+        if (
+            shinyMode.value ===
+            'toggle'
+        ) {
+            const wrap =
+                document.createElement(
+                    'div'
+                );
+
+            wrap.className =
+                'toggle-wrap';
+
+            const stack =
+                document.createElement(
+                    'div'
+                );
+
+            stack.className =
+                'toggle-stack';
+
+            let normal = null;
+            let shiny = null;
+
+            if (normalFile) {
+                normal =
+                    createImageElement(
+                        normalFile,
+                        `${id} normal`
+                    );
+
+                normal.className =
+                    'normal-image';
+
+                stack.appendChild(
+                    normal
+                );
+            }
+
+            if (shinyFile) {
+                shiny =
+                    createImageElement(
+                        shinyFile,
+                        `${id} shiny`
+                    );
+
+                shiny.className =
+                    'shiny-image';
+
+                stack.appendChild(
+                    shiny
+                );
+            }
+
+            wrap.appendChild(
+                stack
+            );
+
+            if (
+                normal &&
+                shiny
+            ) {
+                const button =
+                    document.createElement(
+                        'button'
+                    );
+
+                button.className =
+                    'shiny-toggle-button';
+
+                button.textContent =
+                    'Show Shiny';
+
+                let active =
+                    false;
+
+                button.onclick =
+                    () => {
+                        active =
+                            !active;
+
+                        normal.style.display =
+                            active
+                                ? 'none'
+                                : '';
+
+                        shiny.style.display =
+                            active
+                                ? 'block'
+                                : 'none';
+
+                        button.textContent =
+                            active
+                                ? 'Show Normal'
+                                : 'Show Shiny';
+                    };
+
+                wrap.appendChild(
+                    button
+                );
+            }
+
+            preview.appendChild(
+                wrap
+            );
+        }
+
+        const name =
+            document.createElement(
+                'div'
+            );
+
+        name.className =
+            'asset-name';
+
+        name.textContent =
+            id;
+
+        card.appendChild(
+            preview
+        );
+
+        card.appendChild(
+            name
+        );
+
+        if (
+            shinyMode.value ===
+                'toggle' &&
+            normalFile &&
+            !shinyFile
+        ) {
+            const warning =
+                document.createElement(
+                    'div'
+                );
+
+            warning.className =
+                'asset-warning';
+
+            warning.textContent =
+                'Missing shiny';
+
+            card.appendChild(
+                warning
+            );
+        }
+
+        return card;
+    }
+
+
+    /* =============================================================
+       POKEMON VIEW
+       ============================================================= */
+
     function renderPokemonView() {
         content.innerHTML = '';
+
+        const records =
+            buildPokemonRecords();
 
         const grid =
             document.createElement(
@@ -1579,24 +2558,35 @@
         grid.className =
             'pokemon-grid';
 
-        const pokemon =
-            Array.from(
-                pokemonData.values()
-            ).sort(
-                (a, b) =>
-                    comparePokemonNames(
-                        a.name,
-                        b.name
-                    )
+        if (
+            formMode.value ===
+            'separate'
+        ) {
+            records.forEach(
+                record => {
+                    grid.appendChild(
+                        createPokemonCard(
+                            record
+                        )
+                    );
+                }
             );
+        } else {
+            const groups =
+                groupPokemonRecords(
+                    records
+                );
 
-        pokemon.forEach(entry => {
-            grid.appendChild(
-                createPokemonCard(
-                    entry
-                )
+            groups.forEach(
+                group => {
+                    grid.appendChild(
+                        createGroupedPokemonCard(
+                            group
+                        )
+                    );
+                }
             );
-        });
+        }
 
         content.appendChild(
             grid
@@ -1606,8 +2596,204 @@
     }
 
 
+    function groupPokemonRecords(
+        records
+    ) {
+        const groups =
+            new Map();
+
+        records.forEach(
+            record => {
+                const base =
+                    record.parsed
+                        .baseName;
+
+                if (
+                    !groups.has(base)
+                ) {
+                    groups.set(
+                        base,
+                        []
+                    );
+                }
+
+                groups
+                    .get(base)
+                    .push(record);
+            }
+        );
+
+        return Array
+            .from(
+                groups.entries()
+            )
+            .map(
+                ([baseName, variants]) => {
+                    const primary =
+                        variants.find(
+                            record =>
+                                record.parsed
+                                    .formNumber ===
+                                    null &&
+                                !record.parsed
+                                    .isFemale &&
+                                !record.parsed
+                                    .isOld
+                        ) ||
+                        variants[0];
+
+                    return {
+                        baseName,
+                        primary,
+                        alternates:
+                            variants.filter(
+                                variant =>
+                                    variant !==
+                                    primary
+                            )
+                    };
+                }
+            )
+            .sort(
+                (a, b) =>
+                    compareNames(
+                        a.baseName,
+                        b.baseName
+                    )
+            );
+    }
+
+
     function createPokemonCard(
-        entry
+        record
+    ) {
+        const card =
+            createPokemonCardShell(
+                record
+            );
+
+        applyPokemonColors(
+            card,
+            record
+        );
+
+        return card;
+    }
+
+
+    function createGroupedPokemonCard(
+        group
+    ) {
+        const card =
+            createPokemonCardShell(
+                group.primary,
+                group.baseName
+            );
+
+        card.dataset.search +=
+            ' ' +
+            group.alternates
+                .map(
+                    record =>
+                        getDisplayName(
+                            record
+                        )
+                )
+                .join(' ')
+                .toLowerCase();
+
+        if (
+            group.alternates.length >
+            0
+        ) {
+            const body =
+                card.querySelector(
+                    '.pokemon-body'
+                );
+
+            const section =
+                document.createElement(
+                    'div'
+                );
+
+            section.className =
+                'alternate-forms';
+
+            const heading =
+                document.createElement(
+                    'div'
+                );
+
+            heading.className =
+                'alternate-forms-title';
+
+            heading.textContent =
+                'Alternate Forms';
+
+            const list =
+                document.createElement(
+                    'div'
+                );
+
+            list.className =
+                'alternate-form-list';
+
+            group.alternates.forEach(
+                alternate => {
+                    const button =
+                        document.createElement(
+                            'button'
+                        );
+
+                    button.type =
+                        'button';
+
+                    button.className =
+                        'alternate-form-button';
+
+                    button.textContent =
+                        getVariantLabel(
+                            alternate.parsed
+                        ) ||
+                        alternate.id;
+
+                    button.onclick =
+                        () =>
+                            openAssetModal(
+                                alternate
+                            );
+
+                    list.appendChild(
+                        button
+                    );
+                }
+            );
+
+            section.appendChild(
+                heading
+            );
+
+            section.appendChild(
+                list
+            );
+
+            body.appendChild(
+                section
+            );
+        }
+
+        applyPokemonColors(
+            card,
+            group.primary
+        );
+
+        return card;
+    }
+
+
+    function createPokemonCardShell(
+        record,
+        forcedTitle = null
     ) {
         const card =
             document.createElement(
@@ -1618,7 +2804,11 @@
             'pokemon-card';
 
         card.dataset.search =
-            entry.name.toLowerCase();
+            (
+                record.id +
+                ' ' +
+                getDisplayName(record)
+            ).toLowerCase();
 
         const cover =
             document.createElement(
@@ -1626,43 +2816,64 @@
             );
 
         cover.className =
-            'pokemon-cover';
+            'pokemon-cover checkerboard';
 
         const coverFile =
-            entry.assets.artwork ||
-            entry.assets.front ||
-            entry.assets.icon ||
-            entry.assets.back;
+            record.assets.artwork ||
+            record.assets.front ||
+            record.assets.icon ||
+            record.assets.back;
 
         if (coverFile) {
-            let coverDisplay;
+            let display;
 
             if (
                 coverFile ===
-                entry.assets.icon &&
+                    record.assets.icon &&
                 iconMode.value ===
-                'animated'
+                    'animated'
             ) {
-                coverDisplay =
+                display =
                     createAnimatedIcon(
                         coverFile,
                         200,
                         200
                     );
             } else {
-                coverDisplay =
+                display =
                     createImageElement(
                         coverFile,
-                        entry.name
+                        getDisplayName(
+                            record
+                        )
                     );
             }
 
             cover.appendChild(
-                coverDisplay
+                display
             );
         } else {
             cover.textContent =
                 'No preview';
+        }
+
+        if (
+            record.parsed.isOld
+        ) {
+            const badge =
+                document.createElement(
+                    'div'
+                );
+
+            badge.className =
+                'archived-badge';
+
+            badge.textContent =
+                'OLD';
+
+            cover.appendChild(
+                badge
+            );
         }
 
         const body =
@@ -1673,6 +2884,14 @@
         body.className =
             'pokemon-body';
 
+        const titleRow =
+            document.createElement(
+                'div'
+            );
+
+        titleRow.className =
+            'pokemon-title-row';
+
         const title =
             document.createElement(
                 'h2'
@@ -1682,27 +2901,68 @@
             'pokemon-name';
 
         title.textContent =
-            entry.name;
+            forcedTitle ||
+            record.parsed.baseName;
 
-        const assetList =
+        titleRow.appendChild(
+            title
+        );
+
+        const variant =
+            getVariantLabel(
+                record.parsed
+            );
+
+        if (
+            variant &&
+            !forcedTitle
+        ) {
+            const badge =
+                document.createElement(
+                    'span'
+                );
+
+            badge.className =
+                'variant-badge';
+
+            if (
+                record.parsed.isOld
+            ) {
+                badge.classList.add(
+                    'old'
+                );
+            }
+
+            badge.textContent =
+                variant;
+
+            titleRow.appendChild(
+                badge
+            );
+        }
+
+        body.appendChild(
+            titleRow
+        );
+
+        const checklist =
             document.createElement(
                 'div'
             );
 
-        assetList.className =
+        checklist.className =
             'asset-list';
 
-        let missingRequired =
+        let missing =
             0;
 
-        expectedPokemonAssets.forEach(
-            key => {
-                const config =
-                    getConfig(key);
-
+        getRequiredConfig()
+            .forEach(config => {
                 const exists =
                     Boolean(
-                        entry.assets[key]
+                        record.assets[
+                            config.key
+                        ]
                     );
 
                 const status =
@@ -1711,8 +2971,7 @@
                     );
 
                 status.className =
-                    `asset-status ` +
-                    `${
+                    `asset-status ${
                         exists
                             ? 'exists'
                             : 'missing'
@@ -1725,40 +2984,33 @@
                             : '✗'
                     } ${config.label}`;
 
-                assetList.appendChild(
+                checklist.appendChild(
                     status
                 );
 
                 if (!exists) {
-                    missingRequired++;
+                    missing++;
                 }
-            }
-        );
+            });
 
         body.appendChild(
-            title
+            checklist
         );
 
-        body.appendChild(
-            assetList
-        );
-
-        if (
-            missingRequired === 0
-        ) {
-            const summary =
+        if (missing === 0) {
+            const complete =
                 document.createElement(
                     'div'
                 );
 
-            summary.className =
+            complete.className =
                 'complete-summary';
 
-            summary.textContent =
+            complete.textContent =
                 'All required image types exist.';
 
             body.appendChild(
-                summary
+                complete
             );
         }
 
@@ -1767,23 +3019,20 @@
                 'button'
             );
 
-        button.className =
-            'view-assets-button';
-
         button.type =
             'button';
+
+        button.className =
+            'view-assets-button';
 
         button.textContent =
             'View All Assets';
 
-        button.addEventListener(
-            'click',
-            () => {
+        button.onclick =
+            () =>
                 openAssetModal(
-                    entry
+                    record
                 );
-            }
-        );
 
         body.appendChild(
             button
@@ -1801,13 +3050,28 @@
     }
 
 
+    /* =============================================================
+       ASSET MODAL
+       ============================================================= */
+
     function openAssetModal(
-        entry
+        record
     ) {
         modalTitle.textContent =
-            entry.name;
+            getDisplayName(
+                record
+            );
 
-        modalBody.innerHTML = '';
+        modalBody.innerHTML =
+            '';
+
+        modalWindow.classList.remove(
+            'colored'
+        );
+
+        modalWindow.removeAttribute(
+            'style'
+        );
 
         const grid =
             document.createElement(
@@ -1818,11 +3082,13 @@
             'modal-asset-grid';
 
         /*
-         * Popup shows every configured asset,
-         * including Egg and Shadow.
+         * Uses visible config, meaning unused folders are hidden
+         * from the popup when Hide non-sprite assets is ON.
+         *
+         * Egg remains visible.
          */
-        folderConfig.forEach(
-            config => {
+        getVisibleFolderConfig()
+            .forEach(config => {
                 const item =
                     document.createElement(
                         'div'
@@ -1837,10 +3103,10 @@
                     );
 
                 preview.className =
-                    'modal-asset-preview';
+                    'modal-asset-preview checkerboard';
 
                 const file =
-                    entry.assets[
+                    record.assets[
                         config.key
                     ];
 
@@ -1863,7 +3129,7 @@
                         display =
                             createImageElement(
                                 file,
-                                `${entry.name} ${config.label}`
+                                `${record.id} ${config.label}`
                             );
                     }
 
@@ -1909,8 +3175,7 @@
                 grid.appendChild(
                     item
                 );
-            }
-        );
+            });
 
         modalBody.appendChild(
             grid
@@ -1922,6 +3187,11 @@
 
         document.body.style.overflow =
             'hidden';
+
+        applyPokemonColors(
+            modalWindow,
+            record
+        );
     }
 
 
@@ -1930,12 +3200,17 @@
             'hidden'
         );
 
-        modalBody.innerHTML = '';
+        modalBody.innerHTML =
+            '';
 
         document.body.style.overflow =
             '';
     }
 
+
+    /* =============================================================
+       SEARCH
+       ============================================================= */
 
     function applySearch() {
         const query =
@@ -1947,40 +3222,53 @@
             .querySelectorAll(
                 '.asset-card, .pokemon-card'
             )
-            .forEach(card => {
-                const matches =
-                    card.dataset.search
-                        .includes(query);
+            .forEach(
+                card => {
+                    const matches =
+                        card.dataset.search
+                            .includes(
+                                query
+                            );
 
-                card.classList.toggle(
-                    'hidden',
-                    !matches
-                );
-            });
+                    card.classList.toggle(
+                        'hidden',
+                        !matches
+                    );
+                }
+            );
 
         document
             .querySelectorAll(
                 '.folder-section'
             )
-            .forEach(section => {
-                const visibleCards =
-                    section.querySelectorAll(
-                        '.asset-card:not(.hidden)'
-                    );
+            .forEach(
+                section => {
+                    const visible =
+                        section
+                            .querySelectorAll(
+                                '.asset-card:not(.hidden)'
+                            )
+                            .length;
 
-                section.classList.toggle(
-                    'hidden',
-                    query !== '' &&
-                    visibleCards.length === 0
-                );
-            });
+                    section.classList.toggle(
+                        'hidden',
+                        query !== '' &&
+                        visible === 0
+                    );
+                }
+            );
     }
 
+
+    /* =============================================================
+       EVENTS
+       ============================================================= */
 
     modalClose.addEventListener(
         'click',
         closeAssetModal
     );
+
 
     assetModal.addEventListener(
         'click',
@@ -1994,41 +3282,61 @@
         }
     );
 
+
     document.addEventListener(
         'keydown',
         event => {
             if (
                 event.key ===
                     'Escape' &&
-                !assetModal.classList.contains(
-                    'hidden'
-                )
+                !assetModal
+                    .classList
+                    .contains(
+                        'hidden'
+                    )
             ) {
                 closeAssetModal();
             }
         }
     );
 
+
     searchInput.addEventListener(
         'input',
         applySearch
     );
 
-    viewMode.addEventListener(
+
+    [
+        viewMode,
+        shinyMode,
+        iconMode,
+        formMode,
+        cardStyle
+    ].forEach(
+        element =>
+            element.addEventListener(
+                'change',
+                render
+            )
+    );
+
+
+    hideUnusedAssets.addEventListener(
         'change',
         render
     );
 
-    shinyMode.addEventListener(
+
+    showOldFiles.addEventListener(
         'change',
         render
     );
 
-    iconMode.addEventListener(
-        'change',
-        render
-    );
 
+    /* =============================================================
+       START
+       ============================================================= */
 
     loadAllData();
 </script>
