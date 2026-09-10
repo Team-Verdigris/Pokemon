@@ -6,6 +6,32 @@
 
     <title>Team Verdigris Pokémon Asset Viewer</title>
 
+    <meta
+        name="description"
+        content="Browse Team Verdigris Pokémon artwork, front and back sprites, shiny sprites, icons, and additional assets."
+    >
+    <link
+        id="canonicalLink"
+        rel="canonical"
+        href="https://team-verdigris.github.io/Pokemon/"
+    >
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Team Verdigris Pokémon Assets">
+    <meta property="og:title" content="Team Verdigris Pokémon Asset Viewer">
+    <meta
+        property="og:description"
+        content="Browse Team Verdigris Pokémon artwork, front and back sprites, shiny sprites, icons, and additional assets."
+    >
+    <meta property="og:url" content="https://team-verdigris.github.io/Pokemon/">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Team Verdigris Pokémon Asset Viewer">
+    <meta
+        name="twitter:description"
+        content="Browse Team Verdigris Pokémon artwork, front and back sprites, shiny sprites, icons, and additional assets."
+    >
+
     <style>
         * {
             box-sizing: border-box;
@@ -691,8 +717,37 @@
         }
 
         .modal-title {
+            min-width: 0;
             margin: 0;
+            overflow: hidden;
             font-size: 20px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .modal-header-actions {
+            display: flex;
+            flex: 0 0 auto;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .modal-link-button {
+            min-height: 34px;
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--field-bg);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .modal-link-button:hover {
+            border-color: var(--accent);
+            background: var(--panel-raised);
         }
 
         .modal-close {
@@ -955,6 +1010,26 @@
                 max-height: calc(100vh - 20px);
             }
 
+            .modal-header {
+                gap: 10px;
+                padding: 11px 12px;
+            }
+
+            .modal-header-actions {
+                gap: 5px;
+            }
+
+            .modal-link-button {
+                min-height: 32px;
+                padding: 5px 7px;
+                font-size: 11px;
+            }
+
+            .modal-close {
+                width: 32px;
+                height: 32px;
+            }
+
             .modal-asset-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -1147,14 +1222,32 @@
                 class="modal-title"
             ></h2>
 
-            <button
-                id="modalClose"
-                class="modal-close"
-                type="button"
-                aria-label="Close"
-            >
-                ×
-            </button>
+            <div class="modal-header-actions">
+                <button
+                    id="modalCopyLink"
+                    class="modal-link-button"
+                    type="button"
+                >
+                    Copy Link
+                </button>
+
+                <button
+                    id="modalShareLink"
+                    class="modal-link-button"
+                    type="button"
+                >
+                    Share
+                </button>
+
+                <button
+                    id="modalClose"
+                    class="modal-close"
+                    type="button"
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+            </div>
 
         </div>
 
@@ -1172,6 +1265,25 @@
 
     const organization = 'Team-Verdigris';
     const repository = 'Pokemon';
+
+    const siteBaseUrl =
+        'https://team-verdigris.github.io/Pokemon/';
+
+    /*
+     * Keep this false while this index.html is the only deployed routing
+     * file. Set it to true after static /pokemon/<ID>/index.html preview
+     * pages are generated and deployed. Those static pages are what let
+     * Discord, Slack, iMessage, social sites, etc. see Pokémon-specific
+     * Open Graph metadata without executing JavaScript.
+     */
+    let generatedPreviewRoutesEnabled =
+        false;
+
+    const defaultPageTitle =
+        'Team Verdigris Pokémon Asset Viewer';
+
+    const defaultPageDescription =
+        'Browse Team Verdigris Pokémon artwork, front and back sprites, shiny sprites, icons, and additional assets.';
 
 
     /* =============================================================
@@ -1322,6 +1434,15 @@
     const modalClose =
         document.getElementById('modalClose');
 
+    const modalCopyLink =
+        document.getElementById('modalCopyLink');
+
+    const modalShareLink =
+        document.getElementById('modalShareLink');
+
+    const canonicalLink =
+        document.getElementById('canonicalLink');
+
 
     const copyToast =
         document.getElementById('copyToast');
@@ -1338,6 +1459,12 @@
 
     const paletteCache =
         new Map();
+
+    let dataReady =
+        false;
+
+    let currentModalRecord =
+        null;
 
 
     /* =============================================================
@@ -1534,6 +1661,612 @@
                 numeric: true,
                 sensitivity: 'base'
             }
+        );
+    }
+
+
+    /* =============================================================
+       URL ROUTING / SHARE METADATA
+       ============================================================= */
+
+    function normalizePokemonRouteId(value) {
+        if (!value) {
+            return null;
+        }
+
+        try {
+            return decodeURIComponent(
+                String(value)
+                    .trim()
+                    .replace(/^\/+|\/+$/g, '')
+            );
+        } catch (error) {
+            return String(value)
+                .trim()
+                .replace(/^\/+|\/+$/g, '');
+        }
+    }
+
+
+    function getPokemonIdFromLocation() {
+        const url =
+            new URL(
+                window.location.href
+            );
+
+        const queryId =
+            normalizePokemonRouteId(
+                url.searchParams.get(
+                    'pokemon'
+                )
+            );
+
+        if (queryId) {
+            return queryId;
+        }
+
+        const pathMatch =
+            url.pathname.match(
+                /\/pokemon\/([^/]+)\/?$/i
+            );
+
+        if (
+            pathMatch &&
+            pathMatch[1]
+        ) {
+            return normalizePokemonRouteId(
+                pathMatch[1]
+            );
+        }
+
+        const hash =
+            url.hash.replace(
+                /^#/,
+                ''
+            );
+
+        const hashPathMatch =
+            hash.match(
+                /^\/?pokemon\/([^/?#]+)/i
+            );
+
+        if (
+            hashPathMatch &&
+            hashPathMatch[1]
+        ) {
+            return normalizePokemonRouteId(
+                hashPathMatch[1]
+            );
+        }
+
+        const hashParams =
+            new URLSearchParams(
+                hash
+            );
+
+        return normalizePokemonRouteId(
+            hashParams.get(
+                'pokemon'
+            )
+        );
+    }
+
+
+    function getPokemonRecordById(id) {
+        const wanted =
+            normalizePokemonRouteId(
+                id
+            );
+
+        if (!wanted) {
+            return null;
+        }
+
+        return buildPokemonRecords()
+            .find(
+                record =>
+                    record.id
+                        .toLowerCase() ===
+                    wanted.toLowerCase()
+            ) || null;
+    }
+
+
+    function getPokemonQueryUrl(record) {
+        const url =
+            new URL(
+                siteBaseUrl
+            );
+
+        url.searchParams.set(
+            'pokemon',
+            record.id
+        );
+
+        return url.toString();
+    }
+
+
+    function getPokemonPreviewRouteUrl(record) {
+        return (
+            siteBaseUrl +
+            'pokemon/' +
+            encodeURIComponent(
+                record.id
+            ) +
+            '/'
+        );
+    }
+
+
+    function getPokemonShareUrl(record) {
+        return generatedPreviewRoutesEnabled
+            ? getPokemonPreviewRouteUrl(
+                record
+            )
+            : getPokemonQueryUrl(
+                record
+            );
+    }
+
+
+    async function detectGeneratedPreviewRoutes() {
+        try {
+            const response =
+                await fetch(
+                    siteBaseUrl +
+                    'pokemon/routes-ready.txt',
+                    {
+                        cache: 'no-store'
+                    }
+                );
+
+            generatedPreviewRoutesEnabled =
+                response.ok;
+        } catch (error) {
+            generatedPreviewRoutesEnabled =
+                false;
+        }
+
+        if (currentModalRecord) {
+            updateDocumentMetadata(
+                currentModalRecord
+            );
+        }
+    }
+
+
+    function getPokemonPreviewImage(record) {
+        return (
+            record.assets.artwork ||
+            record.assets.front ||
+            record.assets.icon ||
+            record.assets.back ||
+            null
+        );
+    }
+
+
+    function setNamedMeta(
+        name,
+        content
+    ) {
+        let element =
+            document.querySelector(
+                `meta[name="${name}"]`
+            );
+
+        if (!element) {
+            element =
+                document.createElement(
+                    'meta'
+                );
+
+            element.setAttribute(
+                'name',
+                name
+            );
+
+            document.head.appendChild(
+                element
+            );
+        }
+
+        element.setAttribute(
+            'content',
+            content
+        );
+    }
+
+
+    function setPropertyMeta(
+        property,
+        content
+    ) {
+        let element =
+            document.querySelector(
+                `meta[property="${property}"]`
+            );
+
+        if (!element) {
+            element =
+                document.createElement(
+                    'meta'
+                );
+
+            element.setAttribute(
+                'property',
+                property
+            );
+
+            document.head.appendChild(
+                element
+            );
+        }
+
+        element.setAttribute(
+            'content',
+            content
+        );
+    }
+
+
+    function removeMeta(
+        selector
+    ) {
+        const element =
+            document.querySelector(
+                selector
+            );
+
+        if (element) {
+            element.remove();
+        }
+    }
+
+
+    function updateDocumentMetadata(
+        record = null
+    ) {
+        if (!record) {
+            document.title =
+                defaultPageTitle;
+
+            setNamedMeta(
+                'description',
+                defaultPageDescription
+            );
+
+            setPropertyMeta(
+                'og:title',
+                defaultPageTitle
+            );
+
+            setPropertyMeta(
+                'og:description',
+                defaultPageDescription
+            );
+
+            setPropertyMeta(
+                'og:url',
+                siteBaseUrl
+            );
+
+            setNamedMeta(
+                'twitter:title',
+                defaultPageTitle
+            );
+
+            setNamedMeta(
+                'twitter:description',
+                defaultPageDescription
+            );
+
+            removeMeta(
+                'meta[property="og:image"]'
+            );
+
+            removeMeta(
+                'meta[name="twitter:image"]'
+            );
+
+            canonicalLink.href =
+                siteBaseUrl;
+
+            return;
+        }
+
+        const displayName =
+            getDisplayName(
+                record
+            );
+
+        const progress =
+            getRecordProgress(
+                record
+            );
+
+        const title =
+            `${displayName} — Team Verdigris Pokémon Assets`;
+
+        const description =
+            `${displayName} artwork, sprites, shiny sprites, icons and additional assets. ` +
+            `${progress.complete}/${progress.total} core graphics available.`;
+
+        const shareUrl =
+            getPokemonShareUrl(
+                record
+            );
+
+        const previewImage =
+            getPokemonPreviewImage(
+                record
+            );
+
+        document.title =
+            title;
+
+        setNamedMeta(
+            'description',
+            description
+        );
+
+        setPropertyMeta(
+            'og:title',
+            title
+        );
+
+        setPropertyMeta(
+            'og:description',
+            description
+        );
+
+        setPropertyMeta(
+            'og:url',
+            shareUrl
+        );
+
+        setNamedMeta(
+            'twitter:title',
+            title
+        );
+
+        setNamedMeta(
+            'twitter:description',
+            description
+        );
+
+        if (previewImage) {
+            setPropertyMeta(
+                'og:image',
+                previewImage.download_url
+            );
+
+            setNamedMeta(
+                'twitter:image',
+                previewImage.download_url
+            );
+        } else {
+            removeMeta(
+                'meta[property="og:image"]'
+            );
+
+            removeMeta(
+                'meta[name="twitter:image"]'
+            );
+        }
+
+        canonicalLink.href =
+            shareUrl;
+    }
+
+
+    function setPokemonLocation(
+        record,
+        replace = false
+    ) {
+        const target =
+            new URL(
+                window.location.href
+            );
+
+        const base =
+            new URL(
+                siteBaseUrl
+            );
+
+        target.pathname =
+            base.pathname;
+
+        target.searchParams.set(
+            'pokemon',
+            record.id
+        );
+
+        target.hash =
+            '';
+
+        if (
+            target.toString() ===
+            window.location.href
+        ) {
+            return;
+        }
+
+        const method =
+            replace
+                ? 'replaceState'
+                : 'pushState';
+
+        window.history[method](
+            {
+                pokemon:
+                    record.id
+            },
+            '',
+            target
+        );
+    }
+
+
+    function clearPokemonLocation(
+        replace = true
+    ) {
+        const target =
+            new URL(
+                window.location.href
+            );
+
+        const base =
+            new URL(
+                siteBaseUrl
+            );
+
+        target.pathname =
+            base.pathname;
+
+        target.searchParams.delete(
+            'pokemon'
+        );
+
+        target.hash =
+            '';
+
+        const method =
+            replace
+                ? 'replaceState'
+                : 'pushState';
+
+        window.history[method](
+            {
+                pokemon: null
+            },
+            '',
+            target
+        );
+    }
+
+
+    function applyLocationRoute() {
+        if (!dataReady) {
+            return;
+        }
+
+        const requestedId =
+            getPokemonIdFromLocation();
+
+        if (!requestedId) {
+            closeAssetModal({
+                updateUrl: false,
+                updateMetadata: true
+            });
+
+            return;
+        }
+
+        const record =
+            getPokemonRecordById(
+                requestedId
+            );
+
+        if (!record) {
+            closeAssetModal({
+                updateUrl: false,
+                updateMetadata: true
+            });
+
+            showCopyToast(
+                `No Pokémon asset record found for ${requestedId}.`,
+                true
+            );
+
+            return;
+        }
+
+        openAssetModal(
+            record,
+            {
+                updateUrl: false
+            }
+        );
+    }
+
+
+    async function copyPokemonShareLink(
+        record
+    ) {
+        if (!record) {
+            return;
+        }
+
+        const url =
+            getPokemonShareUrl(
+                record
+            );
+
+        try {
+            await navigator.clipboard.writeText(
+                url
+            );
+
+            showCopyToast(
+                `Copied link for ${getDisplayName(record)}`
+            );
+        } catch (error) {
+            console.warn(
+                'Could not copy Pokémon link:',
+                error
+            );
+
+            showCopyToast(
+                url,
+                true
+            );
+        }
+    }
+
+
+    async function sharePokemonRecord(
+        record
+    ) {
+        if (!record) {
+            return;
+        }
+
+        const url =
+            getPokemonShareUrl(
+                record
+            );
+
+        const title =
+            `${getDisplayName(record)} — Team Verdigris Pokémon Assets`;
+
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title,
+                    url
+                });
+
+                return;
+            } catch (error) {
+                if (
+                    error &&
+                    error.name ===
+                        'AbortError'
+                ) {
+                    return;
+                }
+
+                console.warn(
+                    'Could not open share sheet:',
+                    error
+                );
+            }
+        }
+
+        await copyPokemonShareLink(
+            record
         );
     }
 
@@ -1759,6 +2492,9 @@
                     'The repository loaded, but no configured image assets were found.'
                 );
             }
+
+            dataReady =
+                true;
 
             render();
 
@@ -2902,7 +3638,10 @@
        ============================================================= */
 
     function render() {
-        closeAssetModal();
+        closeAssetModal({
+            updateUrl: false,
+            updateMetadata: false
+        });
 
         if (
             viewMode.value ===
@@ -2911,6 +3650,10 @@
             renderPokemonView();
         } else {
             renderFolderView();
+        }
+
+        if (dataReady) {
+            applyLocationRoute();
         }
     }
 
@@ -4296,8 +5039,30 @@
        ============================================================= */
 
     function openAssetModal(
-        record
+        record,
+        options = {}
     ) {
+        const updateUrl =
+            options.updateUrl !==
+            false;
+
+        const replaceUrl =
+            options.replaceUrl ===
+            true;
+
+        currentModalRecord =
+            record;
+
+        if (updateUrl) {
+            setPokemonLocation(
+                record,
+                replaceUrl
+            );
+        }
+
+        updateDocumentMetadata(
+            record
+        );
 
         modalTitle.textContent =
             getDisplayName(
@@ -4706,7 +5471,25 @@
     }
 
 
-    function closeAssetModal() {
+    function closeAssetModal(
+        options = {}
+    ) {
+        const updateUrl =
+            options.updateUrl !==
+            false;
+
+        const updateMetadata =
+            options.updateMetadata !==
+            false;
+
+        const hadRecord =
+            Boolean(
+                currentModalRecord
+            );
+
+        currentModalRecord =
+            null;
+
         assetModal.classList.add(
             'hidden'
         );
@@ -4716,6 +5499,19 @@
 
         document.body.style.overflow =
             '';
+
+        if (
+            updateUrl &&
+            hadRecord
+        ) {
+            clearPokemonLocation(
+                true
+            );
+        }
+
+        if (updateMetadata) {
+            updateDocumentMetadata();
+        }
     }
 
 
@@ -4777,7 +5573,31 @@
 
     modalClose.addEventListener(
         'click',
-        closeAssetModal
+        () => closeAssetModal()
+    );
+
+
+    modalCopyLink.addEventListener(
+        'click',
+        () =>
+            copyPokemonShareLink(
+                currentModalRecord
+            )
+    );
+
+
+    modalShareLink.addEventListener(
+        'click',
+        () =>
+            sharePokemonRecord(
+                currentModalRecord
+            )
+    );
+
+
+    window.addEventListener(
+        'popstate',
+        applyLocationRoute
     );
 
 
@@ -4861,6 +5681,7 @@
        START
        ============================================================= */
 
+    detectGeneratedPreviewRoutes();
     loadAllData();
 </script>
 
