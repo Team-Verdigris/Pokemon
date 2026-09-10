@@ -1177,11 +1177,12 @@
                     </div>
 
                     <div class="control-group">
-                        <label>Archived Files</label>
-                        <div class="toggle-group">
-                            <input id="showOldFiles" type="checkbox">
-                            <label for="showOldFiles">Show _OLD</label>
-                        </div>
+                        <label for="archiveMode">Archived Files</label>
+                        <select id="archiveMode">
+                            <option value="search" selected>Search Only</option>
+                            <option value="hidden">Hidden</option>
+                            <option value="all">Show All</option>
+                        </select>
                     </div>
                 </div>
             </section>
@@ -1416,8 +1417,8 @@
     const hideUnusedAssets =
         document.getElementById('hideUnusedAssets');
 
-    const showOldFiles =
-        document.getElementById('showOldFiles');
+    const archiveMode =
+        document.getElementById('archiveMode');
 
     const assetModal =
         document.getElementById('assetModal');
@@ -1497,8 +1498,12 @@
      * PIKACHU_old
      * PIKACHU_OLD
      * DEOXYS_1_old
+     * Archived/Artworks/PIKACHU.png (folder marks it archived)
      */
-    function parsePokemonFilename(filename) {
+    function parsePokemonFilename(
+        filename,
+        archivedByFolder = false
+    ) {
         const originalStem =
             stripExtension(
                 filename
@@ -1507,8 +1512,17 @@
         let stem =
             originalStem;
 
+        /*
+         * An asset is archived when either:
+         *
+         * 1. it lives under Archived/<asset folder>/, or
+         * 2. its legacy filename ends in _old / _OLD.
+         *
+         * This lets the repository migrate old files into the Archived
+         * tree without breaking existing _old filenames or URLs.
+         */
         let isOld =
-            false;
+            Boolean(archivedByFolder);
 
         if (/_old$/i.test(stem)) {
             isOld = true;
@@ -1762,7 +1776,9 @@
             return null;
         }
 
-        return buildPokemonRecords()
+        return buildPokemonRecords({
+            includeArchived: true
+        })
             .find(
                 record =>
                     record.id
@@ -1800,7 +1816,15 @@
 
 
     function getPokemonShareUrl(record) {
-        return generatedPreviewRoutesEnabled
+        /*
+         * The current preview-page generator only scans the normal asset
+         * folders. Archived records therefore use the query permalink,
+         * which the viewer can resolve even when archives are hidden.
+         */
+        return (
+            generatedPreviewRoutesEnabled &&
+            !record.parsed.isOld
+        )
             ? getPokemonPreviewRouteUrl(
                 record
             )
@@ -2392,26 +2416,60 @@
                 )
             )
             .forEach(item => {
-                const matchingConfig =
-                    folderConfig.find(
-                        config => {
-                            const prefix =
-                                `${config.folder}/`;
+                let matchingConfig =
+                    null;
 
-                            return (
-                                item.path
-                                    .toLowerCase()
-                                    .startsWith(
-                                        prefix.toLowerCase()
-                                    ) &&
-                                !item.path
-                                    .substring(
-                                        prefix.length
-                                    )
-                                    .includes('/')
+                let archivedByFolder =
+                    false;
+
+                folderConfig.some(
+                    config => {
+                        const livePrefix =
+                            `${config.folder}/`;
+
+                        const archivePrefix =
+                            `Archived/${config.folder}/`;
+
+                        const candidates = [
+                            {
+                                prefix: livePrefix,
+                                archived: false
+                            },
+                            {
+                                prefix: archivePrefix,
+                                archived: true
+                            }
+                        ];
+
+                        const match =
+                            candidates.find(
+                                candidate =>
+                                    item.path
+                                        .toLowerCase()
+                                        .startsWith(
+                                            candidate.prefix
+                                                .toLowerCase()
+                                        ) &&
+                                    !item.path
+                                        .substring(
+                                            candidate.prefix.length
+                                        )
+                                        .includes('/')
                             );
+
+                        if (!match) {
+                            return false;
                         }
-                    );
+
+                        matchingConfig =
+                            config;
+
+                        archivedByFolder =
+                            match.archived;
+
+                        return true;
+                    }
+                );
 
                 if (!matchingConfig) {
                     return;
@@ -2439,12 +2497,14 @@
                     name: filename,
                     path: item.path,
                     type: 'file',
+                    archivedByFolder,
                     download_url:
                         `https://raw.githubusercontent.com/` +
                         `${organization}/${repository}/main/${encodedPath}`,
                     parsed:
                         parsePokemonFilename(
-                            filename
+                            filename,
+                            archivedByFolder
                         )
                 });
             });
@@ -2463,7 +2523,6 @@
             );
         });
     }
-
 
     async function loadAllData() {
         content.innerHTML =
@@ -2575,17 +2634,43 @@
        ACTIVE FILES
        ============================================================= */
 
+    function shouldIncludeArchivedFiles() {
+        if (archiveMode.value === 'all') {
+            return true;
+        }
+
+        if (archiveMode.value === 'hidden') {
+            return false;
+        }
+
+        /*
+         * Search Only is the default: archived files stay out of normal
+         * browsing but become part of the rendered result set as soon as
+         * the user searches for something.
+         */
+        return (
+            searchInput.value
+                .trim() !== ''
+        );
+    }
+
+
     function getActiveFiles(
-        assetKey
+        assetKey,
+        options = {}
     ) {
+        const includeArchived =
+            options.includeArchived !==
+                undefined
+                ? options.includeArchived
+                : shouldIncludeArchivedFiles();
+
         let files =
             rawFolderData[
                 assetKey
             ] || [];
 
-        if (
-            !showOldFiles.checked
-        ) {
+        if (!includeArchived) {
             files =
                 files.filter(
                     file =>
@@ -2595,7 +2680,6 @@
 
         return files;
     }
-
 
     /*
      * Creates one record for each exact visual variant.
@@ -2608,14 +2692,17 @@
      *
      * each becomes its own record.
      */
-    function buildPokemonRecords() {
+    function buildPokemonRecords(
+        options = {}
+    ) {
         const records =
             new Map();
 
         getVisibleFolderConfig()
             .forEach(config => {
                 getActiveFiles(
-                    config.key
+                    config.key,
+                    options
                 ).forEach(file => {
                     const id =
                         file.parsed
@@ -5082,7 +5169,9 @@
 
         const siblingRecords =
             sortPokemonRecords(
-                buildPokemonRecords()
+                buildPokemonRecords({
+                    includeArchived: true
+                })
                     .filter(
                         sibling =>
                             sibling.parsed
@@ -5092,9 +5181,27 @@
                     )
             );
 
-        if (
-            siblingRecords.length > 1
+        const currentSiblingRecords =
+            siblingRecords.filter(
+                sibling =>
+                    !sibling.parsed.isOld
+            );
+
+        const archivedSiblingRecords =
+            siblingRecords.filter(
+                sibling =>
+                    sibling.parsed.isOld
+            );
+
+        function appendVariantNavigation(
+            headingText,
+            records,
+            archived = false
         ) {
+            if (records.length === 0) {
+                return;
+            }
+
             const nav =
                 document.createElement(
                     'div'
@@ -5112,7 +5219,7 @@
                 'modal-section-title';
 
             heading.textContent =
-                'Forms';
+                headingText;
 
             const list =
                 document.createElement(
@@ -5122,7 +5229,7 @@
             list.className =
                 'modal-variant-list';
 
-            siblingRecords.forEach(
+            records.forEach(
                 sibling => {
                     const button =
                         document.createElement(
@@ -5135,11 +5242,25 @@
                     button.className =
                         'modal-variant-button';
 
-                    const label =
+                    let label =
                         getVariantLabel(
                             sibling.parsed
                         ) ||
                         'Base';
+
+                    if (archived) {
+                        label =
+                            label
+                                .replace(
+                                    /\s*·\s*OLD$/i,
+                                    ''
+                                )
+                                .replace(
+                                    /^OLD$/i,
+                                    'Base'
+                                ) ||
+                            'Base';
+                    }
 
                     const progress =
                         getRecordProgress(
@@ -5185,6 +5306,24 @@
                 nav
             );
         }
+
+        if (
+            currentSiblingRecords.length > 1 ||
+            record.parsed.isOld
+        ) {
+            appendVariantNavigation(
+                currentSiblingRecords.length > 1
+                    ? 'Forms'
+                    : 'Current',
+                currentSiblingRecords
+            );
+        }
+
+        appendVariantNavigation(
+            'Archived',
+            archivedSiblingRecords,
+            true
+        );
 
         const coreHeading =
             document.createElement(
@@ -5634,7 +5773,16 @@
 
     searchInput.addEventListener(
         'input',
-        applySearch
+        () => {
+            if (
+                archiveMode.value ===
+                'search'
+            ) {
+                render();
+            } else {
+                applySearch();
+            }
+        }
     );
 
 
@@ -5671,7 +5819,7 @@
     );
 
 
-    showOldFiles.addEventListener(
+    archiveMode.addEventListener(
         'change',
         render
     );
