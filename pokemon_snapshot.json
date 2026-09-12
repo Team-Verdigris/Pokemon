@@ -1,0 +1,4183 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-12T19:56:07Z",
+  "source": {
+    "repository": "PKMN-Verdigris",
+    "files": [
+      "PBS/pokemon.txt",
+      "PBS/pokemon_verdigris.txt",
+      "PBS/pokemon_forms.txt",
+      "PBS/pokemon_forms_verdigris.txt",
+      "PBS/abilities.txt",
+      "PBS/abilities_Gen_9_Pack.txt",
+      "PBS/abilities_verdigris.txt",
+      "PBS/types.txt",
+      "PBS/regional_dexes.txt"
+    ]
+  },
+  "pokedex": {
+    "id": "0",
+    "entry_count": 75
+  },
+  "pokemon": [
+    {
+      "pokedex_number": 1,
+      "id": "KIWEAF",
+      "name": "Kiweaf",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Kiweaf",
+          "types": [
+            {
+              "id": "GRASS",
+              "name": "Grass"
+            }
+          ],
+          "species_name": "Bush Bird Pokémon",
+          "category": "Bush Bird",
+          "pokedex_entry": "Kiweaf are natural-born troopers, refusing to give up even in the worst-circumstances. They use their bush to hide amongst the forest floor.",
+          "evolves_into": [
+            {
+              "id": "OSTROOP",
+              "name": "Ostroop"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "OVERGROW",
+                "name": "Overgrow"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "QUICKFEET",
+                "name": "Quick Feet"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 50,
+            "attack": 54,
+            "defense": 62,
+            "speed": 51,
+            "special_attack": 45,
+            "special_defense": 48,
+            "total": 310
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 2,
+      "id": "OSTROOP",
+      "name": "Ostroop",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Ostroop",
+          "types": [
+            {
+              "id": "GRASS",
+              "name": "Grass"
+            }
+          ],
+          "species_name": "Marching Pokémon",
+          "category": "Marching",
+          "pokedex_entry": "The leaf on its head is surprisingly resiliant, allowing it to headbutt foes. Able to synthesize energy from the sun, Stoutree can march on for hours.",
+          "evolves_into": [
+            {
+              "id": "ARMAZOURA",
+              "name": "Armazoura"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "OVERGROW",
+                "name": "Overgrow"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "QUICKFEET",
+                "name": "Quick Feet"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 77,
+            "attack": 77,
+            "defense": 82,
+            "speed": 70,
+            "special_attack": 50,
+            "special_defense": 64,
+            "total": 420
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 3,
+      "id": "ARMAZOURA",
+      "name": "Armazoura",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Armazoura",
+          "types": [
+            {
+              "id": "GRASS",
+              "name": "Grass"
+            },
+            {
+              "id": "STEEL",
+              "name": "Steel"
+            }
+          ],
+          "species_name": "Soldier Pokémon",
+          "category": "Soldier",
+          "pokedex_entry": "Armazoura's leaves have grown into an impenetrable armor, able to shrug off the most devastating hits. It was once used to guard members of royalty.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "OVERGROW",
+                "name": "Overgrow"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "ADAPTABILITY",
+                "name": "Adaptability"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 88,
+            "attack": 111,
+            "defense": 117,
+            "speed": 80,
+            "special_attack": 60,
+            "special_defense": 74,
+            "total": 530
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 4,
+      "id": "FLAIGOS",
+      "name": "Flaigos",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Flaigos",
+          "types": [
+            {
+              "id": "FIRE",
+              "name": "Fire"
+            }
+          ],
+          "species_name": "Smoke Goat Pokémon",
+          "category": "Smoke Goat",
+          "pokedex_entry": "Flaigos tend to be overconfident, ramming head first into various situations. The grass it eats fuels its smokey mane.",
+          "evolves_into": [
+            {
+              "id": "SMOGGOAT",
+              "name": "Smoggoat"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "BLAZE",
+                "name": "Blaze"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "GLUTTONY",
+                "name": "Gluttony"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 50,
+            "attack": 62,
+            "defense": 45,
+            "speed": 51,
+            "special_attack": 54,
+            "special_defense": 48,
+            "total": 310
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 5,
+      "id": "SMOGGOAT",
+      "name": "Smoggoat",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Smoggoat",
+          "types": [
+            {
+              "id": "FIRE",
+              "name": "Fire"
+            },
+            {
+              "id": "POISON",
+              "name": "Poison"
+            }
+          ],
+          "species_name": "Angsty Pokémon",
+          "category": "Angsty",
+          "pokedex_entry": "This rebellious Pokemon requires lots of food to sustain is speedy metabolism. A simple whiff of its neck gas can lead to difficulty breathing.",
+          "evolves_into": [
+            {
+              "id": "MIASMERAS",
+              "name": "Miasmeras"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "BLAZE",
+                "name": "Blaze"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "GLUTTONY",
+                "name": "Gluttony"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 60,
+            "attack": 80,
+            "defense": 60,
+            "speed": 75,
+            "special_attack": 80,
+            "special_defense": 65,
+            "total": 420
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 6,
+      "id": "MIASMERAS",
+      "name": "Miasmeras",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Miasmeras",
+          "types": [
+            {
+              "id": "FIRE",
+              "name": "Fire"
+            },
+            {
+              "id": "POISON",
+              "name": "Poison"
+            }
+          ],
+          "species_name": "Chimera Pokémon",
+          "category": "Chimera",
+          "pokedex_entry": "Miasmeras uses its toxic fumes and false-headed tail to strike fear into its enemies. It was once used as a weapon of war for its sheer brutality.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "BLAZE",
+                "name": "Blaze"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "TERRIFY",
+                "name": "Terrify"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 70,
+            "attack": 102,
+            "defense": 68,
+            "speed": 102,
+            "special_attack": 108,
+            "special_defense": 80,
+            "total": 530
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 7,
+      "id": "SNESSEL",
+      "name": "Snessel",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Snessel",
+          "types": [
+            {
+              "id": "WATER",
+              "name": "Water"
+            }
+          ],
+          "species_name": "Relic Snail Pokémon",
+          "category": "Relic Snail",
+          "pokedex_entry": "Due to their squishy bodies, Snessel use relic vessels to protect themselves. While agile in water, this creates difficulty moving on land.",
+          "evolves_into": [
+            {
+              "id": "SHELPHORE",
+              "name": "Shelphore"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "TORRENT",
+                "name": "Torrent"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SHELLARMOR",
+                "name": "Shell Armor"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 50,
+            "attack": 48,
+            "defense": 51,
+            "speed": 45,
+            "special_attack": 54,
+            "special_defense": 62,
+            "total": 310
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 8,
+      "id": "SHELPHORE",
+      "name": "Shelphore",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Shelphore",
+          "types": [
+            {
+              "id": "WATER",
+              "name": "Water"
+            },
+            {
+              "id": "PSYCHIC",
+              "name": "Psychic"
+            }
+          ],
+          "species_name": "Focused Pokémon",
+          "category": "Focused",
+          "pokedex_entry": "To limit visual distractions, Shelphore wears broken pottery over its eyes. It stands upright on its tail when using its psychic powers.",
+          "evolves_into": [
+            {
+              "id": "KRATERICLE",
+              "name": "Kratericle"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "TORRENT",
+                "name": "Torrent"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SHELLARMOR",
+                "name": "Shell Armor"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 76,
+            "attack": 58,
+            "defense": 81,
+            "speed": 40,
+            "special_attack": 79,
+            "special_defense": 86,
+            "total": 420
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 9,
+      "id": "KRATERICLE",
+      "name": "Kratericle",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Kratericle",
+          "types": [
+            {
+              "id": "WATER",
+              "name": "Water"
+            },
+            {
+              "id": "PSYCHIC",
+              "name": "Psychic"
+            }
+          ],
+          "species_name": "Oracle Pokémon",
+          "category": "Oracle",
+          "pokedex_entry": "When focused, Kratericle can predict the most minute decisions its opponent makes. It was once revered for its ability to forsee the future.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "TORRENT",
+                "name": "Torrent"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "MAGICGUARD",
+                "name": "Magic Guard"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 94,
+            "attack": 68,
+            "defense": 105,
+            "speed": 35,
+            "special_attack": 109,
+            "special_defense": 119,
+            "total": 530
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 10,
+      "id": "VERMET",
+      "name": "Vermet",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Vermet",
+          "types": [
+            {
+              "id": "NORMAL",
+              "name": "Normal"
+            }
+          ],
+          "species_name": "Tail Pokémon",
+          "category": "Tail",
+          "pokedex_entry": "Vermet stash food and trinkets in their fluffy tails. Their tails puff up when startled, however, so many of these items are often lost to a simple scare.",
+          "evolves_into": [
+            {
+              "id": "MINURREL",
+              "name": "Minurrel"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "PICKUP",
+                "name": "Pickup"
+              },
+              {
+                "id": "SKILLLINK",
+                "name": "Skill Link"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "TINTEDLENS",
+                "name": "Tinted Lens"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 50,
+            "attack": 50,
+            "defense": 55,
+            "speed": 35,
+            "special_attack": 40,
+            "special_defense": 35,
+            "total": 265
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 11,
+      "id": "MINURREL",
+      "name": "Minurrel",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Minurrel",
+          "types": [
+            {
+              "id": "NORMAL",
+              "name": "Normal"
+            },
+            {
+              "id": "STEEL",
+              "name": "Steel"
+            }
+          ],
+          "species_name": "Miner Pokémon",
+          "category": "Miner",
+          "pokedex_entry": "They wrap their tails around other Minurrel for support as they dig, using their metal claws like pickaxes. Its eyes can detect rare ores beneath the earth.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "TOUGHCLAWS",
+                "name": "Tough Claws"
+              },
+              {
+                "id": "SKILLLINK",
+                "name": "Skill Link"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "TINTEDLENS",
+                "name": "Tinted Lens"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 75,
+            "attack": 95,
+            "defense": 85,
+            "speed": 70,
+            "special_attack": 75,
+            "special_defense": 50,
+            "total": 450
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 12,
+      "id": "PLOVERT",
+      "name": "Plovert",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Plovert",
+          "types": [
+            {
+              "id": "FLYING",
+              "name": "Flying"
+            },
+            {
+              "id": "SOUND",
+              "name": "Sound"
+            }
+          ],
+          "species_name": "Song Piper Pokémon",
+          "category": "Song Piper",
+          "pokedex_entry": "Notoriously chatty, it uses a variety of whistles to signal for food or warn others of danger. Its long legs are built to run along the vast shores of the region.",
+          "evolves_into": [
+            {
+              "id": "CAVORETT",
+              "name": "Cavorett"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "KEENEYE",
+                "name": "Keen Eye"
+              },
+              {
+                "id": "KLUTZ",
+                "name": "Klutz"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "GUSTRUSH",
+                "name": "Gust Rush"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 50,
+            "attack": 47,
+            "defense": 26,
+            "speed": 71,
+            "special_attack": 47,
+            "special_defense": 26,
+            "total": 267
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 13,
+      "id": "CAVORETT",
+      "name": "Cavorett",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Cavorett",
+          "types": [
+            {
+              "id": "FLYING",
+              "name": "Flying"
+            },
+            {
+              "id": "SOUND",
+              "name": "Sound"
+            }
+          ],
+          "species_name": "Song Wader Pokémon",
+          "category": "Song Wader",
+          "pokedex_entry": "It sings and capers along mudflats to rile up any prey hidden beneath the muck. Kelpish and Gravvorm are some of its favorite morsels to find.",
+          "evolves_into": [
+            {
+              "id": "GRUSICHOR",
+              "name": "Grusichor"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "KEENEYE",
+                "name": "Keen Eye"
+              },
+              {
+                "id": "TANGLEDFEET",
+                "name": "Tangled Feet"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "GUSTRUSH",
+                "name": "Gust Rush"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 61,
+            "attack": 69,
+            "defense": 52,
+            "speed": 77,
+            "special_attack": 69,
+            "special_defense": 52,
+            "total": 380
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 14,
+      "id": "GRUSICHOR",
+      "name": "Grusichor",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Grusichor",
+          "types": [
+            {
+              "id": "FLYING",
+              "name": "Flying"
+            },
+            {
+              "id": "SOUND",
+              "name": "Sound"
+            }
+          ],
+          "species_name": "Choreography Pokémon",
+          "category": "Choreography",
+          "pokedex_entry": "Grusichor mate for life, so every pair has a unique dance routine. Catching a glimpse of their performance will bring joy to the beholder.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "KEENEYE",
+                "name": "Keen Eye"
+              },
+              {
+                "id": "DANCER",
+                "name": "Dancer"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "GUSTRUSH",
+                "name": "Gust Rush"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 70,
+            "attack": 95,
+            "defense": 66,
+            "speed": 108,
+            "special_attack": 95,
+            "special_defense": 66,
+            "total": 500
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 15,
+      "id": "AMBUG",
+      "name": "Ambug",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Ambug",
+          "types": [
+            {
+              "id": "BUG",
+              "name": "Bug"
+            },
+            {
+              "id": "ROCK",
+              "name": "Rock"
+            }
+          ],
+          "species_name": "Amber Larva Pokémon",
+          "category": "Amber Larva",
+          "pokedex_entry": "A section of its body is encased in amber, made from the tree sap it eats. They avoid the light when possible, so they are hard to find during the day.",
+          "evolves_into": [
+            {
+              "id": "CASQUITO",
+              "name": "Casquito"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "GLUTTONY",
+                "name": "Gluttony"
+              },
+              {
+                "id": "CLEARBODY",
+                "name": "Clear Body"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "WEAKARMOR",
+                "name": "Weak Armor"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 40,
+            "attack": 51,
+            "defense": 54,
+            "speed": 31,
+            "special_attack": 31,
+            "special_defense": 43,
+            "total": 250
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 16,
+      "id": "CASQUITO",
+      "name": "Casquito",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Casquito",
+          "types": [
+            {
+              "id": "BUG",
+              "name": "Bug"
+            },
+            {
+              "id": "ROCK",
+              "name": "Rock"
+            }
+          ],
+          "species_name": "Amber Pupa Pokémon",
+          "category": "Amber Pupa",
+          "pokedex_entry": "Casquito hang motionless on trees and cave ceilings awaiting evolution. If parts of their amber coating chips off, Ambug help repair it.",
+          "evolves_into": [
+            {
+              "id": "AMBRYKOS",
+              "name": "Ambrykos"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SAPSIPPER",
+                "name": "Sap Sipper"
+              },
+              {
+                "id": "CLEARBODY",
+                "name": "Clear Body"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "WEAKARMOR",
+                "name": "Weak Armor"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 50,
+            "attack": 51,
+            "defense": 79,
+            "speed": 21,
+            "special_attack": 31,
+            "special_defense": 68,
+            "total": 300
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 17,
+      "id": "AMBRYKOS",
+      "name": "Ambrykos",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Ambrykos",
+          "types": [
+            {
+              "id": "BUG",
+              "name": "Bug"
+            },
+            {
+              "id": "ROCK",
+              "name": "Rock"
+            }
+          ],
+          "species_name": "Amber Mosquito Pokémon",
+          "category": "Amber Mosquito",
+          "pokedex_entry": "It typically eats tree resin to harden its amber, but ones have been spotted feasting on the grapes of Spoink, but too tipsy to fly.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SAPSIPPER",
+                "name": "Sap Sipper"
+              },
+              {
+                "id": "CLEARBODY",
+                "name": "Clear Body"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "INFILTRATOR",
+                "name": "Infiltrator"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 90,
+            "attack": 117,
+            "defense": 103,
+            "speed": 68,
+            "special_attack": 31,
+            "special_defense": 76,
+            "total": 485
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 18,
+      "id": "CORYPILLAR",
+      "name": "Corypillar",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Corypillar",
+          "types": [
+            {
+              "id": "BUG",
+              "name": "Bug"
+            },
+            {
+              "id": "FAIRY",
+              "name": "Fairy"
+            }
+          ],
+          "species_name": "Clown Larva Pokémon",
+          "category": "Clown Larva",
+          "pokedex_entry": "Corypillar is not actually sad. Rather its tear-like appendages help garner attention. It naps in flowers petals after it has had its fill of nectar.",
+          "evolves_into": [
+            {
+              "id": "JACKOON",
+              "name": "Jackoon"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SHIELDDUST",
+                "name": "Shield Dust"
+              },
+              {
+                "id": "EARLYBIRD",
+                "name": "Early Bird"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "TINTEDLENS",
+                "name": "Tinted Lens"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 54,
+            "attack": 34,
+            "defense": 34,
+            "speed": 34,
+            "special_attack": 49,
+            "special_defense": 45,
+            "total": 250
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 19,
+      "id": "JACKOON",
+      "name": "Jackoon",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Jackoon",
+          "types": [
+            {
+              "id": "BUG",
+              "name": "Bug"
+            },
+            {
+              "id": "FAIRY",
+              "name": "Fairy"
+            }
+          ],
+          "species_name": "Clown Pupa Pokémon",
+          "category": "Clown Pupa",
+          "pokedex_entry": "Jackoon is still developing proper limbs, so it lacks balance. Despite this, it seems to enjoy the delight of onlookers witnessing its clumsy nature.",
+          "evolves_into": [
+            {
+              "id": "CLAUDIFLY",
+              "name": "Claudifly"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "KLUTZ",
+                "name": "Klutz"
+              }
+            ],
+            "hidden": []
+          },
+          "base_stats": {
+            "hp": 64,
+            "attack": 34,
+            "defense": 59,
+            "speed": 24,
+            "special_attack": 49,
+            "special_defense": 70,
+            "total": 300
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 20,
+      "id": "CLAUDIFLY",
+      "name": "Claudifly",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Claudifly",
+          "types": [
+            {
+              "id": "BUG",
+              "name": "Bug"
+            },
+            {
+              "id": "FAIRY",
+              "name": "Fairy"
+            }
+          ],
+          "species_name": "Jester Fly Pokémon",
+          "category": "Jester Fly",
+          "pokedex_entry": "Claudifly loves to pull pranks and juggle the pollen puffs on its head. Many people find their antics annoying, but some find them quite charming.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SHIELDDUST",
+                "name": "Shield Dust"
+              },
+              {
+                "id": "PRANKSTER",
+                "name": "Prankster"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "TINTEDLENS",
+                "name": "Tinted Lens"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 100,
+            "attack": 49,
+            "defense": 59,
+            "speed": 85,
+            "special_attack": 107,
+            "special_defense": 85,
+            "total": 485
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 21,
+      "id": "NIMBIM",
+      "name": "Nimbim",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Nimbim",
+          "types": [
+            {
+              "id": "FLYING",
+              "name": "Flying"
+            }
+          ],
+          "species_name": "Cloud Wyrm Pokémon",
+          "category": "Cloud Wyrm",
+          "pokedex_entry": "Its body is so light that even a small breeze can cause it to drift away for miles. It absorbs air particles in order to evolve.",
+          "evolves_into": [
+            {
+              "id": "ANEMINAL",
+              "name": "Aneminal"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "CLOUDNINE",
+                "name": "Cloud Nine"
+              },
+              {
+                "id": "GUSTRUSH",
+                "name": "Gust Rush"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "TEMPEST",
+                "name": "Tempest"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 49,
+            "attack": 49,
+            "defense": 49,
+            "speed": 69,
+            "special_attack": 49,
+            "special_defense": 49,
+            "total": 314
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 22,
+      "id": "ANEMINAL",
+      "name": "Aneminal",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Aneminal",
+          "types": [
+            {
+              "id": "FLYING",
+              "name": "Flying"
+            },
+            {
+              "id": "WATER",
+              "name": "Water"
+            }
+          ],
+          "species_name": "South Wind Pokémon",
+          "category": "South Wind",
+          "pokedex_entry": "The sea salt in the air of southern Fusis caused Nimbim to evolve into this form of Aneminal. It can freely manipulate the water that makes up its body.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SWIFTSWIM",
+                "name": "Swift Swim"
+              },
+              {
+                "id": "GUSTRUSH",
+                "name": "Gust Rush"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "TEMPEST",
+                "name": "Tempest"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 69,
+            "attack": 60,
+            "defense": 74,
+            "speed": 116,
+            "special_attack": 94,
+            "special_defense": 111,
+            "total": 524
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 23,
+      "id": "FEATHAL",
+      "name": "Feathal",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Feathal",
+          "types": [
+            {
+              "id": "STEEL",
+              "name": "Steel"
+            },
+            {
+              "id": "FLYING",
+              "name": "Flying"
+            }
+          ],
+          "species_name": "Big Beak Pokémon",
+          "category": "Big Beak",
+          "pokedex_entry": "Feathal are aggressive and territorial, protecting their hunting grounds at all costs. They fling metallic feathers at foes who get too close.",
+          "evolves_into": [
+            {
+              "id": "STYCARUS",
+              "name": "Stycarus"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "BIGPECKS",
+                "name": "Big Pecks"
+              },
+              {
+                "id": "INTIMIDATE",
+                "name": "Intimidate"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "MOXIE",
+                "name": "Moxie"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 60,
+            "attack": 68,
+            "defense": 56,
+            "speed": 67,
+            "special_attack": 30,
+            "special_defense": 43,
+            "total": 324
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 24,
+      "id": "STYCARUS",
+      "name": "Stycarus",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Stycarus",
+          "types": [
+            {
+              "id": "STEEL",
+              "name": "Steel"
+            },
+            {
+              "id": "FLYING",
+              "name": "Flying"
+            }
+          ],
+          "species_name": "Waxwing Pokémon",
+          "category": "Waxwing",
+          "pokedex_entry": "Stycarus can solidify the liquid metal of its wings to slash at prey and volley darts at its foes. Kids are taught to seek shelter if they hear its screech nearby.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SHEERFORCE",
+                "name": "Sheer Force"
+              },
+              {
+                "id": "INTIMIDATE",
+                "name": "Intimidate"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "MOXIE",
+                "name": "Moxie"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 80,
+            "attack": 125,
+            "defense": 86,
+            "speed": 106,
+            "special_attack": 40,
+            "special_defense": 68,
+            "total": 505
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 25,
+      "id": "SPIRDIX",
+      "name": "Spirdix",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Spirdix",
+          "types": [
+            {
+              "id": "GHOST",
+              "name": "Ghost"
+            },
+            {
+              "id": "FLYING",
+              "name": "Flying"
+            }
+          ],
+          "species_name": "Fallen Pokémon",
+          "category": "Fallen",
+          "pokedex_entry": "Legend has it, Spirdix are the souls of those who have fallen to their doom. They fly and nest low to the ground, supposedly wary of falling again.",
+          "evolves_into": [
+            {
+              "id": "MYSTIFOWL",
+              "name": "Mystifowl"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "CURSEDBODY",
+                "name": "Cursed Body"
+              },
+              {
+                "id": "ILLUMINATE",
+                "name": "Illuminate"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SAVVY",
+                "name": "Savvy"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 55,
+            "attack": 30,
+            "defense": 38,
+            "speed": 67,
+            "special_attack": 68,
+            "special_defense": 66,
+            "total": 324
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 26,
+      "id": "MYSTIFOWL",
+      "name": "Mystifowl",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Mystifowl",
+          "types": [
+            {
+              "id": "GHOST",
+              "name": "Ghost"
+            },
+            {
+              "id": "FLYING",
+              "name": "Flying"
+            }
+          ],
+          "species_name": "Fallen Pokémon",
+          "category": "Fallen",
+          "pokedex_entry": "The gem on its chest glows when it is facing north. Sailors thought of them as deities, following their flight when the stars were covered by clouds.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "CURSEDBODY",
+                "name": "Cursed Body"
+              },
+              {
+                "id": "ILLUMINATE",
+                "name": "Illuminate"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SAVVY",
+                "name": "Savvy"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 75,
+            "attack": 40,
+            "defense": 58,
+            "speed": 97,
+            "special_attack": 125,
+            "special_defense": 110,
+            "total": 505
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 27,
+      "id": "LULLABELL",
+      "name": "Lullabell",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Lullabell",
+          "types": [
+            {
+              "id": "SOUND",
+              "name": "Sound"
+            },
+            {
+              "id": "GRASS",
+              "name": "Grass"
+            }
+          ],
+          "species_name": "Flower Bell Pokémon",
+          "category": "Flower Bell",
+          "pokedex_entry": "A bashful Pokemon, it clings to branches with its vine to avoid trouble. Groups of them create delightful chimes in the forest breeze.",
+          "evolves_into": [
+            {
+              "id": "BELLEDY",
+              "name": "Belledy"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "FLOWERVEIL",
+                "name": "Flower Veil"
+              },
+              {
+                "id": "RATTLED",
+                "name": "Rattled"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "HUGEPOWER",
+                "name": "Huge Power"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 45,
+            "attack": 45,
+            "defense": 54,
+            "speed": 38,
+            "special_attack": 58,
+            "special_defense": 58,
+            "total": 298
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 28,
+      "id": "BELLEDY",
+      "name": "Belledy",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Belledy",
+          "types": [
+            {
+              "id": "SOUND",
+              "name": "Sound"
+            },
+            {
+              "id": "GRASS",
+              "name": "Grass"
+            }
+          ],
+          "species_name": "Flower Belle Pokémon",
+          "category": "Flower Belle",
+          "pokedex_entry": "This tender-hearted Pokemon is used by nurses across the region. Simply hearing the chime of its flower bells can alleviate years of chronic aches and pains.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "FLOWERVEIL",
+                "name": "Flower Veil"
+              },
+              {
+                "id": "TRIAGE",
+                "name": "Triage"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "HUGEPOWER",
+                "name": "Huge Power"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 94,
+            "attack": 56,
+            "defense": 81,
+            "speed": 69,
+            "special_attack": 90,
+            "special_defense": 100,
+            "total": 490
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 29,
+      "id": "SPOINK",
+      "name": "Spoink",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Spoink",
+          "types": [
+            {
+              "id": "POISON",
+              "name": "Poison"
+            },
+            {
+              "id": "GRASS",
+              "name": "Grass"
+            }
+          ],
+          "species_name": "Bounce Pokémon",
+          "category": "Bounce",
+          "pokedex_entry": "It ferments the wild grapes it consumes by bouncing, creating a potent toxin. This has numbed its psychic power, but keeps predators away.",
+          "evolves_into": [
+            {
+              "id": "GRUMPIG",
+              "name": "Grumpig"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "TIPSY",
+                "name": "Tipsy"
+              },
+              {
+                "id": "GLUTTONY",
+                "name": "Gluttony"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "THICKFAT",
+                "name": "Thick Fat"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 65,
+            "attack": 15,
+            "defense": 40,
+            "speed": 60,
+            "special_attack": 80,
+            "special_defense": 70,
+            "total": 330
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 30,
+      "id": "GRUMPIG",
+      "name": "Grumpig",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Grumpig",
+          "types": [
+            {
+              "id": "POISON",
+              "name": "Poison"
+            },
+            {
+              "id": "GRASS",
+              "name": "Grass"
+            }
+          ],
+          "species_name": "Influence Pokémon",
+          "category": "Influence",
+          "pokedex_entry": "Grumpig stomps grapes and berries it finds into a sweet tasting fluid that dulls the senses. Its dance is more disorderly than its Hoennian cousin.",
+          "evolves_into": [
+            {
+              "id": "SWIONYSUS",
+              "name": "Swionysus"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "TIPSY",
+                "name": "Tipsy"
+              },
+              {
+                "id": "GLUTTONY",
+                "name": "Gluttony"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "THICKFAT",
+                "name": "Thick Fat"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 90,
+            "attack": 35,
+            "defense": 70,
+            "speed": 80,
+            "special_attack": 105,
+            "special_defense": 90,
+            "total": 470
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 31,
+      "id": "SWIONYSUS",
+      "name": "Swionysus",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Swionysus",
+          "types": [
+            {
+              "id": "POISON",
+              "name": "Poison"
+            },
+            {
+              "id": "GRASS",
+              "name": "Grass"
+            }
+          ],
+          "species_name": "Leisurely Pokémon",
+          "category": "Leisurely",
+          "pokedex_entry": "It lounges on its tail and feasts on berries Spoink and Grumpig provide. The happier it is, the more bountiful the vegetation around it becomes.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "TIPSY",
+                "name": "Tipsy"
+              },
+              {
+                "id": "GLUTTONY",
+                "name": "Gluttony"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "THICKFAT",
+                "name": "Thick Fat"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 130,
+            "attack": 45,
+            "defense": 85,
+            "speed": 49,
+            "special_attack": 115,
+            "special_defense": 110,
+            "total": 534
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 32,
+      "id": "FAWNEE",
+      "name": "Fawnee",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Fawnee",
+          "types": [
+            {
+              "id": "NORMAL",
+              "name": "Normal"
+            }
+          ],
+          "species_name": "Faun Pokémon",
+          "category": "Faun",
+          "pokedex_entry": "A rambunctious and playful Pokémon, it often prances around the forest and uses sticks to play fight with other Fawnee.",
+          "evolves_into": [
+            {
+              "id": "FAUNDERER",
+              "name": "Faunderer"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "RUNAWAY",
+                "name": "Run Away"
+              },
+              {
+                "id": "STEADFAST",
+                "name": "Steadfast"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SCRAPPY",
+                "name": "Scrappy"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 51,
+            "attack": 65,
+            "defense": 48,
+            "speed": 61,
+            "special_attack": 30,
+            "special_defense": 32,
+            "total": 287
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 33,
+      "id": "FAUNDERER",
+      "name": "Faunderer",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Faunderer",
+          "types": [
+            {
+              "id": "NORMAL",
+              "name": "Normal"
+            },
+            {
+              "id": "FIGHTING",
+              "name": "Fighting"
+            }
+          ],
+          "species_name": "Faun Pokémon",
+          "category": "Faun",
+          "pokedex_entry": "The sharp growth on its arm is used to carve into trees in order to mark its territory. They only need about 3 hours of sleep each day.",
+          "evolves_into": [
+            {
+              "id": "AMAZENTAUR",
+              "name": "Amazentaur"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "DEFIANT",
+                "name": "Defiant"
+              },
+              {
+                "id": "STEADFAST",
+                "name": "Steadfast"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SCRAPPY",
+                "name": "Scrappy"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 65,
+            "attack": 86,
+            "defense": 61,
+            "speed": 81,
+            "special_attack": 41,
+            "special_defense": 47,
+            "total": 381
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 34,
+      "id": "AMAZENTAUR",
+      "name": "Amazentaur",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Amazentaur",
+          "types": [
+            {
+              "id": "NORMAL",
+              "name": "Normal"
+            },
+            {
+              "id": "FIGHTING",
+              "name": "Fighting"
+            }
+          ],
+          "species_name": "Centaur Pokémon",
+          "category": "Centaur",
+          "pokedex_entry": "Amazentars were once used by warriors to ride into battle. One back kick from this robust Pokémon can decimate an entire brick wall.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "DEFIANT",
+                "name": "Defiant"
+              },
+              {
+                "id": "INTIMIDATE",
+                "name": "Intimidate"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SCRAPPY",
+                "name": "Scrappy"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 76,
+            "attack": 120,
+            "defense": 74,
+            "speed": 105,
+            "special_attack": 56,
+            "special_defense": 68,
+            "total": 499
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 35,
+      "id": "LYKELIC",
+      "name": "Lykelic",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Lykelic",
+          "types": [
+            {
+              "id": "ROCK",
+              "name": "Rock"
+            }
+          ],
+          "species_name": "Doric Pokémon",
+          "category": "Doric",
+          "pokedex_entry": "Unsuspecting travelers will sit atop its head, mistaking it for ruinous stone. The lichen on its body covers the last standing element of a forgotten empire.",
+          "evolves_into": [
+            {
+              "id": "ENDORIC",
+              "name": "Endoric"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "STICKYHOLD",
+                "name": "Sticky Hold"
+              },
+              {
+                "id": "STURDY",
+                "name": "Sturdy"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SANDFORCE",
+                "name": "Sand Force"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 52,
+            "attack": 62,
+            "defense": 61,
+            "speed": 25,
+            "special_attack": 41,
+            "special_defense": 39,
+            "total": 280
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 36,
+      "id": "ENDORIC",
+      "name": "Endoric",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Endoric",
+          "types": [
+            {
+              "id": "ROCK",
+              "name": "Rock"
+            },
+            {
+              "id": "POISON",
+              "name": "Poison"
+            }
+          ],
+          "species_name": "Ionic Pokémon",
+          "category": "Ionic",
+          "pokedex_entry": "Endoric does not eat. Instead, it melts small rocks with its caustic lichen arms and absorbs their minerals to strengthen its own body.",
+          "evolves_into": [
+            {
+              "id": "LYCORINTH",
+              "name": "Lycorinth"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "POISONTOUCH",
+                "name": "Poison Touch"
+              },
+              {
+                "id": "STURDY",
+                "name": "Sturdy"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SANDFORCE",
+                "name": "Sand Force"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 84,
+            "attack": 89,
+            "defense": 89,
+            "speed": 30,
+            "special_attack": 85,
+            "special_defense": 65,
+            "total": 442
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 37,
+      "id": "LYCORINTH",
+      "name": "Lycorinth",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Lycorinth",
+          "types": [
+            {
+              "id": "ROCK",
+              "name": "Rock"
+            },
+            {
+              "id": "POISON",
+              "name": "Poison"
+            }
+          ],
+          "species_name": "Corinthian Pokémon",
+          "category": "Corinthian",
+          "pokedex_entry": "The toxic endolith in its body acts like a set of powerful muscles. While normally placid, Lycorinth will rampage if it finds any vandalism in its home ruins.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "POISONTOUCH",
+                "name": "Poison Touch"
+              },
+              {
+                "id": "STURDY",
+                "name": "Sturdy"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SANDFORCE",
+                "name": "Sand Force"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 100,
+            "attack": 110,
+            "defense": 130,
+            "speed": 40,
+            "special_attack": 55,
+            "special_defense": 80,
+            "total": 515
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 38,
+      "id": "SWIPUS",
+      "name": "Swipus",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Swipus",
+          "types": [
+            {
+              "id": "DARK",
+              "name": "Dark"
+            }
+          ],
+          "species_name": "Wily Pokémon",
+          "category": "Wily",
+          "pokedex_entry": "Swipus is very mischievous, tricking humans and other Pokémon with its suspicious looking card. Raskoon seem to be easily influenced by their behavior.",
+          "evolves_into": [
+            {
+              "id": "SUPULEIST",
+              "name": "Supuleist"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SUPERLUCK",
+                "name": "Super Luck"
+              },
+              {
+                "id": "MAGICIAN",
+                "name": "Magician"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "FLUFFY",
+                "name": "Fluffy"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 50,
+            "attack": 47,
+            "defense": 40,
+            "speed": 78,
+            "special_attack": 66,
+            "special_defense": 49,
+            "total": 330
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 39,
+      "id": "SUPULEIST",
+      "name": "Supuleist",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Supuleist",
+          "types": [
+            {
+              "id": "DARK",
+              "name": "Dark"
+            }
+          ],
+          "species_name": "Swindler Pokémon",
+          "category": "Swindler",
+          "pokedex_entry": "The guilt from its misdeeds is said to be the cause of Supuleist's black fur falling out. It stays in denial, using this shed fur as a cloak to continue swindling.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SUPERLUCK",
+                "name": "Super Luck"
+              },
+              {
+                "id": "MAGICIAN",
+                "name": "Magician"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "FURCOAT",
+                "name": "Fur Coat"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 72,
+            "attack": 80,
+            "defense": 61,
+            "speed": 105,
+            "special_attack": 109,
+            "special_defense": 73,
+            "total": 500
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 40,
+      "id": "FUZZEU",
+      "name": "Fuzzeu",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Fuzzeu",
+          "types": [
+            {
+              "id": "NORMAL",
+              "name": "Normal"
+            },
+            {
+              "id": "ICE",
+              "name": "Ice"
+            }
+          ],
+          "species_name": "Sniffle Pokémon",
+          "category": "Sniffle",
+          "pokedex_entry": "Fuzzeu crawls along frozen cave walls and ceilings. It is often a carrier of the common cold, unknowingly infecting humans and other Pokémon.",
+          "evolves_into": [
+            {
+              "id": "SLOBRRGEN",
+              "name": "Slobrrgen"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SIMPLE",
+                "name": "Simple"
+              },
+              {
+                "id": "TANGLINGHAIR",
+                "name": "Tangling Hair"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SNOWSPIT",
+                "name": "Snow Spit"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 55,
+            "attack": 56,
+            "defense": 52,
+            "speed": 33,
+            "special_attack": 55,
+            "special_defense": 40,
+            "total": 291
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 41,
+      "id": "SLOBRRGEN",
+      "name": "Slobrrgen",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Slobrrgen",
+          "types": [
+            {
+              "id": "NORMAL",
+              "name": "Normal"
+            },
+            {
+              "id": "ICE",
+              "name": "Ice"
+            }
+          ],
+          "species_name": "Slobber Pokémon",
+          "category": "Slobber",
+          "pokedex_entry": "Underneath its thick fur and gruesome demeanor hides a gentle heart. Beware, however! Just one lick of its tongue can cause severe frostbite.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SIMPLE",
+                "name": "Simple"
+              },
+              {
+                "id": "TANGLINGHAIR",
+                "name": "Tangling Hair"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SNOWSPIT",
+                "name": "Snow Spit"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 114,
+            "attack": 85,
+            "defense": 80,
+            "speed": 50,
+            "special_attack": 85,
+            "special_defense": 65,
+            "total": 479
+          }
+        },
+        {
+          "form_number": 1,
+          "form_name": "Brazen",
+          "display_name": "Slobrrgen — Brazen",
+          "types": [
+            {
+              "id": "NORMAL",
+              "name": "Normal"
+            },
+            {
+              "id": "ICE",
+              "name": "Ice"
+            }
+          ],
+          "species_name": "Slobber Pokémon",
+          "category": "Slobber",
+          "pokedex_entry": "Adorned in strange bronze chains, its aggression and power have increased greatly. It freezes and gobbles up anything in its path.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SIMPLE",
+                "name": "Simple"
+              },
+              {
+                "id": "TANGLINGHAIR",
+                "name": "Tangling Hair"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SNOWSPIT",
+                "name": "Snow Spit"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 114,
+            "attack": 105,
+            "defense": 90,
+            "speed": 50,
+            "special_attack": 95,
+            "special_defense": 75,
+            "total": 529
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 42,
+      "id": "COMBEAT",
+      "name": "Combeat",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Combeat",
+          "types": [
+            {
+              "id": "DARK",
+              "name": "Dark"
+            },
+            {
+              "id": "SOUND",
+              "name": "Sound"
+            }
+          ],
+          "species_name": "Boom Bat Pokémon",
+          "category": "Boom Bat",
+          "pokedex_entry": "Initially deemed a Combee variant, it was reclassified due to its inability to detect pheromones. Instead, it emits sound from its ears to communicate.",
+          "evolves_into": [
+            {
+              "id": "VESPEAKER",
+              "name": "Vespeaker"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "RATTLED",
+                "name": "Rattled"
+              },
+              {
+                "id": "LEVITATE",
+                "name": "Levitate"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "UNNERVE",
+                "name": "Unnerve"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 30,
+            "attack": 30,
+            "defense": 42,
+            "speed": 70,
+            "special_attack": 30,
+            "special_defense": 42,
+            "total": 244
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 43,
+      "id": "VESPEAKER",
+      "name": "Vespeaker",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Vespeaker",
+          "types": [
+            {
+              "id": "DARK",
+              "name": "Dark"
+            },
+            {
+              "id": "SOUND",
+              "name": "Sound"
+            }
+          ],
+          "species_name": "Bat Queen Pokémon",
+          "category": "Bat Queen",
+          "pokedex_entry": "It ruthlessly orders swarms of Combeat to do its bidding using high-pitched frequencies. Its tail chamber can blast sound as loud as 120 decibels.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "PRESSURE",
+                "name": "Pressure"
+              },
+              {
+                "id": "LEVITATE",
+                "name": "Levitate"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "UNNERVE",
+                "name": "Unnerve"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 70,
+            "attack": 80,
+            "defense": 102,
+            "speed": 40,
+            "special_attack": 80,
+            "special_defense": 102,
+            "total": 474
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 44,
+      "id": "WOOPER",
+      "name": "Wooper",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Wooper",
+          "types": [
+            {
+              "id": "ICE",
+              "name": "Ice"
+            }
+          ],
+          "species_name": "Ice Fish Pokémon",
+          "category": "Ice Fish",
+          "pokedex_entry": "Wooper have been chased off by predators in the swamps. They now live in icy caves, obtaining moisture from the crystals that stick to its face.",
+          "evolves_into": [
+            {
+              "id": "QUAGSIRE",
+              "name": "Quagsire"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "UNAWARE",
+                "name": "Unaware"
+              },
+              {
+                "id": "GLAZED",
+                "name": "Glazed"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SLUSHRUSH",
+                "name": "Slush Rush"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 55,
+            "attack": 45,
+            "defense": 45,
+            "speed": 15,
+            "special_attack": 25,
+            "special_defense": 25,
+            "total": 210
+          }
+        },
+        {
+          "form_number": 1,
+          "form_name": "Paldean",
+          "display_name": "Wooper — Paldean",
+          "types": [
+            {
+              "id": "POISON",
+              "name": "Poison"
+            },
+            {
+              "id": "GROUND",
+              "name": "Ground"
+            }
+          ],
+          "species_name": "Poison Fish Pokémon",
+          "category": "Poison Fish",
+          "pokedex_entry": "After losing a territorial struggle, Wooper began living on land. The Pokémon changed over time, developing a poisonous film to protect its body.",
+          "evolves_into": [
+            {
+              "id": "CLODSIRE",
+              "name": "Clodsire"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "POISONPOINT",
+                "name": "Poison Point"
+              },
+              {
+                "id": "WATERABSORB",
+                "name": "Water Absorb"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SLUSHRUSH",
+                "name": "Slush Rush"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 55,
+            "attack": 45,
+            "defense": 45,
+            "speed": 15,
+            "special_attack": 25,
+            "special_defense": 25,
+            "total": 210
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 45,
+      "id": "QUAGSIRE",
+      "name": "Quagsire",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Quagsire",
+          "types": [
+            {
+              "id": "ICE",
+              "name": "Ice"
+            },
+            {
+              "id": "ROCK",
+              "name": "Rock"
+            }
+          ],
+          "species_name": "Ice Fish Pokémon",
+          "category": "Ice Fish",
+          "pokedex_entry": "Quagsire's rocky crest and body are coated with frozen slime, making solid hits difficult. It remains about as dim-witted as it's Johtonian cousin.",
+          "evolves_into": [
+            {
+              "id": "KRAGGSIRE",
+              "name": "Kraggsire"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "UNAWARE",
+                "name": "Unaware"
+              },
+              {
+                "id": "GLAZED",
+                "name": "Glazed"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SLUSHRUSH",
+                "name": "Slush Rush"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 95,
+            "attack": 80,
+            "defense": 100,
+            "speed": 35,
+            "special_attack": 60,
+            "special_defense": 60,
+            "total": 430
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 46,
+      "id": "KRAGGSIRE",
+      "name": "Kraggsire",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Kraggsire",
+          "types": [
+            {
+              "id": "ICE",
+              "name": "Ice"
+            },
+            {
+              "id": "ROCK",
+              "name": "Rock"
+            }
+          ],
+          "species_name": "Black Ice Pokémon",
+          "category": "Black Ice",
+          "pokedex_entry": "The ice-glazed rock on Kraggsire's body make for the perfect offense and defense. Woopers often cling to its back as it belly slides through caves.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "IRONFIST",
+                "name": "Iron Fist"
+              },
+              {
+                "id": "GLAZED",
+                "name": "Glazed"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SLUSHRUSH",
+                "name": "Slush Rush"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 110,
+            "attack": 115,
+            "defense": 125,
+            "speed": 65,
+            "special_attack": 60,
+            "special_defense": 60,
+            "total": 535
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 47,
+      "id": "DWEBBLE",
+      "name": "Dwebble",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Dwebble",
+          "types": [
+            {
+              "id": "ICE",
+              "name": "Ice"
+            },
+            {
+              "id": "BUG",
+              "name": "Bug"
+            }
+          ],
+          "species_name": "Snowball Pokémon",
+          "category": "Snowball",
+          "pokedex_entry": "After being brought to Mount Kion, Dwebble began to make homes from nearby snow and ice. It spits a fluid that makes snow easier to ball up.",
+          "evolves_into": [
+            {
+              "id": "FROSTLE",
+              "name": "Frostle"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "ICEBODY",
+                "name": "Ice Body"
+              },
+              {
+                "id": "REFRIGERATE",
+                "name": "Refrigerate"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "STURDY",
+                "name": "Sturdy"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 50,
+            "attack": 60,
+            "defense": 45,
+            "speed": 55,
+            "special_attack": 40,
+            "special_defense": 75,
+            "total": 325
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 48,
+      "id": "FROSTLE",
+      "name": "Frostle",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Frostle",
+          "types": [
+            {
+              "id": "ICE",
+              "name": "Ice"
+            },
+            {
+              "id": "BUG",
+              "name": "Bug"
+            }
+          ],
+          "species_name": "Snowman Pokémon",
+          "category": "Snowman",
+          "pokedex_entry": "Frostle's claws are made to plow snow with the utmost ease. It is known to house Dwebble in its shell when fresh packing snow becomes scarce.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "ICEBODY",
+                "name": "Ice Body"
+              },
+              {
+                "id": "REFRIGERATE",
+                "name": "Refrigerate"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "STURDY",
+                "name": "Sturdy"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 80,
+            "attack": 90,
+            "defense": 75,
+            "speed": 60,
+            "special_attack": 70,
+            "special_defense": 110,
+            "total": 485
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 49,
+      "id": "KITTOO",
+      "name": "Kittoo",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Kittoo",
+          "types": [
+            {
+              "id": "ICE",
+              "name": "Ice"
+            }
+          ],
+          "species_name": "Scaredy-Cat Pokémon",
+          "category": "Scaredy-Cat",
+          "pokedex_entry": "When Kittoo is scared, frost-covered back fur spikes up. You can tell how it is feeling by looking at the position of its whiskers.",
+          "evolves_into": [
+            {
+              "id": "HIMALION",
+              "name": "Himalion"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SNOWCLOAK",
+                "name": "Snow Cloak"
+              },
+              {
+                "id": "LIMBER",
+                "name": "Limber"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SLUSHRUSH",
+                "name": "Slush Rush"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 47,
+            "attack": 50,
+            "defense": 50,
+            "speed": 67,
+            "special_attack": 55,
+            "special_defense": 41,
+            "total": 310
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 50,
+      "id": "HIMALION",
+      "name": "Himalion",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Himalion",
+          "types": [
+            {
+              "id": "ICE",
+              "name": "Ice"
+            },
+            {
+              "id": "ELECTRIC",
+              "name": "Electric"
+            }
+          ],
+          "species_name": "Thunder Cat Pokémon",
+          "category": "Thunder Cat",
+          "pokedex_entry": "The underbelly of a Himalion locks mass amounts of static electricity. It uses electroreception to find prey during blizzards when visibility is near zero.",
+          "evolves_into": [
+            {
+              "id": "OLYMPUMA",
+              "name": "Olympuma"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SNOWCLOAK",
+                "name": "Snow Cloak"
+              },
+              {
+                "id": "STATIC",
+                "name": "Static"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SLUSHRUSH",
+                "name": "Slush Rush"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 60,
+            "attack": 95,
+            "defense": 78,
+            "speed": 82,
+            "special_attack": 95,
+            "special_defense": 60,
+            "total": 470
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 51,
+      "id": "OLYMPUMA",
+      "name": "Olympuma",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Olympuma",
+          "types": [
+            {
+              "id": "ICE",
+              "name": "Ice"
+            },
+            {
+              "id": "ELECTRIC",
+              "name": "Electric"
+            }
+          ],
+          "species_name": "Aurora Cat Pokémon",
+          "category": "Aurora Cat",
+          "pokedex_entry": "Olympuma is too slow to hunt. Instead it hides in the snow, waiting to shock any prey unlucky enough to pass by. Its fur creates beautiful auroras.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SNOWCLOAK",
+                "name": "Snow Cloak"
+              },
+              {
+                "id": "LIGHTNINGROD",
+                "name": "Lightning Rod"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SNOWWARNING",
+                "name": "Snow Warning"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 109,
+            "attack": 75,
+            "defense": 108,
+            "speed": 37,
+            "special_attack": 135,
+            "special_defense": 90,
+            "total": 554
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 52,
+      "id": "RASKOON",
+      "name": "Raskoon",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Raskoon",
+          "types": [
+            {
+              "id": "NORMAL",
+              "name": "Normal"
+            }
+          ],
+          "species_name": "Trash Tot Pokémon",
+          "category": "Trash Tot",
+          "pokedex_entry": "These Pokémon lurk in city alleys, often mingling with the wrong crowd. When seeking attention, they shake their fishbone like a rattle.",
+          "evolves_into": [
+            {
+              "id": "MUSKOON",
+              "name": "Muskoon"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "KLUTZ",
+                "name": "Klutz"
+              },
+              {
+                "id": "PICKUP",
+                "name": "Pickup"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "STENCH",
+                "name": "Stench"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 34,
+            "attack": 50,
+            "defense": 33,
+            "speed": 65,
+            "special_attack": 40,
+            "special_defense": 33,
+            "total": 255
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 53,
+      "id": "MUSKOON",
+      "name": "Muskoon",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Muskoon",
+          "types": [
+            {
+              "id": "NORMAL",
+              "name": "Normal"
+            },
+            {
+              "id": "DARK",
+              "name": "Dark"
+            }
+          ],
+          "species_name": "Trash Bandit Pokémon",
+          "category": "Trash Bandit",
+          "pokedex_entry": "This evolution was influenced by the cunning nature of other Dark-types. Its bone sword is used to defend itself and slice open trash bags for scavenging.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SKILLLINK",
+                "name": "Skill Link"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "POISONHEAL",
+                "name": "Poison Heal"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 63,
+            "attack": 110,
+            "defense": 56,
+            "speed": 110,
+            "special_attack": 85,
+            "special_defense": 66,
+            "total": 490
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 54,
+      "id": "SPINPIN",
+      "name": "Spinpin",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Spinpin",
+          "types": [
+            {
+              "id": "ELECTRIC",
+              "name": "Electric"
+            },
+            {
+              "id": "STEEL",
+              "name": "Steel"
+            }
+          ],
+          "species_name": "Spinning Top Pokémon",
+          "category": "Spinning Top",
+          "pokedex_entry": "It zips around and uses rotational force to generate electricity. The horn on its head delivers painful shocks to any threat in its path.",
+          "evolves_into": [
+            {
+              "id": "BOLTREAD",
+              "name": "Boltread"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "MOTORDRIVE",
+                "name": "Motor Drive"
+              },
+              {
+                "id": "STEADFAST",
+                "name": "Steadfast"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "GALVANIZE",
+                "name": "Galvanize"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 42,
+            "attack": 45,
+            "defense": 40,
+            "speed": 62,
+            "special_attack": 30,
+            "special_defense": 33,
+            "total": 252
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 55,
+      "id": "BOLTREAD",
+      "name": "Boltread",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Boltread",
+          "types": [
+            {
+              "id": "ELECTRIC",
+              "name": "Electric"
+            },
+            {
+              "id": "STEEL",
+              "name": "Steel"
+            }
+          ],
+          "species_name": "Wheel Pokémon",
+          "category": "Wheel",
+          "pokedex_entry": "When it rains, many Boltread will race towards the nearest storm cloud to gather electricity. Small children love to sit atop its head and hitch a ride.",
+          "evolves_into": [
+            {
+              "id": "FULTHRODEL",
+              "name": "Fulthrodel"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "MOTORDRIVE",
+                "name": "Motor Drive"
+              },
+              {
+                "id": "ALLTERRAIN",
+                "name": "All-Terrain"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "GALVANIZE",
+                "name": "Galvanize"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 60,
+            "attack": 64,
+            "defense": 64,
+            "speed": 84,
+            "special_attack": 40,
+            "special_defense": 48,
+            "total": 360
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 56,
+      "id": "FULTHRODEL",
+      "name": "Fulthrodel",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Fulthrodel",
+          "types": [
+            {
+              "id": "ELECTRIC",
+              "name": "Electric"
+            },
+            {
+              "id": "STEEL",
+              "name": "Steel"
+            }
+          ],
+          "species_name": "Chariot Pokémon",
+          "category": "Chariot",
+          "pokedex_entry": "Static electricity fills the air as it recklessly drifts across open roadways, often carrying a passenger or two. It looked quite different before the Industrial Era.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "MOTORDRIVE",
+                "name": "Motor Drive"
+              },
+              {
+                "id": "ALLTERRAIN",
+                "name": "All-Terrain"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "GALVANIZE",
+                "name": "Galvanize"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 95,
+            "attack": 124,
+            "defense": 82,
+            "speed": 113,
+            "special_attack": 50,
+            "special_defense": 62,
+            "total": 526
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 57,
+      "id": "KELPISH",
+      "name": "Kelpish",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Kelpish",
+          "types": [
+            {
+              "id": "WATER",
+              "name": "Water"
+            },
+            {
+              "id": "GRASS",
+              "name": "Grass"
+            }
+          ],
+          "species_name": "Plant Gill Pokémon",
+          "category": "Plant Gill",
+          "pokedex_entry": "It swims along the water's surface to absorb sunlight. This makes Kelpish vulnerable to bird Pokémon, so it stays close to kelp forests to quickly dart into.",
+          "evolves_into": [
+            {
+              "id": "LAMIGILL",
+              "name": "Lamigill"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "PHOTOAQUATIC",
+                "name": "Photoaquatic"
+              },
+              {
+                "id": "OBLIVIOUS",
+                "name": "Oblivious"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SOLARPOWER",
+                "name": "Solar Power"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 40,
+            "attack": 40,
+            "defense": 50,
+            "speed": 40,
+            "special_attack": 50,
+            "special_defense": 60,
+            "total": 280
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 58,
+      "id": "LAMIGILL",
+      "name": "Lamigill",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Lamigill",
+          "types": [
+            {
+              "id": "WATER",
+              "name": "Water"
+            },
+            {
+              "id": "GRASS",
+              "name": "Grass"
+            }
+          ],
+          "species_name": "Sea Floor Pokémon",
+          "category": "Sea Floor",
+          "pokedex_entry": "Lamigill can contort its flat body to slip through small cracks and crevices. It's cellular structure is actually more akin to plants than animals.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "PHOTOAQUATIC",
+                "name": "Photoaquatic"
+              },
+              {
+                "id": "OBLIVIOUS",
+                "name": "Oblivious"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SOLARPOWER",
+                "name": "Solar Power"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 70,
+            "attack": 65,
+            "defense": 80,
+            "speed": 70,
+            "special_attack": 85,
+            "special_defense": 110,
+            "total": 480
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 59,
+      "id": "FILFURR",
+      "name": "Filfurr",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Filfurr",
+          "types": [
+            {
+              "id": "GROUND",
+              "name": "Ground"
+            }
+          ],
+          "species_name": "Dust Kitten Pokémon",
+          "category": "Dust Kitten",
+          "pokedex_entry": "Filfurr is often teased for its carelessness and scruffy appearance. It takes mud baths to clean its fur, but it's unable to get rid of the dirt and gravel.",
+          "evolves_into": [
+            {
+              "id": "PAMPURR",
+              "name": "Pampurr"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "HUSTLE",
+                "name": "Hustle"
+              },
+              {
+                "id": "FLUFFY",
+                "name": "Fluffy"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "CUTECHARM",
+                "name": "Cute Charm"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 65,
+            "attack": 65,
+            "defense": 52,
+            "speed": 50,
+            "special_attack": 35,
+            "special_defense": 38,
+            "total": 305
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 60,
+      "id": "PAMPURR",
+      "name": "Pampurr",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Pampurr",
+          "types": [
+            {
+              "id": "GROUND",
+              "name": "Ground"
+            },
+            {
+              "id": "FAIRY",
+              "name": "Fairy"
+            }
+          ],
+          "species_name": "Pageant Pokémon",
+          "category": "Pageant",
+          "pokedex_entry": "Pampurr are highly regarded in Pokémon contests and beauty paegants. They are also kindhearted, often cleaning up dirty Pokémon with their tail.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "HUSTLE",
+                "name": "Hustle"
+              },
+              {
+                "id": "FLUFFY",
+                "name": "Fluffy"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "CUTECHARM",
+                "name": "Cute Charm"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 110,
+            "attack": 90,
+            "defense": 88,
+            "speed": 90,
+            "special_attack": 52,
+            "special_defense": 65,
+            "total": 495
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 61,
+      "id": "SNOOPUP",
+      "name": "Snoopup",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Snoopup",
+          "types": [
+            {
+              "id": "PSYCHIC",
+              "name": "Psychic"
+            },
+            {
+              "id": "NORMAL",
+              "name": "Normal"
+            }
+          ],
+          "species_name": "Psi Pup Pokémon",
+          "category": "Psi Pup",
+          "pokedex_entry": "Snoopup are very nosy Pokémon, thouroughly investigating any strange sounds or smells. The paw-like pattern on its ears glow in the dark.",
+          "evolves_into": [
+            {
+              "id": "HUNDAPPER",
+              "name": "Hundapper"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "BLACKLIGHT",
+                "name": "Blacklight"
+              },
+              {
+                "id": "PICKUP",
+                "name": "Pickup"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "FRISK",
+                "name": "Frisk"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 55,
+            "attack": 60,
+            "defense": 45,
+            "speed": 60,
+            "special_attack": 40,
+            "special_defense": 45,
+            "total": 305
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 62,
+      "id": "HUNDAPPER",
+      "name": "Hundapper",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Hundapper",
+          "types": [
+            {
+              "id": "PSYCHIC",
+              "name": "Psychic"
+            },
+            {
+              "id": "NORMAL",
+              "name": "Normal"
+            }
+          ],
+          "species_name": "Detective Pokémon",
+          "category": "Detective",
+          "pokedex_entry": "Its sense of smell is unrivaled, and its hearing is not far behind. It's even able to visually materialize scent trails and footprints with the light from its ears.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "BLACKLIGHT",
+                "name": "Blacklight"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "FRISK",
+                "name": "Frisk"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 90,
+            "attack": 115,
+            "defense": 70,
+            "speed": 90,
+            "special_attack": 60,
+            "special_defense": 70,
+            "total": 495
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 63,
+      "id": "EUSEEMI",
+      "name": "Euseemi",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Euseemi",
+          "types": [
+            {
+              "id": "GHOST",
+              "name": "Ghost"
+            },
+            {
+              "id": "PSYCHIC",
+              "name": "Psychic"
+            }
+          ],
+          "species_name": "Cursed Charm Pokémon",
+          "category": "Cursed Charm",
+          "pokedex_entry": "If it senses impurity within your soul, it will follow you around and haunt you perpetually. Clean up your act, and it just might leave you alone.",
+          "evolves_into": [
+            {
+              "id": "EYESIIYU",
+              "name": "Eyesiiyu"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "KEENEYE",
+                "name": "Keen Eye"
+              },
+              {
+                "id": "SYNCHRONIZE",
+                "name": "Synchronize"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "INSOMNIA",
+                "name": "Insomnia"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 40,
+            "attack": 40,
+            "defense": 40,
+            "speed": 50,
+            "special_attack": 50,
+            "special_defense": 70,
+            "total": 290
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 64,
+      "id": "EYESIIYU",
+      "name": "Eyesiiyu",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Eyesiiyu",
+          "types": [
+            {
+              "id": "GHOST",
+              "name": "Ghost"
+            },
+            {
+              "id": "PSYCHIC",
+              "name": "Psychic"
+            }
+          ],
+          "species_name": "Cursed Charm Pokémon",
+          "category": "Cursed Charm",
+          "pokedex_entry": "Try not to stare at this Pokemon. Tainted souls that gaze upon its eye are cursed with bad luck for years. Trainers that can befriend one are truly kindhearted.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "KEENEYE",
+                "name": "Keen Eye"
+              },
+              {
+                "id": "SYNCHRONIZE",
+                "name": "Synchronize"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "INSOMNIA",
+                "name": "Insomnia"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 50,
+            "attack": 60,
+            "defense": 60,
+            "speed": 85,
+            "special_attack": 110,
+            "special_defense": 130,
+            "total": 495
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 65,
+      "id": "PEAKEE",
+      "name": "Peakee",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Peakee",
+          "types": [
+            {
+              "id": "NORMAL",
+              "name": "Normal"
+            },
+            {
+              "id": "FLYING",
+              "name": "Flying"
+            }
+          ],
+          "species_name": "Peafowl Pokémon",
+          "category": "Peafowl",
+          "pokedex_entry": "Its flight capabilities are lacking so it uses its long feather to sense danger. How it evolves changes wildly depending on its gender.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "KEENEYE",
+                "name": "Keen Eye"
+              },
+              {
+                "id": "SYNCHRONIZE",
+                "name": "Synchronize"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "INSOMNIA",
+                "name": "Insomnia"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 50,
+            "attack": 50,
+            "defense": 60,
+            "speed": 55,
+            "special_attack": 60,
+            "special_defense": 50,
+            "total": 325
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 66,
+      "id": "MATRIVONI",
+      "name": "Matrivoni",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": "Male",
+          "display_name": "Matrivoni — Male",
+          "types": [
+            {
+              "id": "PSYCHIC",
+              "name": "Psychic"
+            },
+            {
+              "id": "FLYING",
+              "name": "Flying"
+            }
+          ],
+          "species_name": "Wedlock Pokémon",
+          "category": "Wedlock",
+          "pokedex_entry": "It uses the horns on its head to sense the emotions of others. Males will act as valets for those they serve, looking after their every need.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "INNERFOCUS",
+                "name": "Inner Focus"
+              },
+              {
+                "id": "SYNCHRONIZE",
+                "name": "Synchronize"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "PSYCHICSURGE",
+                "name": "Psychic Surge"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 60,
+            "attack": 65,
+            "defense": 55,
+            "speed": 95,
+            "special_attack": 105,
+            "special_defense": 95,
+            "total": 475
+          }
+        },
+        {
+          "form_number": 1,
+          "form_name": "Female",
+          "display_name": "Matrivoni — Female",
+          "types": [
+            {
+              "id": "PSYCHIC",
+              "name": "Psychic"
+            },
+            {
+              "id": "FLYING",
+              "name": "Flying"
+            }
+          ],
+          "species_name": "Wedlock Pokémon",
+          "category": "Wedlock",
+          "pokedex_entry": "They diligently serve people and Pokémon so they can gather feelings of gratitude. The females are particularly good at babysitting.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "OWNTEMPO",
+                "name": "Own Tempo"
+              },
+              {
+                "id": "SYNCHRONIZE",
+                "name": "Synchronize"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "PSYCHICSURGE",
+                "name": "Psychic Surge"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 70,
+            "attack": 55,
+            "defense": 65,
+            "speed": 85,
+            "special_attack": 95,
+            "special_defense": 105,
+            "total": 475
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 67,
+      "id": "BOOMBA",
+      "name": "Boomba",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": "Sine",
+          "display_name": "Boomba — Sine",
+          "types": [
+            {
+              "id": "SOUND",
+              "name": "Sound"
+            }
+          ],
+          "species_name": "Boombox Pokémon",
+          "category": "Boombox",
+          "pokedex_entry": "The feet of a Boomba release a strong pulse, accentuating every step it takes. For whatever reason, it has a strange affinity for discs.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "SOUNDPROOF",
+                "name": "Soundproof"
+              },
+              {
+                "id": "MOLDBREAKER",
+                "name": "Mold Breaker"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "SYNTHESIZE",
+                "name": "Synthesize"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 52,
+            "attack": 70,
+            "defense": 45,
+            "speed": 60,
+            "special_attack": 50,
+            "special_defense": 45,
+            "total": 322
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 68,
+      "id": "EGGON",
+      "name": "Eggon",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Eggon",
+          "types": [
+            {
+              "id": "DRAGON",
+              "name": "Dragon"
+            }
+          ],
+          "species_name": "??? Pokémon",
+          "category": "???",
+          "pokedex_entry": "???",
+          "evolves_into": [
+            {
+              "id": "ROYEGGON",
+              "name": "Royeggon"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "EARLYBIRD",
+                "name": "Early Bird"
+              }
+            ],
+            "hidden": []
+          },
+          "base_stats": {
+            "hp": 30,
+            "attack": 30,
+            "defense": 50,
+            "speed": 30,
+            "special_attack": 30,
+            "special_defense": 30,
+            "total": 200
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 69,
+      "id": "ROYEGGON",
+      "name": "Royeggon",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Royeggon",
+          "types": [
+            {
+              "id": "DRAGON",
+              "name": "Dragon"
+            },
+            {
+              "id": "FLYING",
+              "name": "Flying"
+            }
+          ],
+          "species_name": "??? Pokémon",
+          "category": "???",
+          "pokedex_entry": "???",
+          "evolves_into": [
+            {
+              "id": "EMPEGGON",
+              "name": "Empeggon"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "EARLYBIRD",
+                "name": "Early Bird"
+              }
+            ],
+            "hidden": []
+          },
+          "base_stats": {
+            "hp": 84,
+            "attack": 66,
+            "defense": 80,
+            "speed": 50,
+            "special_attack": 70,
+            "special_defense": 70,
+            "total": 420
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 70,
+      "id": "EMPEGGON",
+      "name": "Empeggon",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Empeggon",
+          "types": [
+            {
+              "id": "DRAGON",
+              "name": "Dragon"
+            },
+            {
+              "id": "FLYING",
+              "name": "Flying"
+            }
+          ],
+          "species_name": "Draco King Pokémon",
+          "category": "Draco King",
+          "pokedex_entry": "Despite its immense power, Empeggon has other Pokémon bring it food and trinkets. It is greedy and lax, but treats its underlings quite well.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "HISEGGCELLENCY",
+                "name": "His Eggcellency"
+              }
+            ],
+            "hidden": []
+          },
+          "base_stats": {
+            "hp": 100,
+            "attack": 114,
+            "defense": 113,
+            "speed": 55,
+            "special_attack": 155,
+            "special_defense": 113,
+            "total": 650
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 71,
+      "id": "FAYKADRAKE",
+      "name": "Faykadrake",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Faykadrake",
+          "types": [
+            {
+              "id": "WATER",
+              "name": "Water"
+            }
+          ],
+          "species_name": "Faux Serpent Pokémon",
+          "category": "Faux Serpent",
+          "pokedex_entry": "Too weak to fight, Faykadrake rely on their dragon-like guise to fool predators. It sucks the blood of larger marine Pokémon to get by.",
+          "evolves_into": [
+            {
+              "id": "TRUDRAKON",
+              "name": "Trudrakon"
+            }
+          ],
+          "abilities": {
+            "standard": [
+              {
+                "id": "WATERVEIL",
+                "name": "Water Veil"
+              },
+              {
+                "id": "UNNERVE",
+                "name": "Unnerve"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "DRIZZLE",
+                "name": "Drizzle"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 40,
+            "attack": 31,
+            "defense": 36,
+            "speed": 66,
+            "special_attack": 31,
+            "special_defense": 36,
+            "total": 240
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 72,
+      "id": "TRUDRAKON",
+      "name": "Trudrakon",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Trudrakon",
+          "types": [
+            {
+              "id": "DRAGON",
+              "name": "Dragon"
+            },
+            {
+              "id": "WATER",
+              "name": "Water"
+            }
+          ],
+          "species_name": "Leviathan Pokémon",
+          "category": "Leviathan",
+          "pokedex_entry": "Trudrakon's maelstroms have been feared by seafarers since ancient times. Sunken ships and debris are commonplace within its underwater lair.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "MULTISCALE",
+                "name": "Multiscale"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "DRIZZLE",
+                "name": "Drizzle"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 80,
+            "attack": 120,
+            "defense": 70,
+            "speed": 56,
+            "special_attack": 124,
+            "special_defense": 90,
+            "total": 540
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 73,
+      "id": "PROACHNID",
+      "name": "Proachnid",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Proachnid",
+          "types": [
+            {
+              "id": "BUG",
+              "name": "Bug"
+            },
+            {
+              "id": "FAIRY",
+              "name": "Fairy"
+            }
+          ],
+          "species_name": "Genesis Pokémon",
+          "category": "Genesis",
+          "pokedex_entry": "Its exudes a revitalizing aura, bringing a sense of rebirth to all. The warm glow from its precious silk is thought to herald new beginnings.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "FOREWARN",
+                "name": "Forewarn"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "COTTONDOWN",
+                "name": "Cotton Down"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 135,
+            "attack": 63,
+            "defense": 93,
+            "speed": 73,
+            "special_attack": 123,
+            "special_defense": 93,
+            "total": 580
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 74,
+      "id": "MESOPENDRA",
+      "name": "Mesopendra",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Mesopendra",
+          "types": [
+            {
+              "id": "BUG",
+              "name": "Bug"
+            },
+            {
+              "id": "POISON",
+              "name": "Poison"
+            }
+          ],
+          "species_name": "Medius Pokémon",
+          "category": "Medius",
+          "pokedex_entry": "Its long body is in constant motion, said to measure the passage of time itself. Its toxins mirror life's challenges: potent but short-lived.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "FOREWARN",
+                "name": "Forewarn"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "LONGREACH",
+                "name": "Long Reach"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 123,
+            "attack": 93,
+            "defense": 135,
+            "speed": 63,
+            "special_attack": 73,
+            "special_defense": 93,
+            "total": 580
+          }
+        }
+      ]
+    },
+    {
+      "pokedex_number": 75,
+      "id": "TERMANTOS",
+      "name": "Termantos",
+      "forms": [
+        {
+          "form_number": 0,
+          "form_name": null,
+          "display_name": "Termantos",
+          "types": [
+            {
+              "id": "BUG",
+              "name": "Bug"
+            },
+            {
+              "id": "GHOST",
+              "name": "Ghost"
+            }
+          ],
+          "species_name": "Terminus Pokémon",
+          "category": "Terminus",
+          "pokedex_entry": "Its claws sever the very threads that bind souls to the mortal realm. Though feared, it only wishes to aid souls who have reached their final hour.",
+          "evolves_into": [],
+          "abilities": {
+            "standard": [
+              {
+                "id": "FOREWARN",
+                "name": "Forewarn"
+              }
+            ],
+            "hidden": [
+              {
+                "id": "PERISHBODY",
+                "name": "Perish Body"
+              }
+            ]
+          },
+          "base_stats": {
+            "hp": 93,
+            "attack": 135,
+            "defense": 73,
+            "speed": 123,
+            "special_attack": 63,
+            "special_defense": 93,
+            "total": 580
+          }
+        }
+      ]
+    }
+  ]
+}
