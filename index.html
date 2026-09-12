@@ -129,11 +129,18 @@
 
         .brand {
             display: flex;
-            align-items: baseline;
-            gap: 9px;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
             white-space: nowrap;
         }
-        .brand-title { font-size: 19px; font-weight: 850; letter-spacing: -0.025em; }
+        .brand-logo {
+            display: block;
+            width: auto;
+            height: 38px;
+            max-width: 190px;
+            object-fit: contain;
+        }
         .brand-subtitle { color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
 
         .main-nav { display: flex; align-items: stretch; align-self: stretch; justify-content: center; }
@@ -546,7 +553,7 @@
     <header class="site-header">
         <div class="topbar">
             <div class="brand" aria-label="Verdigris Dex home">
-                <span class="brand-title">Verdigris Dex</span>
+                <img class="brand-logo" src="logo.png" alt="Team Verdigris">
                 <span class="brand-subtitle">Pokédex & Asset Library</span>
             </div>
 
