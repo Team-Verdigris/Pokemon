@@ -1491,7 +1491,6 @@
                 dex?.pokedex_number,
                 dex?.species_name,
                 dex?.category,
-                dex?.pokedex_entry,
                 ...(dex?.types || []).flatMap(type => [type.id, type.name]),
                 ...abilities.flatMap(ability => [ability.id, ability.name]),
                 ...(dex?.evolves_into || []).flatMap(evo => [evo.id, evo.name]),
