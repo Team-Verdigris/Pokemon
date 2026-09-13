@@ -278,6 +278,31 @@
             background: var(--panel);
             color: var(--muted);
         }
+        .loading-status {
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-align: center;
+        }
+        .loading-spinner {
+            width: 28px;
+            height: 28px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: verdigris-spin .75s linear infinite;
+        }
+        .loading-pulse {
+            animation: verdigris-pulse 1.4s ease-in-out infinite;
+        }
+        @keyframes verdigris-spin { to { transform: rotate(360deg); } }
+        @keyframes verdigris-pulse { 0%,100% { opacity:.55; } 50% { opacity:1; } }
+        @media (prefers-reduced-motion: reduce) {
+            .loading-spinner, .loading-pulse { animation: none; }
+        }
 
         /* Cards */
         .pokemon-grid,
@@ -413,15 +438,19 @@
             right: 0;
             z-index: 210;
             width: min(420px, 92vw);
-            height: 100vh;
-            overflow: auto;
+            height: 100dvh;
+            max-height: 100dvh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
             border-left: 1px solid var(--border);
             background: var(--panel);
             box-shadow: -16px 0 45px var(--shadow);
         }
         .panel-header { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 17px 18px; border-bottom: 1px solid var(--border); background: var(--panel); }
         .panel-header h2 { margin: 0; font-size: 18px; }
-        .panel-body { padding: 18px; }
+        .panel-body { padding: 18px 18px calc(28px + env(safe-area-inset-bottom)); }
         .panel-section { margin-bottom: 22px; }
         .panel-section:last-child { margin-bottom: 0; }
         .panel-section h3 { margin: 0 0 10px; color: var(--accent-strong); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
@@ -474,12 +503,20 @@
         .evolution-node.current { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); font-weight: 800; }
         .evolution-arrow { color: var(--muted); }
 
-        .stats-grid { display: grid; gap: 7px; }
-        .stat-row { display: grid; grid-template-columns: 72px 38px minmax(0,1fr); align-items: center; gap: 8px; font-size: 11px; }
-        .stat-label { color: var(--muted); font-weight: 750; }
-        .stat-value { text-align: right; font-variant-numeric: tabular-nums; font-weight: 800; }
-        .stat-track { height: 8px; overflow: hidden; border-radius: 999px; background: var(--panel-3); }
-        .stat-fill { height: 100%; border-radius: inherit; background: var(--accent); }
+        .hero-stats { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+        .hero-stats-title { margin: 0 0 9px; font-size: 11px; font-weight: 850; letter-spacing: .055em; text-transform: uppercase; color: var(--muted); }
+        .stats-grid { display: grid; gap: 6px; }
+        .stat-row { display: grid; grid-template-columns: 76px 38px minmax(0,1fr); align-items: center; gap: 8px; font-size: 11px; }
+        .stat-label { color: var(--text); font-weight: 800; }
+        .stat-value { text-align: right; font-variant-numeric: tabular-nums; font-weight: 850; }
+        .stat-track { height: 11px; overflow: hidden; border-radius: 4px; background: var(--stat-base, var(--panel-3)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--stat-fill, var(--accent)) 46%, transparent); }
+        .stat-fill { height: 100%; border-radius: 3px 0 0 3px; background: var(--stat-fill, var(--accent)); }
+        .stat-row[data-stat="hp"] { --stat-base: #fe5a59; --stat-fill: #fe0000; }
+        .stat-row[data-stat="attack"] { --stat-base: #f4ab78; --stat-fill: #ef8030; }
+        .stat-row[data-stat="defense"] { --stat-base: #fae078; --stat-fill: #f8d030; }
+        .stat-row[data-stat="special_attack"] { --stat-base: #9cb7f5; --stat-fill: #688ff0; }
+        .stat-row[data-stat="special_defense"] { --stat-base: #a7db8d; --stat-fill: #78c84f; }
+        .stat-row[data-stat="speed"] { --stat-base: #fa92b3; --stat-fill: #f85788; }
         .bst-row { display: flex; justify-content: space-between; margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--border); font-size: 12px; font-weight: 850; }
 
         .modal-asset-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
@@ -564,13 +601,13 @@
         }
         .topbar {
             width: min(calc(100% - 28px), var(--content-max)); min-height: var(--header-h); margin: 0 auto;
-            display: grid; grid-template-columns: auto auto minmax(260px, 1fr) auto; align-items: center; gap: 16px;
+            display: grid; grid-template-columns: max-content max-content minmax(220px, 1fr) max-content; align-items: center; gap: 16px;
             padding: 8px 0;
         }
-        .brand { display:flex; align-items:center; gap:9px; min-width:0; padding:0; border:0; background:transparent; color:inherit; cursor:pointer; text-align:left; }
-        .brand-logo { display:block; width:auto; height:38px; max-width:170px; object-fit:contain; }
-        .brand-subtitle { max-width:115px; line-height:1.05; }
-        .main-nav { display:flex; align-items:center; gap:2px; padding:3px; border:1px solid var(--border); border-radius:10px; background:var(--panel); }
+        .brand { display:flex; align-items:center; gap:10px; min-width:max-content; padding:0; border:0; background:transparent; color:inherit; cursor:pointer; text-align:left; }
+        .brand-logo { display:block; width:auto; height:42px; max-width:220px; object-fit:contain; flex:0 0 auto; }
+        .brand-subtitle { max-width:none; white-space:nowrap; line-height:1.05; }
+        .main-nav { display:flex; align-items:center; gap:2px; min-width:max-content; padding:3px; border:1px solid var(--border); border-radius:10px; background:var(--panel); }
         .nav-button { min-height:34px; padding:6px 10px; border:0; border-radius:7px; background:transparent; color:var(--muted); font-size:12px; font-weight:750; cursor:pointer; transition:background var(--ease), color var(--ease); }
         .nav-button:hover { color:var(--text); background:var(--panel-2); }
         .nav-button.active { color:var(--text); background:var(--panel-3); box-shadow:inset 0 0 0 1px var(--border); }
@@ -643,12 +680,31 @@
         .subsection-heading h2 { margin:0; font-size:13px; }
         .subsection-heading span { color:var(--muted); font-size:10px; }
 
-        .modal-backdrop { align-items:stretch; justify-content:flex-end; padding:0; background:rgba(0,0,0,.54); }
-        .modal-window { width:min(1080px,94vw); max-height:100vh; height:100vh; border-width:0 0 0 1px; border-radius:0; box-shadow:-16px 0 48px rgba(0,0,0,.34); }
-        .modal-header { min-height:58px; padding:10px 16px; }
-        .modal-body { padding:0 18px 24px; }
+        .modal-backdrop { align-items:stretch; justify-content:flex-end; padding:0; background:rgba(0,0,0,.54); overflow:hidden; }
+        .modal-window {
+            width:min(1080px,94vw);
+            height:100dvh;
+            max-height:100dvh;
+            display:flex;
+            flex-direction:column;
+            overflow:hidden;
+            border-width:0 0 0 1px;
+            border-radius:0;
+            box-shadow:-16px 0 48px rgba(0,0,0,.34);
+        }
+        .modal-header { position:relative; top:auto; flex:0 0 auto; min-height:58px; padding:10px 16px; }
+        .modal-body {
+            flex:1 1 auto;
+            min-height:0;
+            overflow-y:auto;
+            overflow-x:hidden;
+            overscroll-behavior:contain;
+            -webkit-overflow-scrolling:touch;
+            padding:0 18px calc(32px + env(safe-area-inset-bottom));
+            scroll-padding-top:56px;
+        }
         .form-tabs { margin:12px 0 0; }
-        .detail-tabs { position:sticky; top:58px; z-index:7; display:flex; gap:2px; margin:10px -18px 16px; padding:7px 18px; overflow-x:auto; border-bottom:1px solid var(--border); background:color-mix(in srgb,var(--panel) 96%,transparent); backdrop-filter:blur(10px); }
+        .detail-tabs { position:sticky; top:0; z-index:7; display:flex; gap:2px; margin:10px -18px 16px; padding:7px 18px; overflow-x:auto; border-bottom:1px solid var(--border); background:color-mix(in srgb,var(--panel) 96%,transparent); backdrop-filter:blur(10px); }
         .detail-tab { min-width:max-content; padding:7px 10px; border:0; border-radius:7px; background:transparent; color:var(--muted); cursor:pointer; font-size:11px; font-weight:800; }
         .detail-tab:hover { color:var(--text); background:var(--panel-2); }
         .detail-tab.active { color:var(--accent-strong); background:var(--accent-soft); }
@@ -677,16 +733,18 @@
         html[data-density="compact"] .card-chip-row { margin-top:5px; }
 
         @media (hover:none) { .card-hover-details { display:none; } }
-        @media (max-width: 1080px) {
-            .topbar { grid-template-columns:auto minmax(180px,1fr) auto; gap:10px; }
-            .main-nav { order:4; grid-column:1 / -1; justify-self:center; }
+        @media (max-width: 1240px) {
             .brand-subtitle { display:none; }
+        }
+        @media (max-width: 980px) {
+            .topbar { grid-template-columns:max-content minmax(180px,1fr) max-content; gap:10px; }
+            .main-nav { order:4; grid-column:1 / -1; justify-self:center; }
         }
         @media (max-width: 720px) {
             body { padding-bottom:64px; }
             .site-header { position:sticky; }
             .topbar { width:calc(100% - 18px); min-height:54px; grid-template-columns:auto minmax(0,1fr) auto; padding:7px 0; }
-            .brand-logo { height:33px; max-width:120px; }
+            .brand-logo { height:36px; max-width:150px; }
             .main-nav { display:none; }
             .searchbar { grid-column:2; }
             .search-wrap input { min-height:37px; font-size:12px; padding-right:34px; }
@@ -698,14 +756,24 @@
             .mobile-nav-button { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; border-radius:8px; }
             .mobile-nav-button span { font-size:15px; }
             .mobile-nav-button small { font-size:9px; }
-            .modal-window { width:100vw; border:0; }
-            .modal-header { min-height:54px; }
-            .detail-tabs { top:54px; }
+            .modal-window { width:100vw; height:100dvh; max-height:100dvh; border:0; }
+            .modal-header { min-height:54px; padding-top:max(10px, env(safe-area-inset-top)); }
+            .modal-body { padding-left:12px; padding-right:12px; padding-bottom:calc(30px + env(safe-area-inset-bottom)); }
+            .detail-tabs { top:0; margin-left:-12px; margin-right:-12px; padding-left:12px; padding-right:12px; }
             .modal-actions .plain-button { display:inline-flex; }
             .modal-actions #modalCopyLink { display:none; }
-            .evo-branch { align-items:flex-start; }
-            .evo-card { width:132px; grid-template-columns:38px minmax(0,1fr); }
+            .evolution-tree { overflow:visible; padding-bottom:4px; }
+            .evo-branch { min-width:0; width:100%; flex-direction:column; align-items:stretch; gap:6px; }
+            .evo-children { width:100%; gap:8px; padding-left:12px; border-left:1px solid var(--border); }
+            .evo-arrow { align-self:center; transform:rotate(90deg); line-height:1; }
+            .evo-card { width:100%; grid-template-columns:38px minmax(0,1fr); }
             .evo-thumb { width:38px; height:38px; }
+            .view-heading { align-items:stretch; flex-direction:column; gap:9px; }
+            .view-controls { width:100%; flex-wrap:wrap; }
+            .view-controls > * { max-width:100%; }
+            .gallery-grid, .pokemon-grid, .asset-grid { grid-template-columns:repeat(auto-fill,minmax(min(155px,100%),1fr)); }
+            .gallery-detail-image { min-height:0; }
+            .gallery-detail-image img { max-height:none; width:auto; height:auto; }
             .stat-filter-builder { grid-template-columns:1fr 54px 68px; }
             .stat-filter-builder .plain-button { grid-column:1 / -1; }
         }
@@ -949,7 +1017,7 @@
     const GALLERY_ROOT = 'Gallery';
     const ARCHIVE_ROOT = 'Archived';
     const BASE_TITLE = 'Verdigris Dex — Pokémon & Asset Library';
-    const SITE_VERSION = '2.1';
+    const SITE_VERSION = '2.2';
 
     const ASSET_CONFIG = [
         { key: 'artwork', folder: 'Artworks', label: 'Artwork', required: true, utility: false },
@@ -2392,6 +2460,7 @@
         state.modal = { type: 'pokemon', id: record.id, tab };
         renderPokemonModal(record);
         elements.detailModal.classList.remove('hidden');
+        elements.modalBody.scrollTop = 0;
         document.body.style.overflow = 'hidden';
         if (updateUrl) syncRoute({ push: true });
         updateDocumentMetadata(record,null);
@@ -2414,6 +2483,7 @@
         const types=document.createElement('div');types.className='detail-types';(record.dex?.types||[]).forEach(type=>types.appendChild(makeTypeChip(type)));
         const entry=document.createElement('p');entry.className='dex-entry';entry.textContent=record.dex?.pokedex_entry&&record.dex.pokedex_entry!=='???'?record.dex.pokedex_entry:'Pokédex entry not available.';
         copy.append(dexNo,name,species,types,entry);
+        if(record.dex?.base_stats)copy.appendChild(buildStatsSection(record.dex.base_stats,{embedded:true}));
         if(record.dex?.abilities){const abilities=document.createElement('div');abilities.className='ability-row';(record.dex.abilities.standard||[]).forEach(a=>abilities.appendChild(makeAbilityChip(a,false)));(record.dex.abilities.hidden||[]).forEach(a=>abilities.appendChild(makeAbilityChip(a,true)));copy.appendChild(abilities);}
         hero.append(imageWrap,copy);return hero;
     }
@@ -2427,16 +2497,15 @@
         elements.modalTitle.textContent=getDisplayName(record);
         elements.modalBody.replaceChildren();
 
-        if(group&&group.forms.length>1){const tabs=document.createElement('div');tabs.className='form-tabs';group.forms.forEach(form=>{const button=document.createElement('button');button.type='button';button.className=`form-tab${form.id===record.id?' active':''}`;button.textContent=form.dex?.form_name||(form===group.primary?'Base':getVariantLabel(form)||form.id);button.addEventListener('click',()=>{state.modal={type:'pokemon',id:form.id,tab:activeTab};renderPokemonModal(form);syncRoute({replace:true});updateDocumentMetadata(form,null);});tabs.appendChild(button);});elements.modalBody.appendChild(tabs);}
+        if(group&&group.forms.length>1){const tabs=document.createElement('div');tabs.className='form-tabs';group.forms.forEach(form=>{const button=document.createElement('button');button.type='button';button.className=`form-tab${form.id===record.id?' active':''}`;button.textContent=form.dex?.form_name||(form===group.primary?'Base':getVariantLabel(form)||form.id);button.addEventListener('click',()=>{state.modal={type:'pokemon',id:form.id,tab:activeTab};renderPokemonModal(form);elements.modalBody.scrollTop=0;syncRoute({replace:true});updateDocumentMetadata(form,null);});tabs.appendChild(button);});elements.modalBody.appendChild(tabs);}
 
         const nav=document.createElement('div');nav.className='detail-tabs';
         const tabDefs=[['overview','Overview',''],['assets','Assets',getRecordProgress(record).complete+'/'+getRecordProgress(record).total],['gallery','Gallery',gallery.length||''],['archive','Archive',archives.length||'']];
-        tabDefs.forEach(([key,label,count])=>{const button=document.createElement('button');button.type='button';button.className=`detail-tab${activeTab===key?' active':''}`;button.append(document.createTextNode(label));if(count){const badge=document.createElement('span');badge.className='detail-tab-count';badge.textContent=count;button.appendChild(badge);}button.addEventListener('click',()=>{state.modal.tab=key;renderPokemonModal(record);});nav.appendChild(button);});elements.modalBody.appendChild(nav);
+        tabDefs.forEach(([key,label,count])=>{const button=document.createElement('button');button.type='button';button.className=`detail-tab${activeTab===key?' active':''}`;button.append(document.createTextNode(label));if(count){const badge=document.createElement('span');badge.className='detail-tab-count';badge.textContent=count;button.appendChild(badge);}button.addEventListener('click',()=>{state.modal.tab=key;renderPokemonModal(record);elements.modalBody.scrollTop=0;});nav.appendChild(button);});elements.modalBody.appendChild(nav);
 
         const content=document.createElement('div');content.className='detail-tab-content';
         if(activeTab==='overview'){
             content.appendChild(buildPokemonHero(record));
-            if(record.dex?.base_stats)content.appendChild(buildStatsSection(record.dex.base_stats));
             const evolution=buildEvolutionFamilySection(record);if(evolution)content.appendChild(evolution);
         }else if(activeTab==='assets')content.appendChild(buildAssetsSection(record));
         else if(activeTab==='gallery'){
@@ -2449,12 +2518,13 @@
         elements.modalBody.appendChild(content);
     }
 
-    function buildStatsSection(stats) {
-        const section=document.createElement('section');section.className='detail-section';
-        const header=document.createElement('div');header.className='section-header';const title=document.createElement('h3');title.className='section-title';title.textContent='Base Stats';header.appendChild(title);
+    function buildStatsSection(stats,{embedded=false}={}) {
+        const section=document.createElement(embedded?'div':'section');section.className=embedded?'hero-stats':'detail-section';
+        if(embedded){const title=document.createElement('h4');title.className='hero-stats-title';title.textContent='Base Stats';section.appendChild(title);}
+        else{const header=document.createElement('div');header.className='section-header';const title=document.createElement('h3');title.className='section-title';title.textContent='Base Stats';header.appendChild(title);section.appendChild(header);}
         const grid=document.createElement('div');grid.className='stats-grid';
-        STAT_CONFIG.filter(stat=>stat.key!=='total').forEach(stat=>{const value=Number(stats[stat.key])||0;const row=document.createElement('div');row.className='stat-row';const label=document.createElement('span');label.className='stat-label';label.textContent=stat.label;const number=document.createElement('span');number.className='stat-value';number.textContent=value;const track=document.createElement('div');track.className='stat-track';const fill=document.createElement('div');fill.className='stat-fill';fill.style.width=`${Math.min(100,(value/150)*100)}%`;track.appendChild(fill);row.append(label,number,track);grid.appendChild(row);});
-        const bst=document.createElement('div');bst.className='bst-row';bst.innerHTML=`<span>Base Stat Total</span><span>${Number(stats.total)||0}</span>`;section.append(header,grid,bst);return section;
+        STAT_CONFIG.filter(stat=>stat.key!=='total').forEach(stat=>{const value=Number(stats[stat.key])||0;const row=document.createElement('div');row.className='stat-row';row.dataset.stat=stat.key;const label=document.createElement('span');label.className='stat-label';label.textContent=stat.label;const number=document.createElement('span');number.className='stat-value';number.textContent=value;const track=document.createElement('div');track.className='stat-track';track.setAttribute('aria-label',`${stat.label} ${value}`);const fill=document.createElement('div');fill.className='stat-fill';fill.style.width=`${Math.min(100,(value/150)*100)}%`;track.appendChild(fill);row.append(label,number,track);grid.appendChild(row);});
+        const bst=document.createElement('div');bst.className='bst-row';bst.innerHTML=`<span>Base Stat Total</span><span>${Number(stats.total)||0}</span>`;section.append(grid,bst);return section;
     }
 
     function getEvolutionFamily(speciesId) {
@@ -2698,7 +2768,7 @@
     }
 
     async function loadAllData() {
-        elements.content.innerHTML='<div class="status">Loading repository, Pokédex snapshot, and Gallery…</div>';
+        elements.content.innerHTML='<div class="status loading-status" role="status" aria-live="polite"><span class="loading-spinner" aria-hidden="true"></span><strong class="loading-pulse">Loading Verdigris Dex…</strong><span>Repository, Pokédex snapshot, and Gallery</span></div>';
         try {
             state.tree=await fetchRepositoryTree();
             buildAssetCollections(state.tree);
