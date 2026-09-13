@@ -716,7 +716,7 @@
     <header class="site-header">
         <div class="topbar">
             <button class="brand" type="button" aria-label="Verdigris Dex home" data-view="pokemon">
-                <img class="brand-logo" src="https://raw.githubusercontent.com/Team-Verdigris/Pokemon/main/logo.png" alt="Team Verdigris" referrerpolicy="no-referrer">
+                <img class="brand-logo" src="./logo.png" alt="">
                 <span class="brand-subtitle">Pokédex & Asset Library</span>
             </button>
 
@@ -949,6 +949,7 @@
     const GALLERY_ROOT = 'Gallery';
     const ARCHIVE_ROOT = 'Archived';
     const BASE_TITLE = 'Verdigris Dex — Pokémon & Asset Library';
+    const SITE_VERSION = '2.1';
 
     const ASSET_CONFIG = [
         { key: 'artwork', folder: 'Artworks', label: 'Artwork', required: true, utility: false },
@@ -1942,6 +1943,17 @@
         elements.content.replaceChildren(wrapper);
     }
 
+    function formatRefreshDate(value) {
+        if (!value) return '';
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return '';
+        return date.toLocaleDateString(undefined, {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+    }
+
     function makeViewHeading(titleText, metaText, controls = null) {
         const heading = document.createElement('div');
         heading.className = 'view-heading';
@@ -1951,7 +1963,11 @@
         title.textContent = titleText;
         const meta = document.createElement('div');
         meta.className = 'view-meta';
-        meta.textContent = metaText;
+        const refreshDate = formatRefreshDate(state.snapshotGeneratedAt);
+        const siteMeta = refreshDate
+            ? `Refreshed ${refreshDate} · v${SITE_VERSION}`
+            : `v${SITE_VERSION}`;
+        meta.textContent = [metaText, siteMeta].filter(Boolean).join(' · ');
         left.append(title,meta);
         heading.appendChild(left);
         if (controls) heading.appendChild(controls);
