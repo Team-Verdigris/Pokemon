@@ -503,20 +503,12 @@
         .evolution-node.current { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); font-weight: 800; }
         .evolution-arrow { color: var(--muted); }
 
-        .hero-stats { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
-        .hero-stats-title { margin: 0 0 9px; font-size: 11px; font-weight: 850; letter-spacing: .055em; text-transform: uppercase; color: var(--muted); }
-        .stats-grid { display: grid; gap: 6px; }
-        .stat-row { display: grid; grid-template-columns: 76px 38px minmax(0,1fr); align-items: center; gap: 8px; font-size: 11px; }
-        .stat-label { color: var(--text); font-weight: 800; }
-        .stat-value { text-align: right; font-variant-numeric: tabular-nums; font-weight: 850; }
-        .stat-track { height: 11px; overflow: hidden; border-radius: 4px; background: var(--stat-base, var(--panel-3)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--stat-fill, var(--accent)) 46%, transparent); }
-        .stat-fill { height: 100%; border-radius: 3px 0 0 3px; background: var(--stat-fill, var(--accent)); }
-        .stat-row[data-stat="hp"] { --stat-base: #fe5a59; --stat-fill: #fe0000; }
-        .stat-row[data-stat="attack"] { --stat-base: #f4ab78; --stat-fill: #ef8030; }
-        .stat-row[data-stat="defense"] { --stat-base: #fae078; --stat-fill: #f8d030; }
-        .stat-row[data-stat="special_attack"] { --stat-base: #9cb7f5; --stat-fill: #688ff0; }
-        .stat-row[data-stat="special_defense"] { --stat-base: #a7db8d; --stat-fill: #78c84f; }
-        .stat-row[data-stat="speed"] { --stat-base: #fa92b3; --stat-fill: #f85788; }
+        .stats-grid { display: grid; gap: 7px; }
+        .stat-row { display: grid; grid-template-columns: 72px 38px minmax(0,1fr); align-items: center; gap: 8px; font-size: 11px; }
+        .stat-label { color: var(--muted); font-weight: 750; }
+        .stat-value { text-align: right; font-variant-numeric: tabular-nums; font-weight: 800; }
+        .stat-track { height: 8px; overflow: hidden; border-radius: 999px; background: var(--panel-3); }
+        .stat-fill { height: 100%; border-radius: inherit; background: var(--accent); }
         .bst-row { display: flex; justify-content: space-between; margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--border); font-size: 12px; font-weight: 850; }
 
         .modal-asset-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
@@ -1017,7 +1009,7 @@
     const GALLERY_ROOT = 'Gallery';
     const ARCHIVE_ROOT = 'Archived';
     const BASE_TITLE = 'Verdigris Dex — Pokémon & Asset Library';
-    const SITE_VERSION = '2.2';
+    const SITE_VERSION = '2.1';
 
     const ASSET_CONFIG = [
         { key: 'artwork', folder: 'Artworks', label: 'Artwork', required: true, utility: false },
@@ -2483,7 +2475,6 @@
         const types=document.createElement('div');types.className='detail-types';(record.dex?.types||[]).forEach(type=>types.appendChild(makeTypeChip(type)));
         const entry=document.createElement('p');entry.className='dex-entry';entry.textContent=record.dex?.pokedex_entry&&record.dex.pokedex_entry!=='???'?record.dex.pokedex_entry:'Pokédex entry not available.';
         copy.append(dexNo,name,species,types,entry);
-        if(record.dex?.base_stats)copy.appendChild(buildStatsSection(record.dex.base_stats,{embedded:true}));
         if(record.dex?.abilities){const abilities=document.createElement('div');abilities.className='ability-row';(record.dex.abilities.standard||[]).forEach(a=>abilities.appendChild(makeAbilityChip(a,false)));(record.dex.abilities.hidden||[]).forEach(a=>abilities.appendChild(makeAbilityChip(a,true)));copy.appendChild(abilities);}
         hero.append(imageWrap,copy);return hero;
     }
@@ -2506,6 +2497,7 @@
         const content=document.createElement('div');content.className='detail-tab-content';
         if(activeTab==='overview'){
             content.appendChild(buildPokemonHero(record));
+            if(record.dex?.base_stats)content.appendChild(buildStatsSection(record.dex.base_stats));
             const evolution=buildEvolutionFamilySection(record);if(evolution)content.appendChild(evolution);
         }else if(activeTab==='assets')content.appendChild(buildAssetsSection(record));
         else if(activeTab==='gallery'){
@@ -2518,13 +2510,12 @@
         elements.modalBody.appendChild(content);
     }
 
-    function buildStatsSection(stats,{embedded=false}={}) {
-        const section=document.createElement(embedded?'div':'section');section.className=embedded?'hero-stats':'detail-section';
-        if(embedded){const title=document.createElement('h4');title.className='hero-stats-title';title.textContent='Base Stats';section.appendChild(title);}
-        else{const header=document.createElement('div');header.className='section-header';const title=document.createElement('h3');title.className='section-title';title.textContent='Base Stats';header.appendChild(title);section.appendChild(header);}
+    function buildStatsSection(stats) {
+        const section=document.createElement('section');section.className='detail-section';
+        const header=document.createElement('div');header.className='section-header';const title=document.createElement('h3');title.className='section-title';title.textContent='Base Stats';header.appendChild(title);
         const grid=document.createElement('div');grid.className='stats-grid';
-        STAT_CONFIG.filter(stat=>stat.key!=='total').forEach(stat=>{const value=Number(stats[stat.key])||0;const row=document.createElement('div');row.className='stat-row';row.dataset.stat=stat.key;const label=document.createElement('span');label.className='stat-label';label.textContent=stat.label;const number=document.createElement('span');number.className='stat-value';number.textContent=value;const track=document.createElement('div');track.className='stat-track';track.setAttribute('aria-label',`${stat.label} ${value}`);const fill=document.createElement('div');fill.className='stat-fill';fill.style.width=`${Math.min(100,(value/150)*100)}%`;track.appendChild(fill);row.append(label,number,track);grid.appendChild(row);});
-        const bst=document.createElement('div');bst.className='bst-row';bst.innerHTML=`<span>Base Stat Total</span><span>${Number(stats.total)||0}</span>`;section.append(grid,bst);return section;
+        STAT_CONFIG.filter(stat=>stat.key!=='total').forEach(stat=>{const value=Number(stats[stat.key])||0;const row=document.createElement('div');row.className='stat-row';const label=document.createElement('span');label.className='stat-label';label.textContent=stat.label;const number=document.createElement('span');number.className='stat-value';number.textContent=value;const track=document.createElement('div');track.className='stat-track';const fill=document.createElement('div');fill.className='stat-fill';fill.style.width=`${Math.min(100,(value/150)*100)}%`;track.appendChild(fill);row.append(label,number,track);grid.appendChild(row);});
+        const bst=document.createElement('div');bst.className='bst-row';bst.innerHTML=`<span>Base Stat Total</span><span>${Number(stats.total)||0}</span>`;section.append(header,grid,bst);return section;
     }
 
     function getEvolutionFamily(speciesId) {
