@@ -278,6 +278,31 @@
             background: var(--panel);
             color: var(--muted);
         }
+        .loading-status {
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-align: center;
+        }
+        .loading-spinner {
+            width: 28px;
+            height: 28px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: verdigris-spin .75s linear infinite;
+        }
+        .loading-pulse {
+            animation: verdigris-pulse 1.4s ease-in-out infinite;
+        }
+        @keyframes verdigris-spin { to { transform: rotate(360deg); } }
+        @keyframes verdigris-pulse { 0%,100% { opacity:.55; } 50% { opacity:1; } }
+        @media (prefers-reduced-motion: reduce) {
+            .loading-spinner, .loading-pulse { animation: none; }
+        }
 
         /* Cards */
         .pokemon-grid,
@@ -413,15 +438,19 @@
             right: 0;
             z-index: 210;
             width: min(420px, 92vw);
-            height: 100vh;
-            overflow: auto;
+            height: 100dvh;
+            max-height: 100dvh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
             border-left: 1px solid var(--border);
             background: var(--panel);
             box-shadow: -16px 0 45px var(--shadow);
         }
         .panel-header { position: sticky; top: 0; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 17px 18px; border-bottom: 1px solid var(--border); background: var(--panel); }
         .panel-header h2 { margin: 0; font-size: 18px; }
-        .panel-body { padding: 18px; }
+        .panel-body { padding: 18px 18px calc(28px + env(safe-area-inset-bottom)); }
         .panel-section { margin-bottom: 22px; }
         .panel-section:last-child { margin-bottom: 0; }
         .panel-section h3 { margin: 0 0 10px; color: var(--accent-strong); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
@@ -474,12 +503,20 @@
         .evolution-node.current { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-strong); font-weight: 800; }
         .evolution-arrow { color: var(--muted); }
 
-        .stats-grid { display: grid; gap: 7px; }
-        .stat-row { display: grid; grid-template-columns: 72px 38px minmax(0,1fr); align-items: center; gap: 8px; font-size: 11px; }
-        .stat-label { color: var(--muted); font-weight: 750; }
-        .stat-value { text-align: right; font-variant-numeric: tabular-nums; font-weight: 800; }
-        .stat-track { height: 8px; overflow: hidden; border-radius: 999px; background: var(--panel-3); }
-        .stat-fill { height: 100%; border-radius: inherit; background: var(--accent); }
+        .hero-stats { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
+        .hero-stats-title { margin: 0 0 9px; font-size: 11px; font-weight: 850; letter-spacing: .055em; text-transform: uppercase; color: var(--muted); }
+        .stats-grid { display: grid; gap: 6px; }
+        .stat-row { display: grid; grid-template-columns: 76px 38px minmax(0,1fr); align-items: center; gap: 8px; font-size: 11px; }
+        .stat-label { color: var(--text); font-weight: 800; }
+        .stat-value { text-align: right; font-variant-numeric: tabular-nums; font-weight: 850; }
+        .stat-track { height: 11px; overflow: hidden; border-radius: 4px; background: var(--stat-base, var(--panel-3)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--stat-fill, var(--accent)) 62%, transparent); }
+        .stat-fill { height: 100%; border-radius: 3px 0 0 3px; background: var(--stat-fill, var(--accent)); box-shadow: 1px 0 0 color-mix(in srgb, #000 22%, transparent); }
+        .stat-row[data-stat="hp"] { --stat-base: #ffc2c2; --stat-fill: #e60000; }
+        .stat-row[data-stat="attack"] { --stat-base: #ffd4b3; --stat-fill: #df711e; }
+        .stat-row[data-stat="defense"] { --stat-base: #fff0a6; --stat-fill: #d7aa00; }
+        .stat-row[data-stat="special_attack"] { --stat-base: #c8d7ff; --stat-fill: #4f78e8; }
+        .stat-row[data-stat="special_defense"] { --stat-base: #c9ecb8; --stat-fill: #55ad2f; }
+        .stat-row[data-stat="speed"] { --stat-base: #ffc5d7; --stat-fill: #e43f76; }
         .bst-row { display: flex; justify-content: space-between; margin-top: 9px; padding-top: 9px; border-top: 1px solid var(--border); font-size: 12px; font-weight: 850; }
 
         .modal-asset-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
@@ -564,13 +601,13 @@
         }
         .topbar {
             width: min(calc(100% - 28px), var(--content-max)); min-height: var(--header-h); margin: 0 auto;
-            display: grid; grid-template-columns: auto auto minmax(260px, 1fr) auto; align-items: center; gap: 16px;
+            display: grid; grid-template-columns: max-content max-content minmax(220px, 1fr) max-content; align-items: center; gap: 16px;
             padding: 8px 0;
         }
-        .brand { display:flex; align-items:center; gap:9px; min-width:0; padding:0; border:0; background:transparent; color:inherit; cursor:pointer; text-align:left; }
-        .brand-logo { display:block; width:auto; height:38px; max-width:170px; object-fit:contain; }
-        .brand-subtitle { max-width:115px; line-height:1.05; }
-        .main-nav { display:flex; align-items:center; gap:2px; padding:3px; border:1px solid var(--border); border-radius:10px; background:var(--panel); }
+        .brand { display:flex; align-items:center; gap:10px; min-width:max-content; padding:0; border:0; background:transparent; color:inherit; cursor:pointer; text-align:left; }
+        .brand-logo { display:block; width:auto; height:42px; max-width:220px; object-fit:contain; flex:0 0 auto; }
+        .brand-subtitle { max-width:none; white-space:nowrap; line-height:1.05; }
+        .main-nav { display:flex; align-items:center; gap:2px; min-width:max-content; padding:3px; border:1px solid var(--border); border-radius:10px; background:var(--panel); }
         .nav-button { min-height:34px; padding:6px 10px; border:0; border-radius:7px; background:transparent; color:var(--muted); font-size:12px; font-weight:750; cursor:pointer; transition:background var(--ease), color var(--ease); }
         .nav-button:hover { color:var(--text); background:var(--panel-2); }
         .nav-button.active { color:var(--text); background:var(--panel-3); box-shadow:inset 0 0 0 1px var(--border); }
@@ -622,11 +659,16 @@
 
         .pokemon-card, .gallery-card, .asset-card { transition:transform var(--ease), border-color var(--ease), box-shadow var(--ease); }
         .pokemon-card { position:relative; overflow:hidden; }
-        .card-hover-details { position:absolute; inset:auto 8px 8px 8px; z-index:4; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 9px; border:1px solid var(--border-strong); border-radius:8px; background:color-mix(in srgb,var(--panel) 92%,transparent); backdrop-filter:blur(10px); opacity:0; transform:translateY(6px); pointer-events:none; transition:opacity var(--ease), transform var(--ease); }
+        .card-hover-details { position:absolute; inset:auto 8px 8px 8px; z-index:4; display:grid; gap:7px; padding:9px 10px; border:1px solid var(--border-strong); border-radius:9px; background:color-mix(in srgb,var(--panel) 95%,transparent); backdrop-filter:blur(12px); box-shadow:0 8px 22px rgba(0,0,0,.24); opacity:0; transform:translateY(6px); pointer-events:none; transition:opacity var(--ease), transform var(--ease); }
         .pokemon-card:hover .card-hover-details, .pokemon-card:focus-visible .card-hover-details { opacity:1; transform:none; }
-        .hover-stat { font-size:10px; color:var(--muted); }
-        .hover-stat strong { color:var(--text); }
-        .hover-counts { font-size:9px; color:var(--muted); text-align:right; }
+        .hover-summary-row { display:flex; align-items:baseline; justify-content:space-between; gap:10px; }
+        .hover-bst { font-size:11px; font-weight:900; color:var(--text); }
+        .hover-best { color:var(--muted); font-size:9px; text-align:right; }
+        .hover-stat-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:4px 8px; padding-top:6px; border-top:1px solid var(--border); }
+        .hover-stat-item { display:flex; justify-content:space-between; gap:5px; color:var(--muted); font-size:9px; }
+        .hover-stat-item strong { color:var(--text); font-variant-numeric:tabular-nums; }
+        .hover-abilities { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--muted); font-size:9px; }
+        .hover-abilities strong { color:var(--text); }
 
         .gallery-category-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:11px; margin:0 0 22px; }
         .gallery-category-card { display:grid; grid-template-columns:72px minmax(0,1fr); gap:11px; align-items:center; min-height:92px; padding:10px; border:1px solid var(--border); border-radius:11px; background:var(--panel); color:var(--text); cursor:pointer; text-align:left; transition:transform var(--ease),border-color var(--ease); }
@@ -643,12 +685,31 @@
         .subsection-heading h2 { margin:0; font-size:13px; }
         .subsection-heading span { color:var(--muted); font-size:10px; }
 
-        .modal-backdrop { align-items:stretch; justify-content:flex-end; padding:0; background:rgba(0,0,0,.54); }
-        .modal-window { width:min(1080px,94vw); max-height:100vh; height:100vh; border-width:0 0 0 1px; border-radius:0; box-shadow:-16px 0 48px rgba(0,0,0,.34); }
-        .modal-header { min-height:58px; padding:10px 16px; }
-        .modal-body { padding:0 18px 24px; }
+        .modal-backdrop { align-items:stretch; justify-content:flex-end; padding:0; background:rgba(0,0,0,.54); overflow:hidden; }
+        .modal-window {
+            width:min(1080px,94vw);
+            height:100dvh;
+            max-height:100dvh;
+            display:flex;
+            flex-direction:column;
+            overflow:hidden;
+            border-width:0 0 0 1px;
+            border-radius:0;
+            box-shadow:-16px 0 48px rgba(0,0,0,.34);
+        }
+        .modal-header { position:relative; top:auto; flex:0 0 auto; min-height:58px; padding:10px 16px; }
+        .modal-body {
+            flex:1 1 auto;
+            min-height:0;
+            overflow-y:auto;
+            overflow-x:hidden;
+            overscroll-behavior:contain;
+            -webkit-overflow-scrolling:touch;
+            padding:0 18px calc(32px + env(safe-area-inset-bottom));
+            scroll-padding-top:56px;
+        }
         .form-tabs { margin:12px 0 0; }
-        .detail-tabs { position:sticky; top:58px; z-index:7; display:flex; gap:2px; margin:10px -18px 16px; padding:7px 18px; overflow-x:auto; border-bottom:1px solid var(--border); background:color-mix(in srgb,var(--panel) 96%,transparent); backdrop-filter:blur(10px); }
+        .detail-tabs { position:sticky; top:0; z-index:7; display:flex; gap:2px; margin:10px -18px 16px; padding:7px 18px; overflow-x:auto; border-bottom:1px solid var(--border); background:color-mix(in srgb,var(--panel) 96%,transparent); backdrop-filter:blur(10px); }
         .detail-tab { min-width:max-content; padding:7px 10px; border:0; border-radius:7px; background:transparent; color:var(--muted); cursor:pointer; font-size:11px; font-weight:800; }
         .detail-tab:hover { color:var(--text); background:var(--panel-2); }
         .detail-tab.active { color:var(--accent-strong); background:var(--accent-soft); }
@@ -670,23 +731,24 @@
         .evo-types { display:flex; gap:3px; margin-top:4px; }
         .evo-types .type-chip { padding:2px 4px; font-size:7px; pointer-events:none; }
 
-        html[data-density="compact"] .pokemon-grid { grid-template-columns:repeat(auto-fill,minmax(165px,1fr)); gap:8px; }
-        html[data-density="compact"] .pokemon-cover { aspect-ratio:1.15/1; }
-        html[data-density="compact"] .pokemon-card-body { padding:8px; }
-        html[data-density="compact"] .card-subtitle, html[data-density="compact"] .progress-text { display:none; }
-        html[data-density="compact"] .card-chip-row { margin-top:5px; }
 
+        .evolution-group { margin:0 0 24px; }
+        .evolution-group-heading { display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin:0 0 9px; padding-bottom:7px; border-bottom:1px solid var(--border); }
+        .evolution-group-heading h2 { margin:0; font-size:13px; }
+        .evolution-group-heading span { color:var(--muted); font-size:10px; }
         @media (hover:none) { .card-hover-details { display:none; } }
-        @media (max-width: 1080px) {
-            .topbar { grid-template-columns:auto minmax(180px,1fr) auto; gap:10px; }
-            .main-nav { order:4; grid-column:1 / -1; justify-self:center; }
+        @media (max-width: 1240px) {
             .brand-subtitle { display:none; }
+        }
+        @media (max-width: 980px) {
+            .topbar { grid-template-columns:max-content minmax(180px,1fr) max-content; gap:10px; }
+            .main-nav { order:4; grid-column:1 / -1; justify-self:center; }
         }
         @media (max-width: 720px) {
             body { padding-bottom:64px; }
             .site-header { position:sticky; }
             .topbar { width:calc(100% - 18px); min-height:54px; grid-template-columns:auto minmax(0,1fr) auto; padding:7px 0; }
-            .brand-logo { height:33px; max-width:120px; }
+            .brand-logo { height:36px; max-width:150px; }
             .main-nav { display:none; }
             .searchbar { grid-column:2; }
             .search-wrap input { min-height:37px; font-size:12px; padding-right:34px; }
@@ -698,14 +760,24 @@
             .mobile-nav-button { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; border-radius:8px; }
             .mobile-nav-button span { font-size:15px; }
             .mobile-nav-button small { font-size:9px; }
-            .modal-window { width:100vw; border:0; }
-            .modal-header { min-height:54px; }
-            .detail-tabs { top:54px; }
+            .modal-window { width:100vw; height:100dvh; max-height:100dvh; border:0; }
+            .modal-header { min-height:54px; padding-top:max(10px, env(safe-area-inset-top)); }
+            .modal-body { padding-left:12px; padding-right:12px; padding-bottom:calc(30px + env(safe-area-inset-bottom)); }
+            .detail-tabs { top:0; margin-left:-12px; margin-right:-12px; padding-left:12px; padding-right:12px; }
             .modal-actions .plain-button { display:inline-flex; }
             .modal-actions #modalCopyLink { display:none; }
-            .evo-branch { align-items:flex-start; }
-            .evo-card { width:132px; grid-template-columns:38px minmax(0,1fr); }
+            .evolution-tree { overflow:visible; padding-bottom:4px; }
+            .evo-branch { min-width:0; width:100%; flex-direction:column; align-items:stretch; gap:6px; }
+            .evo-children { width:100%; gap:8px; padding-left:12px; border-left:1px solid var(--border); }
+            .evo-arrow { align-self:center; transform:rotate(90deg); line-height:1; }
+            .evo-card { width:100%; grid-template-columns:38px minmax(0,1fr); }
             .evo-thumb { width:38px; height:38px; }
+            .view-heading { align-items:stretch; flex-direction:column; gap:9px; }
+            .view-controls { width:100%; flex-wrap:wrap; }
+            .view-controls > * { max-width:100%; }
+            .gallery-grid, .pokemon-grid, .asset-grid { grid-template-columns:repeat(auto-fill,minmax(min(155px,100%),1fr)); }
+            .gallery-detail-image { min-height:0; }
+            .gallery-detail-image img { max-height:none; width:auto; height:auto; }
             .stat-filter-builder { grid-template-columns:1fr 54px 68px; }
             .stat-filter-builder .plain-button { grid-column:1 / -1; }
         }
@@ -802,7 +874,7 @@
 
             <section class="panel-section" id="assetFilterSection">
                 <details>
-                    <summary>Assets & Sort</summary>
+                    <summary>Display & Sort</summary>
                     <div class="panel-section-content field-grid">
                         <div class="field">
                             <label for="progressFilter">Graphic progress</label>
@@ -821,6 +893,13 @@
                         <div class="field">
                             <label for="sortMode">Sort</label>
                             <select id="sortMode"></select>
+                        </div>
+                        <div class="field" id="groupModeField">
+                            <label for="groupMode">Group</label>
+                            <select id="groupMode">
+                                <option value="none">No grouping</option>
+                                <option value="evolution">Evolution line</option>
+                            </select>
                         </div>
                     </div>
                 </details>
@@ -875,16 +954,9 @@
                     <div class="field">
                         <label for="progressDisplay">Asset progress</label>
                         <select id="progressDisplay">
+                            <option value="none">Hidden</option>
                             <option value="meter">Meter</option>
                             <option value="text">Text</option>
-                            <option value="none">Hidden</option>
-                        </select>
-                    </div>
-                    <div class="field">
-                        <label for="densityMode">Card density</label>
-                        <select id="densityMode">
-                            <option value="comfortable">Comfortable</option>
-                            <option value="compact">Compact</option>
                         </select>
                     </div>
                 </div>
@@ -949,7 +1021,7 @@
     const GALLERY_ROOT = 'Gallery';
     const ARCHIVE_ROOT = 'Archived';
     const BASE_TITLE = 'Verdigris Dex — Pokémon & Asset Library';
-    const SITE_VERSION = '2.1';
+    const SITE_VERSION = '2.2';
 
     const ASSET_CONFIG = [
         { key: 'artwork', folder: 'Artworks', label: 'Artwork', required: true, utility: false },
@@ -993,6 +1065,8 @@
         addStatFilter: document.getElementById('addStatFilter'),
         progressFilter: document.getElementById('progressFilter'),
         sortMode: document.getElementById('sortMode'),
+        groupMode: document.getElementById('groupMode'),
+        groupModeField: document.getElementById('groupModeField'),
         galleryRelationFilter: document.getElementById('galleryRelationFilter'),
         clearFiltersButton: document.getElementById('clearFiltersButton'),
         pokemonFilterSection: document.getElementById('pokemonFilterSection'),
@@ -1002,7 +1076,6 @@
         iconMode: document.getElementById('iconMode'),
         cardStyle: document.getElementById('cardStyle'),
         progressDisplay: document.getElementById('progressDisplay'),
-        densityMode: document.getElementById('densityMode'),
         formMode: document.getElementById('formMode'),
         archiveMode: document.getElementById('archiveMode'),
         hideUnusedAssets: document.getElementById('hideUnusedAssets'),
@@ -1039,6 +1112,7 @@
         progressFilter: 'all',
         galleryRelation: 'all',
         sortMode: 'dex',
+        groupMode: 'none',
         modal: null,
         copyToastTimer: null,
         paletteCache: new Map(),
@@ -1054,11 +1128,11 @@
         theme: 'dark',
         iconMode: 'animated',
         cardStyle: 'pokemon',
-        progressDisplay: 'meter',
+        progressDisplay: 'none',
         formMode: 'grouped',
         archiveMode: 'search',
         hideUnusedAssets: true,
-        density: 'comfortable'
+        preferenceVersion: 2
     };
 
     function isImageFile(path) {
@@ -1186,9 +1260,12 @@
     }
 
     function loadPreferences() {
+        let migrated=false;
         try {
             const saved = JSON.parse(localStorage.getItem('verdigrisDex.preferences') || '{}');
             Object.assign(prefs, saved || {});
+            if((Number(saved?.preferenceVersion)||0)<2){prefs.progressDisplay='none';prefs.preferenceVersion=2;migrated=true;}
+            if('density' in prefs){delete prefs.density;migrated=true;}
         } catch (error) {
             console.warn('Could not read saved preferences', error);
         }
@@ -1197,12 +1274,11 @@
         elements.iconMode.value = prefs.iconMode;
         elements.cardStyle.value = prefs.cardStyle;
         elements.progressDisplay.value = prefs.progressDisplay;
-        if (elements.densityMode) elements.densityMode.value = prefs.density || 'comfortable';
-        document.documentElement.dataset.density = prefs.density || 'comfortable';
         elements.formMode.value = prefs.formMode;
         elements.archiveMode.value = prefs.archiveMode;
         elements.hideUnusedAssets.checked = Boolean(prefs.hideUnusedAssets);
         updateThemeButton();
+        if(migrated)savePreferences();
     }
 
     function savePreferences() {
@@ -1876,20 +1952,25 @@
 
         const hover = document.createElement('div');
         hover.className = 'card-hover-details';
-        const hoverStats = document.createElement('div');
-        hoverStats.className = 'hover-stat';
         const stats = record.dex?.base_stats;
         if (stats) {
             const ranked = STAT_CONFIG.filter(stat => stat.key !== 'total')
-                .map(stat => ({ label: stat.label, value: Number(stats[stat.key]) || 0 }))
-                .sort((a,b) => b.value - a.value)
-                .slice(0,2);
-            hoverStats.innerHTML = `<strong>BST ${Number(stats.total) || 0}</strong>${ranked.length ? ` · ${ranked.map(s => `${s.label} ${s.value}`).join(' · ')}` : ''}`;
-        } else hoverStats.textContent = 'No stat data';
-        const hoverCounts = document.createElement('div');
-        hoverCounts.className = 'hover-counts';
-        hoverCounts.textContent = `${galleryCount} gallery · ${getRecordProgress(record).complete}/${getRecordProgress(record).total} assets`;
-        hover.append(hoverStats,hoverCounts);
+                .map(stat => ({ ...stat, value: Number(stats[stat.key]) || 0 }))
+                .sort((a,b) => b.value - a.value);
+            const summary = document.createElement('div');
+            summary.className = 'hover-summary-row';
+            const bst = document.createElement('div'); bst.className='hover-bst'; bst.textContent=`BST ${Number(stats.total)||0}`;
+            const best = document.createElement('div'); best.className='hover-best'; best.textContent=ranked.length?`Best: ${ranked[0].label} ${ranked[0].value}`:'';
+            summary.append(bst,best); hover.appendChild(summary);
+            const statGrid=document.createElement('div'); statGrid.className='hover-stat-grid';
+            STAT_CONFIG.filter(stat=>stat.key!=='total').forEach(stat=>{const item=document.createElement('div');item.className='hover-stat-item';const label=document.createElement('span');label.textContent=stat.alias.toUpperCase();const value=document.createElement('strong');value.textContent=Number(stats[stat.key])||0;item.append(label,value);statGrid.appendChild(item);});
+            hover.appendChild(statGrid);
+            const standard=(record.dex?.abilities?.standard||[]).map(a=>a.name);
+            const hidden=(record.dex?.abilities?.hidden||[]).map(a=>a.name);
+            if(standard.length||hidden.length){const abilities=document.createElement('div');abilities.className='hover-abilities';const parts=[];if(standard.length)parts.push(standard.join(' · '));if(hidden.length)parts.push(`Hidden: ${hidden.join(' · ')}`);abilities.innerHTML=`<strong>Abilities</strong> ${parts.join(' · ')}`;hover.appendChild(abilities);}
+        } else {
+            const empty=document.createElement('div');empty.className='hover-abilities';empty.textContent='No Pokédex data';hover.appendChild(empty);
+        }
         card.append(cover,body,hover);
 
         const open = () => openPokemon(record);
@@ -1897,6 +1978,67 @@
         card.addEventListener('keydown',event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); } });
         applyCardColor(card,record);
         return card;
+    }
+
+    function getEvolutionSpeciesName(id) {
+        const upper=String(id||'').toUpperCase();
+        const snapshotName=state.snapshotSpeciesById.get(upper)?.name;
+        if(snapshotName)return snapshotName;
+        const primary=state.speciesByBase.get(upper.toLowerCase())?.primary;
+        return primary?getDisplayName(primary):upper;
+    }
+
+    function getEvolutionGroupInfo(record) {
+        const speciesId=String(record?.dex?.pokemon_id||record?.parsed?.baseName||'').toUpperCase();
+        if(!speciesId)return {key:'single',title:'No evolution line',count:1};
+        const family=getEvolutionFamily(speciesId);
+        if(!family||family.nodes.size<=1)return {key:'single',title:'No evolution line',count:1};
+        const key=[...family.nodes].sort().join('|');
+        let title='';
+        if(family.roots.length===1){
+            const chain=[];let current=family.roots[0];const seen=new Set();let linear=true;
+            while(current&&!seen.has(current)){seen.add(current);chain.push(getEvolutionSpeciesName(current));const children=[...(state.evolutionChildren.get(current)||[])].filter(id=>family.nodes.has(id));if(children.length>1){linear=false;break;}current=children[0]||null;}
+            title=linear&&chain.length===family.nodes.size?chain.join(' → '):`${getEvolutionSpeciesName(family.roots[0])} evolution family`;
+        }else title=`${family.roots.map(getEvolutionSpeciesName).join(' / ')} evolution family`;
+        return {key,title,count:family.nodes.size};
+    }
+
+    function renderPokemonGridItems(items,grouped) {
+        const grid=document.createElement('div');grid.className='pokemon-grid';
+        items.forEach(item=>{const record=grouped?(item.displayRecord||item.primary):item;grid.appendChild(makePokemonCard(record,grouped?item:null));});
+        return grid;
+    }
+
+    function getRecordForFolderFile(file) {
+        const base=file?.parsed?.baseName || file?.pokemon?.[0];
+        if(!base)return null;
+        return state.speciesByBase.get(String(base).toLowerCase())?.primary || null;
+    }
+
+    function sortFolderFiles(files) {
+        const mode=state.sortMode;
+        return [...files].sort((a,b)=>{
+            const ar=getRecordForFolderFile(a),br=getRecordForFolderFile(b);
+            const an=a.parsed?.originalStem||a.title||a.name||'',bn=b.parsed?.originalStem||b.title||b.name||'';
+            if(mode==='name')return compareText(an,bn);
+            if(mode==='dex')return (ar?.dex?.pokedex_number??999999)-(br?.dex?.pokedex_number??999999)||compareText(an,bn);
+            if(mode==='progressAsc'||mode==='progressDesc'){
+                const av=ar?getRecordProgress(ar).complete:-1,bv=br?getRecordProgress(br).complete:-1,diff=av-bv;
+                return (mode==='progressAsc'?diff:-diff)||compareText(an,bn);
+            }
+            if(mode.startsWith('stat:')){const key=mode.slice(5);const av=Number(ar?.dex?.base_stats?.[key]);const bv=Number(br?.dex?.base_stats?.[key]);const aa=Number.isFinite(av)?av:-1,bb=Number.isFinite(bv)?bv:-1;return bb-aa||compareText(an,bn);}
+            return compareText(an,bn);
+        });
+    }
+
+    function folderFileMatchesProgress(file) {
+        if(state.progressFilter==='all')return true;
+        const record=getRecordForFolderFile(file);if(!record)return false;
+        const progress=getRecordProgress(record);
+        if(state.progressFilter==='complete')return progress.complete===progress.total;
+        if(state.progressFilter==='incomplete')return progress.complete<progress.total;
+        if(state.progressFilter.startsWith('missing:'))return !record.assets[state.progressFilter.slice(8)];
+        return true;
     }
 
     function renderPokemonView() {
@@ -1930,14 +2072,12 @@
             status.className = 'status';
             status.textContent = 'No Pokémon match the current search and filters.';
             wrapper.appendChild(status);
+        } else if(state.groupMode==='evolution') {
+            const groups=new Map();
+            items.forEach(item=>{const record=grouped?(item.displayRecord||item.primary):item;const info=getEvolutionGroupInfo(record);if(!groups.has(info.key))groups.set(info.key,{...info,items:[]});groups.get(info.key).items.push(item);});
+            [...groups.values()].sort((a,b)=>a.key==='single'?1:b.key==='single'?-1:0).forEach(groupInfo=>{const section=document.createElement('section');section.className='evolution-group';const h=document.createElement('div');h.className='evolution-group-heading';const title=document.createElement('h2');title.textContent=groupInfo.title;const meta=document.createElement('span');meta.textContent=`${groupInfo.items.length} shown`;h.append(title,meta);section.append(h,renderPokemonGridItems(groupInfo.items,grouped));wrapper.appendChild(section);});
         } else {
-            const grid = document.createElement('div');
-            grid.className = 'pokemon-grid';
-            items.forEach(item => {
-                const record = grouped ? (item.displayRecord || item.primary) : item;
-                grid.appendChild(makePokemonCard(record,grouped ? item : null));
-            });
-            wrapper.appendChild(grid);
+            wrapper.appendChild(renderPokemonGridItems(items,grouped));
         }
 
         elements.content.replaceChildren(wrapper);
@@ -2176,6 +2316,8 @@
         let files = getFolderFiles(state.selectedFolder);
         const query = elements.searchInput.value.trim().toLowerCase();
         if (query) files = files.filter(file => escapeSearchText([file.name,file.path,file.title,file.categoryPath,file.parsed?.baseName,file.parsed?.originalStem].filter(Boolean).join(' ')).includes(query));
+        files = files.filter(folderFileMatchesProgress);
+        files = sortFolderFiles(files);
 
         const browser = document.createElement('div');
         browser.className = 'folder-browser';
@@ -2255,6 +2397,7 @@
         elements.statFilterSection.classList.toggle('hidden',!pokemon);
         elements.assetFilterSection.classList.toggle('hidden',state.currentView === 'gallery');
         elements.galleryFilterSection.classList.toggle('hidden',state.currentView !== 'gallery');
+        if(elements.groupModeField)elements.groupModeField.classList.toggle('hidden',state.currentView !== 'pokemon');
     }
 
     function renderActiveFilterBar() {
@@ -2373,6 +2516,7 @@
         elements.progressFilter.value = state.progressFilter;
         elements.galleryRelationFilter.value = state.galleryRelation;
         elements.sortMode.value = state.sortMode;
+        if(elements.groupMode)elements.groupMode.value=state.groupMode;
         syncStatInputs();
     }
 
@@ -2392,6 +2536,7 @@
         state.modal = { type: 'pokemon', id: record.id, tab };
         renderPokemonModal(record);
         elements.detailModal.classList.remove('hidden');
+        elements.modalBody.scrollTop = 0;
         document.body.style.overflow = 'hidden';
         if (updateUrl) syncRoute({ push: true });
         updateDocumentMetadata(record,null);
@@ -2414,6 +2559,7 @@
         const types=document.createElement('div');types.className='detail-types';(record.dex?.types||[]).forEach(type=>types.appendChild(makeTypeChip(type)));
         const entry=document.createElement('p');entry.className='dex-entry';entry.textContent=record.dex?.pokedex_entry&&record.dex.pokedex_entry!=='???'?record.dex.pokedex_entry:'Pokédex entry not available.';
         copy.append(dexNo,name,species,types,entry);
+        if(record.dex?.base_stats)copy.appendChild(buildStatsSection(record.dex.base_stats,{embedded:true}));
         if(record.dex?.abilities){const abilities=document.createElement('div');abilities.className='ability-row';(record.dex.abilities.standard||[]).forEach(a=>abilities.appendChild(makeAbilityChip(a,false)));(record.dex.abilities.hidden||[]).forEach(a=>abilities.appendChild(makeAbilityChip(a,true)));copy.appendChild(abilities);}
         hero.append(imageWrap,copy);return hero;
     }
@@ -2427,16 +2573,16 @@
         elements.modalTitle.textContent=getDisplayName(record);
         elements.modalBody.replaceChildren();
 
-        if(group&&group.forms.length>1){const tabs=document.createElement('div');tabs.className='form-tabs';group.forms.forEach(form=>{const button=document.createElement('button');button.type='button';button.className=`form-tab${form.id===record.id?' active':''}`;button.textContent=form.dex?.form_name||(form===group.primary?'Base':getVariantLabel(form)||form.id);button.addEventListener('click',()=>{state.modal={type:'pokemon',id:form.id,tab:activeTab};renderPokemonModal(form);syncRoute({replace:true});updateDocumentMetadata(form,null);});tabs.appendChild(button);});elements.modalBody.appendChild(tabs);}
+        if(group&&group.forms.length>1){const tabs=document.createElement('div');tabs.className='form-tabs';group.forms.forEach(form=>{const button=document.createElement('button');button.type='button';button.className=`form-tab${form.id===record.id?' active':''}`;button.textContent=form.dex?.form_name||(form===group.primary?'Base':getVariantLabel(form)||form.id);button.addEventListener('click',()=>{state.modal={type:'pokemon',id:form.id,tab:activeTab};renderPokemonModal(form);elements.modalBody.scrollTop=0;syncRoute({replace:true});updateDocumentMetadata(form,null);});tabs.appendChild(button);});elements.modalBody.appendChild(tabs);}
 
         const nav=document.createElement('div');nav.className='detail-tabs';
-        const tabDefs=[['overview','Overview',''],['assets','Assets',getRecordProgress(record).complete+'/'+getRecordProgress(record).total],['gallery','Gallery',gallery.length||''],['archive','Archive',archives.length||'']];
-        tabDefs.forEach(([key,label,count])=>{const button=document.createElement('button');button.type='button';button.className=`detail-tab${activeTab===key?' active':''}`;button.append(document.createTextNode(label));if(count){const badge=document.createElement('span');badge.className='detail-tab-count';badge.textContent=count;button.appendChild(badge);}button.addEventListener('click',()=>{state.modal.tab=key;renderPokemonModal(record);});nav.appendChild(button);});elements.modalBody.appendChild(nav);
+        const assetTabCount=prefs.progressDisplay==='none'?'':getRecordProgress(record).complete+'/'+getRecordProgress(record).total;
+        const tabDefs=[['overview','Overview',''],['assets','Assets',assetTabCount],['gallery','Gallery',gallery.length||''],['archive','Archive',archives.length||'']];
+        tabDefs.forEach(([key,label,count])=>{const button=document.createElement('button');button.type='button';button.className=`detail-tab${activeTab===key?' active':''}`;button.append(document.createTextNode(label));if(count){const badge=document.createElement('span');badge.className='detail-tab-count';badge.textContent=count;button.appendChild(badge);}button.addEventListener('click',()=>{state.modal.tab=key;renderPokemonModal(record);elements.modalBody.scrollTop=0;});nav.appendChild(button);});elements.modalBody.appendChild(nav);
 
         const content=document.createElement('div');content.className='detail-tab-content';
         if(activeTab==='overview'){
             content.appendChild(buildPokemonHero(record));
-            if(record.dex?.base_stats)content.appendChild(buildStatsSection(record.dex.base_stats));
             const evolution=buildEvolutionFamilySection(record);if(evolution)content.appendChild(evolution);
         }else if(activeTab==='assets')content.appendChild(buildAssetsSection(record));
         else if(activeTab==='gallery'){
@@ -2449,12 +2595,13 @@
         elements.modalBody.appendChild(content);
     }
 
-    function buildStatsSection(stats) {
-        const section=document.createElement('section');section.className='detail-section';
-        const header=document.createElement('div');header.className='section-header';const title=document.createElement('h3');title.className='section-title';title.textContent='Base Stats';header.appendChild(title);
+    function buildStatsSection(stats,{embedded=false}={}) {
+        const section=document.createElement(embedded?'div':'section');section.className=embedded?'hero-stats':'detail-section';
+        if(embedded){const title=document.createElement('h4');title.className='hero-stats-title';title.textContent='Base Stats';section.appendChild(title);}
+        else{const header=document.createElement('div');header.className='section-header';const title=document.createElement('h3');title.className='section-title';title.textContent='Base Stats';header.appendChild(title);section.appendChild(header);}
         const grid=document.createElement('div');grid.className='stats-grid';
-        STAT_CONFIG.filter(stat=>stat.key!=='total').forEach(stat=>{const value=Number(stats[stat.key])||0;const row=document.createElement('div');row.className='stat-row';const label=document.createElement('span');label.className='stat-label';label.textContent=stat.label;const number=document.createElement('span');number.className='stat-value';number.textContent=value;const track=document.createElement('div');track.className='stat-track';const fill=document.createElement('div');fill.className='stat-fill';fill.style.width=`${Math.min(100,(value/150)*100)}%`;track.appendChild(fill);row.append(label,number,track);grid.appendChild(row);});
-        const bst=document.createElement('div');bst.className='bst-row';bst.innerHTML=`<span>Base Stat Total</span><span>${Number(stats.total)||0}</span>`;section.append(header,grid,bst);return section;
+        STAT_CONFIG.filter(stat=>stat.key!=='total').forEach(stat=>{const value=Number(stats[stat.key])||0;const row=document.createElement('div');row.className='stat-row';row.dataset.stat=stat.key;const label=document.createElement('span');label.className='stat-label';label.textContent=stat.label;const number=document.createElement('span');number.className='stat-value';number.textContent=value;const track=document.createElement('div');track.className='stat-track';track.setAttribute('aria-label',`${stat.label} ${value}`);const fill=document.createElement('div');fill.className='stat-fill';fill.style.width=`${Math.min(100,(value/150)*100)}%`;track.appendChild(fill);row.append(label,number,track);grid.appendChild(row);});
+        const bst=document.createElement('div');bst.className='bst-row';bst.innerHTML=`<span>Base Stat Total</span><span>${Number(stats.total)||0}</span>`;section.append(grid,bst);return section;
     }
 
     function getEvolutionFamily(speciesId) {
@@ -2497,8 +2644,8 @@
         const progress = getRecordProgress(record);
         const header = document.createElement('div'); header.className='section-header';
         const title = document.createElement('h3'); title.className='section-title'; title.textContent='Assets';
-        const meta = document.createElement('span'); meta.className='section-meta'; meta.textContent=`${progress.complete}/${progress.total} key graphics complete`;
-        header.append(title,meta);
+        const meta = document.createElement('span'); meta.className='section-meta'; meta.textContent=prefs.progressDisplay==='none'?'':`${progress.complete}/${progress.total} key graphics complete`;
+        header.append(title); if(meta.textContent)header.appendChild(meta);
         const grid = document.createElement('div'); grid.className='modal-asset-grid';
         getActiveAssetConfig().forEach(config => {
             const item = document.createElement('div'); item.className='modal-asset';
@@ -2665,6 +2812,7 @@
             if(state.currentView==='gallery'&&state.galleryRelation!=='all')url.searchParams.set('relation',state.galleryRelation);
             state.selectedTypes.forEach(type=>url.searchParams.append('type',type));
             if(state.ability)url.searchParams.set('ability',state.ability);
+            if(state.currentView==='pokemon'&&state.groupMode!=='none')url.searchParams.set('group',state.groupMode);
             STAT_CONFIG.forEach(stat=>{const range=state.statRanges[stat.key]||{};if(range.min!==' '&&range.min!==''&&range.min!=null)url.searchParams.set(`min_${stat.alias}`,range.min);if(range.max!==''&&range.max!=null)url.searchParams.set(`max_${stat.alias}`,range.max);});
         }
         const method=push?'pushState':'replaceState';
@@ -2675,6 +2823,7 @@
         const params=new URLSearchParams(window.location.search);
         state.selectedTypes=new Set(params.getAll('type').map(v=>v.toUpperCase()));
         state.ability=params.get('ability')||'';
+        state.groupMode=params.get('group')==='evolution'?'evolution':'none';
         state.selectedGalleryCategory=params.get('category')||'';
         state.galleryRelation=params.get('relation')||'all';
         state.selectedFolder=params.get('folder')||state.selectedFolder;
@@ -2698,7 +2847,7 @@
     }
 
     async function loadAllData() {
-        elements.content.innerHTML='<div class="status">Loading repository, Pokédex snapshot, and Gallery…</div>';
+        elements.content.innerHTML='<div class="status loading-status" role="status" aria-live="polite"><span class="loading-spinner" aria-hidden="true"></span><strong class="loading-pulse">Loading Verdigris Dex…</strong><span>Repository, Pokédex snapshot, and Gallery</span></div>';
         try {
             state.tree=await fetchRepositoryTree();
             buildAssetCollections(state.tree);
@@ -2715,7 +2864,7 @@
     }
 
     function clearAllFilters() {
-        state.selectedTypes.clear(); state.ability=''; state.progressFilter='all'; state.galleryRelation='all'; state.selectedGalleryCategory='';
+        state.selectedTypes.clear(); state.ability=''; state.progressFilter='all'; state.galleryRelation='all'; state.selectedGalleryCategory=''; state.groupMode='none';
         STAT_CONFIG.forEach(stat=>state.statRanges[stat.key]={min:'',max:''});
         syncControlsFromState(); populateFilters(); render(); syncRoute({replace:true});
     }
@@ -2742,13 +2891,13 @@
     elements.iconMode.addEventListener('change',()=>{prefs.iconMode=elements.iconMode.value;savePreferences();render();});
     elements.cardStyle.addEventListener('change',()=>{prefs.cardStyle=elements.cardStyle.value;savePreferences();render();});
     elements.progressDisplay.addEventListener('change',()=>{prefs.progressDisplay=elements.progressDisplay.value;savePreferences();render();});
-    if (elements.densityMode) elements.densityMode.addEventListener('change',()=>{prefs.density=elements.densityMode.value;document.documentElement.dataset.density=prefs.density;savePreferences();render();});
     elements.formMode.addEventListener('change',()=>{prefs.formMode=elements.formMode.value;savePreferences();render();});
     elements.archiveMode.addEventListener('change',()=>{prefs.archiveMode=elements.archiveMode.value;savePreferences();render();});
     elements.hideUnusedAssets.addEventListener('change',()=>{prefs.hideUnusedAssets=elements.hideUnusedAssets.checked;savePreferences();render();});
     elements.abilityFilter.addEventListener('change',()=>{state.ability=elements.abilityFilter.value;render();syncRoute({replace:true});});
     elements.progressFilter.addEventListener('change',()=>{state.progressFilter=elements.progressFilter.value;render();syncRoute({replace:true});});
-    elements.sortMode.addEventListener('change',()=>{state.sortMode=elements.sortMode.value;render();});
+    elements.sortMode.addEventListener('change',()=>{state.sortMode=elements.sortMode.value;render();syncRoute({replace:true});});
+    if(elements.groupMode)elements.groupMode.addEventListener('change',()=>{state.groupMode=elements.groupMode.value;render();syncRoute({replace:true});});
     elements.galleryRelationFilter.addEventListener('change',()=>{state.galleryRelation=elements.galleryRelationFilter.value;render();syncRoute({replace:true});});
     if (elements.addStatFilter) elements.addStatFilter.addEventListener('click',()=>{
         const key=elements.statBuilderStat.value; const bound=elements.statBuilderOp.value; const value=elements.statBuilderValue.value;
