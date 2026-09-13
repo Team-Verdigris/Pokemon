@@ -547,15 +547,178 @@
             .field-grid { grid-template-columns: 1fr; }
             .field.full { grid-column: auto; }
         }
+
+
+        /* ===== 2026 clean library redesign ===== */
+        :root {
+            --content-max: 1540px;
+            --header-h: 62px;
+            --ease: 150ms ease;
+        }
+        body { min-height: 100vh; }
+        .site-header {
+            position: sticky; top: 0; z-index: 90;
+            border-bottom: 1px solid color-mix(in srgb, var(--border) 78%, transparent);
+            background: color-mix(in srgb, var(--bg) 91%, transparent);
+            backdrop-filter: blur(16px);
+        }
+        .topbar {
+            width: min(calc(100% - 28px), var(--content-max)); min-height: var(--header-h); margin: 0 auto;
+            display: grid; grid-template-columns: auto auto minmax(260px, 1fr) auto; align-items: center; gap: 16px;
+            padding: 8px 0;
+        }
+        .brand { display:flex; align-items:center; gap:9px; min-width:0; padding:0; border:0; background:transparent; color:inherit; cursor:pointer; text-align:left; }
+        .brand-logo { display:block; width:auto; height:38px; max-width:170px; object-fit:contain; }
+        .brand-subtitle { max-width:115px; line-height:1.05; }
+        .main-nav { display:flex; align-items:center; gap:2px; padding:3px; border:1px solid var(--border); border-radius:10px; background:var(--panel); }
+        .nav-button { min-height:34px; padding:6px 10px; border:0; border-radius:7px; background:transparent; color:var(--muted); font-size:12px; font-weight:750; cursor:pointer; transition:background var(--ease), color var(--ease); }
+        .nav-button:hover { color:var(--text); background:var(--panel-2); }
+        .nav-button.active { color:var(--text); background:var(--panel-3); box-shadow:inset 0 0 0 1px var(--border); }
+        .searchbar { width:100%; margin:0; padding:0; }
+        .search-wrap { position:relative; width:100%; }
+        .search-wrap input { min-height:40px; padding-left:38px; padding-right:70px; border-radius:10px; background:var(--field); }
+        .search-icon { left:13px; }
+        .search-shortcut { position:absolute; right:39px; top:50%; transform:translateY(-50%); padding:2px 6px; border:1px solid var(--border); border-bottom-width:2px; border-radius:5px; color:var(--muted); background:var(--panel); font:600 10px/1.3 inherit; pointer-events:none; }
+        #clearSearch { right:7px; }
+        .header-actions { display:flex; gap:5px; }
+        .filter-icon-button { font-size:17px; }
+        .active-filter-bar { width:min(calc(100% - 28px), var(--content-max)); margin:0 auto; padding:0 0 8px; min-height:0; border:0; background:transparent; }
+        main { width:min(calc(100% - 28px), var(--content-max)); padding-top:20px; }
+        .mobile-nav { display:none; }
+
+        .search-suggestions {
+            position:absolute; top:calc(100% + 7px); left:0; right:0; z-index:180; max-height:min(480px,70vh); overflow:auto;
+            border:1px solid var(--border-strong); border-radius:11px; background:var(--panel); box-shadow:0 18px 45px rgba(0,0,0,.34); padding:6px;
+        }
+        .suggestion-group-label { padding:8px 9px 4px; color:var(--muted); font-size:9px; font-weight:850; letter-spacing:.09em; text-transform:uppercase; }
+        .search-suggestion { width:100%; display:grid; grid-template-columns:34px minmax(0,1fr) auto; align-items:center; gap:9px; padding:7px 8px; border:0; border-radius:8px; background:transparent; color:var(--text); cursor:pointer; text-align:left; }
+        .search-suggestion:hover, .search-suggestion:focus-visible { background:var(--panel-2); outline:none; }
+        .suggestion-thumb { width:34px; height:34px; display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:7px; background:var(--field); }
+        .suggestion-thumb img { max-width:100%; max-height:100%; object-fit:contain; }
+        .suggestion-title { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; font-weight:800; }
+        .suggestion-meta { color:var(--muted); font-size:10px; }
+        .suggestion-kind { color:var(--muted); font-size:9px; font-weight:800; text-transform:uppercase; }
+        .search-help { padding:9px; color:var(--muted); font-size:10px; line-height:1.5; }
+
+        .side-panel { width:min(390px, calc(100vw - 24px)); }
+        .panel-kicker { color:var(--muted); font-size:9px; font-weight:850; letter-spacing:.08em; text-transform:uppercase; }
+        .panel-header h2 { margin-top:2px; }
+        .panel-section { padding:0; border-bottom:1px solid var(--border); }
+        .panel-section details > summary { list-style:none; display:flex; align-items:center; justify-content:space-between; padding:13px 0; cursor:pointer; font-size:11px; font-weight:850; text-transform:uppercase; letter-spacing:.055em; }
+        .panel-section details > summary::-webkit-details-marker { display:none; }
+        .panel-section details > summary::after { content:'+'; color:var(--muted); font-size:15px; font-weight:500; }
+        .panel-section details[open] > summary::after { content:'–'; }
+        .panel-section-content { padding:0 0 14px; }
+        .label-note { color:var(--muted); font-weight:500; text-transform:none; letter-spacing:0; }
+        .stat-filter-list { display:grid; gap:7px; margin-bottom:8px; }
+        .stat-filter-row { display:grid; grid-template-columns:minmax(0,1fr) auto 82px 28px; align-items:center; gap:6px; padding:6px; border:1px solid var(--border); border-radius:8px; background:var(--panel-2); }
+        .stat-filter-name { font-size:11px; font-weight:750; }
+        .stat-filter-op { color:var(--muted); font-size:11px; font-weight:800; }
+        .stat-filter-row input { min-width:0; height:30px; padding:4px 7px; }
+        .stat-filter-remove { width:28px; height:28px; border:0; border-radius:6px; background:transparent; color:var(--muted); cursor:pointer; }
+        .stat-filter-remove:hover { background:var(--bad-soft); color:var(--bad); }
+        .stat-filter-builder { display:grid; grid-template-columns:minmax(0,1fr) 58px 78px auto; gap:6px; }
+        .stat-filter-builder select, .stat-filter-builder input { min-width:0; height:34px; padding:5px 7px; }
+
+        .pokemon-card, .gallery-card, .asset-card { transition:transform var(--ease), border-color var(--ease), box-shadow var(--ease); }
+        .pokemon-card { position:relative; overflow:hidden; }
+        .card-hover-details { position:absolute; inset:auto 8px 8px 8px; z-index:4; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 9px; border:1px solid var(--border-strong); border-radius:8px; background:color-mix(in srgb,var(--panel) 92%,transparent); backdrop-filter:blur(10px); opacity:0; transform:translateY(6px); pointer-events:none; transition:opacity var(--ease), transform var(--ease); }
+        .pokemon-card:hover .card-hover-details, .pokemon-card:focus-visible .card-hover-details { opacity:1; transform:none; }
+        .hover-stat { font-size:10px; color:var(--muted); }
+        .hover-stat strong { color:var(--text); }
+        .hover-counts { font-size:9px; color:var(--muted); text-align:right; }
+
+        .gallery-category-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:11px; margin:0 0 22px; }
+        .gallery-category-card { display:grid; grid-template-columns:72px minmax(0,1fr); gap:11px; align-items:center; min-height:92px; padding:10px; border:1px solid var(--border); border-radius:11px; background:var(--panel); color:var(--text); cursor:pointer; text-align:left; transition:transform var(--ease),border-color var(--ease); }
+        .gallery-category-card:hover { transform:translateY(-1px); border-color:var(--border-strong); }
+        .category-stack { position:relative; width:72px; height:68px; }
+        .category-stack img { position:absolute; width:57px; height:57px; object-fit:cover; border:1px solid var(--border-strong); border-radius:8px; background:var(--field); box-shadow:0 3px 8px rgba(0,0,0,.2); }
+        .category-stack img:nth-child(1){left:0;top:9px;transform:rotate(-5deg)}
+        .category-stack img:nth-child(2){left:8px;top:5px;transform:rotate(2deg)}
+        .category-stack img:nth-child(3){left:15px;top:0;transform:rotate(0)}
+        .category-stack-empty { width:57px; height:57px; margin:5px 0 0 12px; border:1px dashed var(--border-strong); border-radius:8px; background:var(--field); }
+        .category-title { font-size:13px; font-weight:850; }
+        .category-meta { margin-top:3px; color:var(--muted); font-size:10px; }
+        .subsection-heading { display:flex; align-items:end; justify-content:space-between; gap:10px; margin:18px 0 9px; }
+        .subsection-heading h2 { margin:0; font-size:13px; }
+        .subsection-heading span { color:var(--muted); font-size:10px; }
+
+        .modal-backdrop { align-items:stretch; justify-content:flex-end; padding:0; background:rgba(0,0,0,.54); }
+        .modal-window { width:min(1080px,94vw); max-height:100vh; height:100vh; border-width:0 0 0 1px; border-radius:0; box-shadow:-16px 0 48px rgba(0,0,0,.34); }
+        .modal-header { min-height:58px; padding:10px 16px; }
+        .modal-body { padding:0 18px 24px; }
+        .form-tabs { margin:12px 0 0; }
+        .detail-tabs { position:sticky; top:58px; z-index:7; display:flex; gap:2px; margin:10px -18px 16px; padding:7px 18px; overflow-x:auto; border-bottom:1px solid var(--border); background:color-mix(in srgb,var(--panel) 96%,transparent); backdrop-filter:blur(10px); }
+        .detail-tab { min-width:max-content; padding:7px 10px; border:0; border-radius:7px; background:transparent; color:var(--muted); cursor:pointer; font-size:11px; font-weight:800; }
+        .detail-tab:hover { color:var(--text); background:var(--panel-2); }
+        .detail-tab.active { color:var(--accent-strong); background:var(--accent-soft); }
+        .detail-tab-count { margin-left:4px; opacity:.75; font-size:9px; }
+        .detail-empty { padding:30px 14px; border:1px dashed var(--border); border-radius:10px; color:var(--muted); text-align:center; }
+        .detail-hero { margin-top:0; }
+        .hero-copy .ability-row { margin-top:12px; }
+
+        .evolution-tree { margin-top:10px; overflow-x:auto; padding:6px 2px 8px; }
+        .evo-branch { display:flex; align-items:center; gap:10px; min-width:max-content; }
+        .evo-children { display:flex; flex-direction:column; gap:9px; }
+        .evo-arrow { color:var(--muted); font-size:18px; }
+        .evo-card { width:154px; display:grid; grid-template-columns:46px minmax(0,1fr); gap:8px; align-items:center; padding:7px; border:1px solid var(--border); border-radius:9px; background:var(--panel-2); color:var(--text); cursor:pointer; text-align:left; }
+        .evo-card:hover { border-color:var(--border-strong); background:var(--panel-3); }
+        .evo-card.current { border-color:var(--accent); box-shadow:0 0 0 1px color-mix(in srgb,var(--accent) 45%, transparent); }
+        .evo-thumb { width:46px; height:46px; display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:7px; background:var(--field); }
+        .evo-thumb img { max-width:100%; max-height:100%; object-fit:contain; }
+        .evo-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:11px; font-weight:850; }
+        .evo-types { display:flex; gap:3px; margin-top:4px; }
+        .evo-types .type-chip { padding:2px 4px; font-size:7px; pointer-events:none; }
+
+        html[data-density="compact"] .pokemon-grid { grid-template-columns:repeat(auto-fill,minmax(165px,1fr)); gap:8px; }
+        html[data-density="compact"] .pokemon-cover { aspect-ratio:1.15/1; }
+        html[data-density="compact"] .pokemon-card-body { padding:8px; }
+        html[data-density="compact"] .card-subtitle, html[data-density="compact"] .progress-text { display:none; }
+        html[data-density="compact"] .card-chip-row { margin-top:5px; }
+
+        @media (hover:none) { .card-hover-details { display:none; } }
+        @media (max-width: 1080px) {
+            .topbar { grid-template-columns:auto minmax(180px,1fr) auto; gap:10px; }
+            .main-nav { order:4; grid-column:1 / -1; justify-self:center; }
+            .brand-subtitle { display:none; }
+        }
+        @media (max-width: 720px) {
+            body { padding-bottom:64px; }
+            .site-header { position:sticky; }
+            .topbar { width:calc(100% - 18px); min-height:54px; grid-template-columns:auto minmax(0,1fr) auto; padding:7px 0; }
+            .brand-logo { height:33px; max-width:120px; }
+            .main-nav { display:none; }
+            .searchbar { grid-column:2; }
+            .search-wrap input { min-height:37px; font-size:12px; padding-right:34px; }
+            .search-shortcut { display:none; }
+            .header-actions { gap:2px; }
+            .active-filter-bar { width:calc(100% - 18px); padding-bottom:6px; overflow-x:auto; flex-wrap:nowrap; }
+            main { width:calc(100% - 18px); padding-top:12px; }
+            .mobile-nav { position:fixed; left:0; right:0; bottom:0; z-index:120; display:grid; grid-template-columns:repeat(3,1fr); min-height:58px; padding:max(4px,env(safe-area-inset-bottom)) 8px 5px; border-top:1px solid var(--border); background:color-mix(in srgb,var(--panel) 96%,transparent); backdrop-filter:blur(14px); }
+            .mobile-nav-button { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; border-radius:8px; }
+            .mobile-nav-button span { font-size:15px; }
+            .mobile-nav-button small { font-size:9px; }
+            .modal-window { width:100vw; border:0; }
+            .modal-header { min-height:54px; }
+            .detail-tabs { top:54px; }
+            .modal-actions .plain-button { display:inline-flex; }
+            .modal-actions #modalCopyLink { display:none; }
+            .evo-branch { align-items:flex-start; }
+            .evo-card { width:132px; grid-template-columns:38px minmax(0,1fr); }
+            .evo-thumb { width:38px; height:38px; }
+            .stat-filter-builder { grid-template-columns:1fr 54px 68px; }
+            .stat-filter-builder .plain-button { grid-column:1 / -1; }
+        }
+
     </style>
 </head>
 <body>
     <header class="site-header">
         <div class="topbar">
-            <div class="brand" aria-label="Verdigris Dex home">
+            <button class="brand" type="button" aria-label="Verdigris Dex home" data-view="pokemon">
                 <img class="brand-logo" src="https://raw.githubusercontent.com/Team-Verdigris/Pokemon/main/logo.png" alt="Team Verdigris" referrerpolicy="no-referrer">
                 <span class="brand-subtitle">Pokédex & Asset Library</span>
-            </div>
+            </button>
 
             <nav class="main-nav" aria-label="Primary navigation">
                 <button class="nav-button active" data-view="pokemon" type="button">Pokémon</button>
@@ -563,23 +726,30 @@
                 <button class="nav-button" data-view="folder" type="button">Folders</button>
             </nav>
 
+            <div class="searchbar">
+                <div class="search-wrap">
+                    <span class="search-icon">⌕</span>
+                    <input id="searchInput" type="search" placeholder="Search anything…" autocomplete="off" aria-label="Search Verdigris Dex">
+                    <kbd class="search-shortcut">/</kbd>
+                    <button id="clearSearch" type="button" aria-label="Clear search">×</button>
+                    <div id="searchSuggestions" class="search-suggestions hidden" role="listbox" aria-label="Search suggestions"></div>
+                </div>
+            </div>
+
             <div class="header-actions">
+                <button id="filtersButton" class="icon-button filter-icon-button" type="button" title="Filters" aria-label="Filters">☷</button>
                 <button id="themeToggle" class="icon-button" type="button" title="Toggle light/dark theme" aria-label="Toggle theme">☾</button>
                 <button id="settingsButton" class="icon-button" type="button" title="Preferences" aria-label="Preferences">⚙</button>
             </div>
         </div>
-
-        <div class="searchbar">
-            <div class="search-wrap">
-                <span class="search-icon">⌕</span>
-                <input id="searchInput" type="search" placeholder="Search Pokémon, types, abilities, stats, gallery…" autocomplete="off">
-                <button id="clearSearch" type="button" aria-label="Clear search">×</button>
-            </div>
-            <button id="filtersButton" class="toolbar-button" type="button">Filters</button>
-        </div>
-
         <div id="activeFilterBar" class="active-filter-bar hidden"></div>
     </header>
+
+    <nav class="mobile-nav" aria-label="Mobile navigation">
+        <button class="nav-button mobile-nav-button active" data-view="pokemon" type="button"><span>◉</span><small>Pokémon</small></button>
+        <button class="nav-button mobile-nav-button" data-view="gallery" type="button"><span>▧</span><small>Gallery</small></button>
+        <button class="nav-button mobile-nav-button" data-view="folder" type="button"><span>▤</span><small>Folders</small></button>
+    </nav>
 
     <main>
         <div id="content"><div class="status">Loading Verdigris Dex…</div></div>
@@ -587,71 +757,93 @@
 
     <div id="panelBackdrop" class="panel-backdrop hidden"></div>
 
-    <aside id="filtersPanel" class="side-panel hidden" aria-label="Pokémon filters">
+    <aside id="filtersPanel" class="side-panel hidden" aria-label="Filters">
         <div class="panel-header">
-            <h2>Filters</h2>
+            <div>
+                <div class="panel-kicker">Refine current view</div>
+                <h2>Filters</h2>
+            </div>
             <button class="icon-button panel-close" type="button" aria-label="Close filters">×</button>
         </div>
         <div class="panel-body">
             <section class="panel-section" id="pokemonFilterSection">
-                <h3>Pokémon</h3>
-                <div class="field-grid">
-                    <div class="field full">
-                        <label>Types — selecting multiple means all selected types</label>
-                        <div id="typeFilterGrid" class="type-filter-grid"></div>
+                <details open>
+                    <summary>Type & Ability</summary>
+                    <div class="panel-section-content">
+                        <div class="field full">
+                            <label>Type <span class="label-note">multiple types use AND</span></label>
+                            <div id="typeFilterGrid" class="type-filter-grid"></div>
+                        </div>
+                        <div class="field full">
+                            <label for="abilityFilter">Ability</label>
+                            <select id="abilityFilter"><option value="">Any ability</option></select>
+                        </div>
                     </div>
-                    <div class="field full">
-                        <label for="abilityFilter">Ability</label>
-                        <select id="abilityFilter"><option value="">Any ability</option></select>
-                    </div>
-                </div>
+                </details>
             </section>
 
             <section class="panel-section" id="statFilterSection">
-                <h3>Base Stats</h3>
-                <div class="field-grid" id="statFilterGrid"></div>
+                <details open>
+                    <summary>Base Stats</summary>
+                    <div class="panel-section-content">
+                        <div id="statFilterGrid" class="stat-filter-list"></div>
+                        <div class="stat-filter-builder">
+                            <select id="statBuilderStat" aria-label="Stat"></select>
+                            <select id="statBuilderOp" aria-label="Comparison">
+                                <option value="min">≥</option>
+                                <option value="max">≤</option>
+                            </select>
+                            <input id="statBuilderValue" type="number" min="0" step="1" placeholder="Value" aria-label="Stat value">
+                            <button id="addStatFilter" class="plain-button" type="button">Add</button>
+                        </div>
+                    </div>
+                </details>
             </section>
 
             <section class="panel-section" id="assetFilterSection">
-                <h3>Assets</h3>
-                <div class="field-grid">
-                    <div class="field">
-                        <label for="progressFilter">Graphic progress</label>
-                        <select id="progressFilter">
-                            <option value="all">Any progress</option>
-                            <option value="complete">Complete 6/6</option>
-                            <option value="incomplete">Incomplete</option>
-                            <option value="missing:artwork">Missing Artwork</option>
-                            <option value="missing:front">Missing Front</option>
-                            <option value="missing:frontShiny">Missing Front Shiny</option>
-                            <option value="missing:back">Missing Back</option>
-                            <option value="missing:backShiny">Missing Back Shiny</option>
-                            <option value="missing:icon">Missing Icon</option>
-                        </select>
+                <details>
+                    <summary>Assets & Sort</summary>
+                    <div class="panel-section-content field-grid">
+                        <div class="field">
+                            <label for="progressFilter">Graphic progress</label>
+                            <select id="progressFilter">
+                                <option value="all">Any progress</option>
+                                <option value="complete">Complete 6/6</option>
+                                <option value="incomplete">Incomplete</option>
+                                <option value="missing:artwork">Missing Artwork</option>
+                                <option value="missing:front">Missing Front</option>
+                                <option value="missing:frontShiny">Missing Front Shiny</option>
+                                <option value="missing:back">Missing Back</option>
+                                <option value="missing:backShiny">Missing Back Shiny</option>
+                                <option value="missing:icon">Missing Icon</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label for="sortMode">Sort</label>
+                            <select id="sortMode"></select>
+                        </div>
                     </div>
-                    <div class="field">
-                        <label for="sortMode">Sort</label>
-                        <select id="sortMode"></select>
-                    </div>
-                </div>
+                </details>
             </section>
 
             <section class="panel-section" id="galleryFilterSection">
-                <h3>Gallery</h3>
-                <div class="field-grid">
-                    <div class="field full">
-                        <label for="galleryRelationFilter">Relationship</label>
-                        <select id="galleryRelationFilter">
-                            <option value="all">All Gallery items</option>
-                            <option value="pokemon">Pokémon-related</option>
-                            <option value="general">General / no Pokémon</option>
-                        </select>
+                <details open>
+                    <summary>Gallery</summary>
+                    <div class="panel-section-content">
+                        <div class="field full">
+                            <label for="galleryRelationFilter">Relationship</label>
+                            <select id="galleryRelationFilter">
+                                <option value="all">All Gallery items</option>
+                                <option value="pokemon">Pokémon-related</option>
+                                <option value="general">General / no Pokémon</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
+                </details>
             </section>
 
             <div class="panel-actions">
-                <button id="clearFiltersButton" class="plain-button" type="button">Clear</button>
+                <button id="clearFiltersButton" class="plain-button" type="button">Clear all</button>
                 <button class="plain-button primary panel-close" type="button">Done</button>
             </div>
         </div>
@@ -686,6 +878,13 @@
                             <option value="meter">Meter</option>
                             <option value="text">Text</option>
                             <option value="none">Hidden</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="densityMode">Card density</label>
+                        <select id="densityMode">
+                            <option value="comfortable">Comfortable</option>
+                            <option value="compact">Compact</option>
                         </select>
                     </div>
                 </div>
@@ -775,6 +974,7 @@
     const elements = {
         content: document.getElementById('content'),
         searchInput: document.getElementById('searchInput'),
+        searchSuggestions: document.getElementById('searchSuggestions'),
         clearSearch: document.getElementById('clearSearch'),
         activeFilterBar: document.getElementById('activeFilterBar'),
         themeToggle: document.getElementById('themeToggle'),
@@ -786,6 +986,10 @@
         typeFilterGrid: document.getElementById('typeFilterGrid'),
         abilityFilter: document.getElementById('abilityFilter'),
         statFilterGrid: document.getElementById('statFilterGrid'),
+        statBuilderStat: document.getElementById('statBuilderStat'),
+        statBuilderOp: document.getElementById('statBuilderOp'),
+        statBuilderValue: document.getElementById('statBuilderValue'),
+        addStatFilter: document.getElementById('addStatFilter'),
         progressFilter: document.getElementById('progressFilter'),
         sortMode: document.getElementById('sortMode'),
         galleryRelationFilter: document.getElementById('galleryRelationFilter'),
@@ -797,6 +1001,7 @@
         iconMode: document.getElementById('iconMode'),
         cardStyle: document.getElementById('cardStyle'),
         progressDisplay: document.getElementById('progressDisplay'),
+        densityMode: document.getElementById('densityMode'),
         formMode: document.getElementById('formMode'),
         archiveMode: document.getElementById('archiveMode'),
         hideUnusedAssets: document.getElementById('hideUnusedAssets'),
@@ -835,7 +1040,13 @@
         sortMode: 'dex',
         modal: null,
         copyToastTimer: null,
-        paletteCache: new Map()
+        paletteCache: new Map(),
+        snapshotSpeciesById: new Map(),
+        evolutionChildren: new Map(),
+        evolutionParents: new Map(),
+        recordsByType: new Map(),
+        recordsByAbility: new Map(),
+        searchTimer: null
     };
 
     const prefs = {
@@ -845,7 +1056,8 @@
         progressDisplay: 'meter',
         formMode: 'grouped',
         archiveMode: 'search',
-        hideUnusedAssets: true
+        hideUnusedAssets: true,
+        density: 'comfortable'
     };
 
     function isImageFile(path) {
@@ -984,6 +1196,8 @@
         elements.iconMode.value = prefs.iconMode;
         elements.cardStyle.value = prefs.cardStyle;
         elements.progressDisplay.value = prefs.progressDisplay;
+        if (elements.densityMode) elements.densityMode.value = prefs.density || 'comfortable';
+        document.documentElement.dataset.density = prefs.density || 'comfortable';
         elements.formMode.value = prefs.formMode;
         elements.archiveMode.value = prefs.archiveMode;
         elements.hideUnusedAssets.checked = Boolean(prefs.hideUnusedAssets);
@@ -1211,6 +1425,44 @@
         });
 
         buildSpeciesGroups();
+        buildDataIndexes();
+    }
+
+    function buildDataIndexes() {
+        state.snapshotSpeciesById = new Map();
+        state.evolutionChildren = new Map();
+        state.evolutionParents = new Map();
+        state.recordsByType = new Map();
+        state.recordsByAbility = new Map();
+
+        if (state.snapshot?.pokemon) {
+            state.snapshot.pokemon.forEach(species => {
+                const sid = String(species.id).toUpperCase();
+                state.snapshotSpeciesById.set(sid, species);
+                if (!state.evolutionChildren.has(sid)) state.evolutionChildren.set(sid, new Set());
+                (species.forms || []).forEach(form => {
+                    (form.evolves_into || []).forEach(target => {
+                        const tid = String(target.id).toUpperCase();
+                        state.evolutionChildren.get(sid).add(tid);
+                        if (!state.evolutionParents.has(tid)) state.evolutionParents.set(tid, new Set());
+                        state.evolutionParents.get(tid).add(sid);
+                    });
+                });
+            });
+        }
+
+        state.pokemonRecords.filter(record => !record.parsed.isOld).forEach(record => {
+            (record.dex?.types || []).forEach(type => {
+                const key = String(type.id).toUpperCase();
+                if (!state.recordsByType.has(key)) state.recordsByType.set(key, new Set());
+                state.recordsByType.get(key).add(record);
+            });
+            [...(record.dex?.abilities?.standard || []), ...(record.dex?.abilities?.hidden || [])].forEach(ability => {
+                const key = String(ability.id).toUpperCase();
+                if (!state.recordsByAbility.has(key)) state.recordsByAbility.set(key, new Set());
+                state.recordsByAbility.get(key).add(record);
+            });
+        });
     }
 
     function canonicalVariantId(record) {
@@ -1274,6 +1526,7 @@
         img.src = file.download_url;
         img.alt = alt;
         img.loading = 'lazy';
+        img.decoding = 'async';
         if (pixelated) img.classList.add('pixelated');
         if (copyable) {
             img.classList.add('copyable-image');
@@ -1619,7 +1872,24 @@
 
         body.append(eyebrow,titleRow,subtitle,chips);
         renderProgress(body,record);
-        card.append(cover,body);
+
+        const hover = document.createElement('div');
+        hover.className = 'card-hover-details';
+        const hoverStats = document.createElement('div');
+        hoverStats.className = 'hover-stat';
+        const stats = record.dex?.base_stats;
+        if (stats) {
+            const ranked = STAT_CONFIG.filter(stat => stat.key !== 'total')
+                .map(stat => ({ label: stat.label, value: Number(stats[stat.key]) || 0 }))
+                .sort((a,b) => b.value - a.value)
+                .slice(0,2);
+            hoverStats.innerHTML = `<strong>BST ${Number(stats.total) || 0}</strong>${ranked.length ? ` · ${ranked.map(s => `${s.label} ${s.value}`).join(' · ')}` : ''}`;
+        } else hoverStats.textContent = 'No stat data';
+        const hoverCounts = document.createElement('div');
+        hoverCounts.className = 'hover-counts';
+        hoverCounts.textContent = `${galleryCount} gallery · ${getRecordProgress(record).complete}/${getRecordProgress(record).total} assets`;
+        hover.append(hoverStats,hoverCounts);
+        card.append(cover,body,hover);
 
         const open = () => openPokemon(record);
         card.addEventListener('click',open);
@@ -1651,7 +1921,7 @@
         items = sortPokemon(items,grouped);
 
         const wrapper = document.createDocumentFragment();
-        const heading = makeViewHeading('Pokémon', `${items.length} ${grouped ? 'species' : 'records'}${state.snapshot ? ` • snapshot ${state.snapshotGeneratedAt ? new Date(state.snapshotGeneratedAt).toLocaleString() : 'loaded'}` : ' • asset-only mode'}`);
+        const heading = makeViewHeading('Pokémon', `${items.length} ${grouped ? 'species' : 'records'}`);
         wrapper.appendChild(heading);
 
         if (!items.length) {
@@ -1781,6 +2051,23 @@
         return card;
     }
 
+    function makeGalleryCategoryCard(path, items) {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'gallery-category-card';
+        const stack = document.createElement('div');
+        stack.className = 'category-stack';
+        const previews = items.slice(0,3);
+        if (previews.length) previews.forEach(item => stack.appendChild(createImage(item,item.title)));
+        else { const empty = document.createElement('div'); empty.className = 'category-stack-empty'; stack.appendChild(empty); }
+        const copy = document.createElement('div');
+        const title = document.createElement('div'); title.className='category-title'; title.textContent=path.split('/').pop() || path;
+        const meta = document.createElement('div'); meta.className='category-meta'; meta.textContent=`${items.length} item${items.length===1?'':'s'}`;
+        copy.append(title,meta); card.append(stack,copy);
+        card.addEventListener('click',() => { state.selectedGalleryCategory=path; render(); syncRoute({replace:true}); });
+        return card;
+    }
+
     function renderGalleryView() {
         const items = state.galleryItems.filter(galleryItemMatches);
         const controls = document.createElement('div');
@@ -1795,58 +2082,36 @@
         const wrapper = document.createDocumentFragment();
         wrapper.appendChild(makeViewHeading('Gallery', `${items.length} of ${state.galleryItems.length} saved image${state.galleryItems.length === 1 ? '' : 's'}`,controls));
 
-        const categories = document.createElement('div');
-        categories.className = 'gallery-toolbar';
         const categoryNav = getGalleryCategoryNavigation();
-
-        const all = document.createElement('button');
-        all.type = 'button';
-        all.className = `category-chip${state.selectedGalleryCategory ? '' : ' active'}`;
-        all.textContent = 'All';
-        all.addEventListener('click',() => {
-            state.selectedGalleryCategory = '';
-            render();
-            syncRoute({ replace: true });
-        });
-        categories.appendChild(all);
-
         if (categoryNav.currentParts.length) {
-            const up = document.createElement('button');
-            up.type = 'button';
-            up.className = 'category-chip';
-            up.textContent = '← Up';
-            up.addEventListener('click',() => {
-                state.selectedGalleryCategory =
-                    categoryNav.currentParts.slice(0, -1).join('/');
-                render();
-                syncRoute({ replace: true });
+            const breadcrumbs = document.createElement('div'); breadcrumbs.className='gallery-toolbar';
+            const root = document.createElement('button'); root.type='button'; root.className='category-chip'; root.textContent='Gallery';
+            root.addEventListener('click',()=>{state.selectedGalleryCategory='';render();syncRoute({replace:true});}); breadcrumbs.appendChild(root);
+            categoryNav.currentParts.forEach((part,index) => {
+                const path=categoryNav.currentParts.slice(0,index+1).join('/');
+                const chip=document.createElement('button');chip.type='button';chip.className=`category-chip${index===categoryNav.currentParts.length-1?' active':''}`;chip.textContent=part;
+                chip.addEventListener('click',()=>{state.selectedGalleryCategory=path;render();syncRoute({replace:true});}); breadcrumbs.appendChild(chip);
             });
-            categories.appendChild(up);
-
-            const current = document.createElement('span');
-            current.className = 'filter-chip';
-            current.textContent =
-                `Gallery / ${categoryNav.currentParts.join(' / ')}`;
-            categories.appendChild(current);
+            wrapper.appendChild(breadcrumbs);
         }
 
-        categoryNav.children.forEach(categoryName => {
-            const path = [
-                ...categoryNav.currentParts,
-                categoryName
-            ].join('/');
-            const chip = document.createElement('button');
-            chip.type = 'button';
-            chip.className = 'category-chip';
-            chip.textContent = categoryName;
-            chip.addEventListener('click',() => {
-                state.selectedGalleryCategory = path;
-                render();
-                syncRoute({ replace: true });
+        if (categoryNav.children.length && !elements.searchInput.value.trim()) {
+            const sub = document.createElement('div'); sub.className='subsection-heading';
+            const h=document.createElement('h2'); h.textContent=state.selectedGalleryCategory?'Subcategories':'Browse categories';
+            const m=document.createElement('span');m.textContent=`${categoryNav.children.length} categor${categoryNav.children.length===1?'y':'ies'}`;sub.append(h,m);wrapper.appendChild(sub);
+            const catGrid=document.createElement('div');catGrid.className='gallery-category-grid';
+            categoryNav.children.forEach(name=>{
+                const path=[...categoryNav.currentParts,name].join('/');
+                const pathLower=path.toLowerCase();
+                const catItems=state.galleryItems.filter(item => item.categoryPath.toLowerCase()===pathLower || item.categoryPath.toLowerCase().startsWith(`${pathLower}/`));
+                catGrid.appendChild(makeGalleryCategoryCard(path,catItems));
             });
-            categories.appendChild(chip);
-        });
-        wrapper.appendChild(categories);
+            wrapper.appendChild(catGrid);
+        }
+
+        const itemHeading=document.createElement('div');itemHeading.className='subsection-heading';
+        const ih=document.createElement('h2'); ih.textContent=state.selectedGalleryCategory?'Artwork in this category':'All Gallery items';
+        const im=document.createElement('span');im.textContent=`${items.length} item${items.length===1?'':'s'}`;itemHeading.append(ih,im);wrapper.appendChild(itemHeading);
 
         if (!items.length) {
             const status = document.createElement('div');
@@ -1924,6 +2189,31 @@
         elements.content.replaceChildren(browser);
     }
 
+    function hideSearchSuggestions() {
+        if (elements.searchSuggestions) elements.searchSuggestions.classList.add('hidden');
+    }
+
+    function renderSearchSuggestions() {
+        if (!elements.searchSuggestions || !state.loaded) return;
+        const raw=elements.searchInput.value.trim();
+        elements.searchSuggestions.replaceChildren();
+        if (!raw) {
+            const help=document.createElement('div');help.className='search-help';help.innerHTML='<strong>Search everything</strong><br>Names, types, abilities, Pokédex text, Gallery, and files. Power filters: <code>type:steel</code>, <code>atk&gt;=100</code>, <code>bst&gt;=500</code>.';
+            elements.searchSuggestions.appendChild(help);elements.searchSuggestions.classList.remove('hidden');return;
+        }
+        const q=raw.toLowerCase();let added=0;
+        const addLabel=text=>{const label=document.createElement('div');label.className='suggestion-group-label';label.textContent=text;elements.searchSuggestions.appendChild(label);};
+        const addSuggestion=(title,meta,kind,thumbFile,onClick)=>{const button=document.createElement('button');button.type='button';button.className='search-suggestion';const thumb=document.createElement('div');thumb.className='suggestion-thumb checkerboard';if(thumbFile)thumb.appendChild(createImage(thumbFile,title));const copy=document.createElement('div');const t=document.createElement('div');t.className='suggestion-title';t.textContent=title;const m=document.createElement('div');m.className='suggestion-meta';m.textContent=meta||'';copy.append(t,m);const k=document.createElement('div');k.className='suggestion-kind';k.textContent=kind;button.append(thumb,copy,k);button.addEventListener('click',()=>{hideSearchSuggestions();onClick();});elements.searchSuggestions.appendChild(button);added++;};
+        if(state.currentView==='pokemon'){
+            const typeMatches=[...state.recordsByType.keys()].filter(type=>type.toLowerCase().includes(q)).slice(0,3);if(typeMatches.length){addLabel('Types');typeMatches.forEach(type=>addSuggestion(type,`${state.recordsByType.get(type).size} matching records`,'Type',null,()=>{state.selectedTypes.add(type);elements.searchInput.value='';populateFilters();syncRoute({push:true});render();}));}
+            const pokemon=state.speciesGroups.filter(group=>group.forms.some(record=>record.searchText.includes(q))).slice(0,6);if(pokemon.length){addLabel('Pokémon');pokemon.forEach(group=>{const record=group.forms.find(r=>r.searchText.includes(q))||group.primary;addSuggestion(getDisplayName(record),(record.dex?.types||[]).map(t=>t.name).join(' · ')||record.dex?.species_name,'Pokémon',getCoverForRecord(record),()=>openPokemon(record));});}
+        } else if(state.currentView==='gallery') {
+            const gallery=state.galleryItems.filter(item=>item.searchText.includes(q)).slice(0,8);if(gallery.length){addLabel('Gallery');gallery.forEach(item=>addSuggestion(item.title,item.categoryPath||'Uncategorized','Gallery',item,()=>openGallery(item)));}
+        }
+        if(!added){const empty=document.createElement('div');empty.className='search-help';empty.textContent='No quick suggestions. Press Enter or keep typing to filter the current view.';elements.searchSuggestions.appendChild(empty);}
+        elements.searchSuggestions.classList.remove('hidden');
+    }
+
     function render() {
         updateNavigation();
         updateFilterPanels();
@@ -1937,9 +2227,9 @@
     function updateNavigation() {
         document.querySelectorAll('.nav-button').forEach(button => button.classList.toggle('active',button.dataset.view === state.currentView));
         elements.searchInput.placeholder = state.currentView === 'gallery'
-            ? 'Search Gallery titles, categories, Pokémon, tags…'
+            ? 'Search Gallery…'
             : state.currentView === 'folder'
-                ? 'Search files in this folder…'
+                ? 'Search this folder…'
                 : 'Search Pokémon, types, abilities, stats…';
     }
 
@@ -1972,7 +2262,7 @@
             const clear = document.createElement('button');
             clear.type = 'button';
             clear.textContent = '×';
-            clear.addEventListener('click',() => { item.clear(); render(); syncRoute({ replace: true }); });
+            clear.addEventListener('click',() => { item.clear(); populateFilters(); render(); syncRoute({ replace: true }); });
             chip.appendChild(clear);
             elements.activeFilterBar.appendChild(chip);
         });
@@ -1995,45 +2285,42 @@
             chip.addEventListener('click',() => {
                 if (state.selectedTypes.has(type.id)) state.selectedTypes.delete(type.id);
                 else state.selectedTypes.add(type.id);
-                populateFilters();
-                render();
-                syncRoute({ replace: true });
+                populateFilters(); render(); syncRoute({ replace: true });
             });
             elements.typeFilterGrid.appendChild(chip);
         });
 
         elements.abilityFilter.innerHTML = '<option value="">Any ability</option>';
         [...abilities.values()].sort((a,b)=>compareText(a.name,b.name)).forEach(ability => {
-            const option = document.createElement('option');
-            option.value = ability.id;
-            option.textContent = ability.name;
-            elements.abilityFilter.appendChild(option);
+            const option = document.createElement('option'); option.value = ability.id; option.textContent = ability.name; elements.abilityFilter.appendChild(option);
         });
         elements.abilityFilter.value = state.ability;
 
         elements.statFilterGrid.replaceChildren();
+        let activeStats=0;
         STAT_CONFIG.forEach(stat => {
-            const minField = document.createElement('div');
-            minField.className = 'field';
-            const minLabel = document.createElement('label');
-            minLabel.textContent = `${stat.label} minimum`;
-            const min = document.createElement('input');
-            min.type = 'number'; min.min = '0'; min.step = '1'; min.dataset.stat = stat.key; min.dataset.bound = 'min';
-            min.value = state.statRanges[stat.key]?.min ?? '';
-            min.addEventListener('input',() => { ensureStatRange(stat.key).min = min.value; render(); syncRoute({ replace: true }); });
-            minField.append(minLabel,min);
-            const maxField = document.createElement('div');
-            maxField.className = 'field';
-            const maxLabel = document.createElement('label');
-            maxLabel.textContent = `${stat.label} maximum`;
-            const max = document.createElement('input');
-            max.type = 'number'; max.min = '0'; max.step = '1'; max.dataset.stat = stat.key; max.dataset.bound = 'max';
-            max.value = state.statRanges[stat.key]?.max ?? '';
-            max.addEventListener('input',() => { ensureStatRange(stat.key).max = max.value; render(); syncRoute({ replace: true }); });
-            maxField.append(maxLabel,max);
-            elements.statFilterGrid.append(minField,maxField);
+            const range=ensureStatRange(stat.key);
+            [['min','≥'],['max','≤']].forEach(([bound,op]) => {
+                if (range[bound] === '' || range[bound] == null) return;
+                activeStats++;
+                const row=document.createElement('div'); row.className='stat-filter-row';
+                const name=document.createElement('div'); name.className='stat-filter-name'; name.textContent=stat.label;
+                const operator=document.createElement('div'); operator.className='stat-filter-op'; operator.textContent=op;
+                const input=document.createElement('input'); input.type='number'; input.min='0'; input.step='1'; input.value=range[bound]; input.dataset.stat=stat.key; input.dataset.bound=bound;
+                input.addEventListener('input',()=>{range[bound]=input.value;render();syncRoute({replace:true});});
+                const remove=document.createElement('button');remove.type='button';remove.className='stat-filter-remove';remove.textContent='×';remove.title='Remove filter';
+                remove.addEventListener('click',()=>{range[bound]='';populateFilters();render();syncRoute({replace:true});});
+                row.append(name,operator,input,remove);elements.statFilterGrid.appendChild(row);
+            });
         });
+        if (!activeStats) {
+            const hint=document.createElement('div');hint.className='search-help';hint.style.padding='0 0 8px';hint.textContent='No stat limits. Add only the comparisons you need.';elements.statFilterGrid.appendChild(hint);
+        }
 
+        if (elements.statBuilderStat && !elements.statBuilderStat.options.length) {
+            STAT_CONFIG.forEach(stat=>{const option=document.createElement('option');option.value=stat.key;option.textContent=stat.label;elements.statBuilderStat.appendChild(option);});
+            elements.statBuilderStat.value='total';
+        }
         populateSortOptions();
     }
 
@@ -2085,8 +2372,8 @@
         elements.panelBackdrop.classList.add('hidden');
     }
 
-    function openPokemon(record, { updateUrl = true } = {}) {
-        state.modal = { type: 'pokemon', id: record.id };
+    function openPokemon(record, { updateUrl = true, tab = 'overview' } = {}) {
+        state.modal = { type: 'pokemon', id: record.id, tab };
         renderPokemonModal(record);
         elements.detailModal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
@@ -2098,126 +2385,95 @@
         return state.speciesByBase.get(record.parsed.baseName.toLowerCase());
     }
 
+    function buildPokemonHero(record) {
+        const hero = document.createElement('div'); hero.className='detail-hero';
+        const imageWrap=document.createElement('div'); imageWrap.className='hero-image checkerboard';
+        const cover=getCoverForRecord(record);
+        if (cover) imageWrap.appendChild(createImage(cover,getDisplayName(record),{copyable:true,pixelated:!isGalleryCover(cover)&&cover!==record.assets.artwork}));
+        else { const missing=document.createElement('span');missing.className='missing-asset';missing.textContent='No artwork or related Gallery image yet';imageWrap.appendChild(missing); }
+        const copy=document.createElement('div');copy.className='hero-copy';
+        const dexNo=document.createElement('div');dexNo.className='dex-number';dexNo.textContent=record.dex?.pokedex_number?`#${String(record.dex.pokedex_number).padStart(3,'0')}`:'Uncatalogued';
+        const name=document.createElement('h3');name.className='detail-name';name.textContent=getDisplayName(record);
+        const species=document.createElement('div');species.className='species-line';species.textContent=record.dex?.species_name||'No Pokédex data available';
+        const types=document.createElement('div');types.className='detail-types';(record.dex?.types||[]).forEach(type=>types.appendChild(makeTypeChip(type)));
+        const entry=document.createElement('p');entry.className='dex-entry';entry.textContent=record.dex?.pokedex_entry&&record.dex.pokedex_entry!=='???'?record.dex.pokedex_entry:'Pokédex entry not available.';
+        copy.append(dexNo,name,species,types,entry);
+        if(record.dex?.abilities){const abilities=document.createElement('div');abilities.className='ability-row';(record.dex.abilities.standard||[]).forEach(a=>abilities.appendChild(makeAbilityChip(a,false)));(record.dex.abilities.hidden||[]).forEach(a=>abilities.appendChild(makeAbilityChip(a,true)));copy.appendChild(abilities);}
+        hero.append(imageWrap,copy);return hero;
+    }
+
     function renderPokemonModal(record) {
-        const group = getSpeciesGroup(record);
-        elements.modalKicker.textContent = record.dex?.pokedex_number ? `Pokédex #${String(record.dex.pokedex_number).padStart(3,'0')}` : 'Pokémon asset record';
-        elements.modalTitle.textContent = getDisplayName(record);
+        const group=getSpeciesGroup(record);
+        const gallery=getGalleryForBase(record.parsed.baseName);
+        const archives=group?[...new Map(group.forms.flatMap(form=>form.archivedVariants).map(item=>[item.id,item])).values()]:record.archivedVariants;
+        const activeTab=state.modal?.tab||'overview';
+        elements.modalKicker.textContent=record.dex?.pokedex_number?`Pokédex #${String(record.dex.pokedex_number).padStart(3,'0')}`:'Pokémon asset record';
+        elements.modalTitle.textContent=getDisplayName(record);
         elements.modalBody.replaceChildren();
 
-        if (group && group.forms.length > 1) {
-            const tabs = document.createElement('div');
-            tabs.className = 'form-tabs';
-            group.forms.forEach(form => {
-                const button = document.createElement('button');
-                button.type = 'button';
-                button.className = `form-tab${form.id === record.id ? ' active' : ''}`;
-                button.textContent = form.dex?.form_name || (form === group.primary ? 'Base' : getVariantLabel(form) || form.id);
-                button.addEventListener('click',() => {
-                    state.modal = { type: 'pokemon', id: form.id };
-                    renderPokemonModal(form);
-                    syncRoute({ replace: true });
-                    updateDocumentMetadata(form,null);
-                });
-                tabs.appendChild(button);
-            });
-            elements.modalBody.appendChild(tabs);
+        if(group&&group.forms.length>1){const tabs=document.createElement('div');tabs.className='form-tabs';group.forms.forEach(form=>{const button=document.createElement('button');button.type='button';button.className=`form-tab${form.id===record.id?' active':''}`;button.textContent=form.dex?.form_name||(form===group.primary?'Base':getVariantLabel(form)||form.id);button.addEventListener('click',()=>{state.modal={type:'pokemon',id:form.id,tab:activeTab};renderPokemonModal(form);syncRoute({replace:true});updateDocumentMetadata(form,null);});tabs.appendChild(button);});elements.modalBody.appendChild(tabs);}
+
+        const nav=document.createElement('div');nav.className='detail-tabs';
+        const tabDefs=[['overview','Overview',''],['assets','Assets',getRecordProgress(record).complete+'/'+getRecordProgress(record).total],['gallery','Gallery',gallery.length||''],['archive','Archive',archives.length||'']];
+        tabDefs.forEach(([key,label,count])=>{const button=document.createElement('button');button.type='button';button.className=`detail-tab${activeTab===key?' active':''}`;button.append(document.createTextNode(label));if(count){const badge=document.createElement('span');badge.className='detail-tab-count';badge.textContent=count;button.appendChild(badge);}button.addEventListener('click',()=>{state.modal.tab=key;renderPokemonModal(record);});nav.appendChild(button);});elements.modalBody.appendChild(nav);
+
+        const content=document.createElement('div');content.className='detail-tab-content';
+        if(activeTab==='overview'){
+            content.appendChild(buildPokemonHero(record));
+            if(record.dex?.base_stats)content.appendChild(buildStatsSection(record.dex.base_stats));
+            const evolution=buildEvolutionFamilySection(record);if(evolution)content.appendChild(evolution);
+        }else if(activeTab==='assets')content.appendChild(buildAssetsSection(record));
+        else if(activeTab==='gallery'){
+            if(gallery.length)content.appendChild(buildPokemonGallerySection(gallery));
+            else{const empty=document.createElement('div');empty.className='detail-empty';empty.textContent='No Gallery items are linked to this species yet.';content.appendChild(empty);}
+        }else if(activeTab==='archive'){
+            if(archives.length)content.appendChild(buildArchiveSection(archives));
+            else{const empty=document.createElement('div');empty.className='detail-empty';empty.textContent='No archived asset versions are available for this species.';content.appendChild(empty);}
         }
-
-        const hero = document.createElement('div');
-        hero.className = 'detail-hero';
-        const imageWrap = document.createElement('div');
-        imageWrap.className = 'hero-image checkerboard';
-        const cover = getCoverForRecord(record);
-        if (cover) imageWrap.appendChild(createImage(cover,getDisplayName(record),{ copyable: true, pixelated: !isGalleryCover(cover) && cover !== record.assets.artwork }));
-        else {
-            const missing = document.createElement('span'); missing.className = 'missing-asset'; missing.textContent = 'No artwork or related Gallery image yet'; imageWrap.appendChild(missing);
-        }
-        const copy = document.createElement('div');
-        copy.className = 'hero-copy';
-        const dexNo = document.createElement('div');
-        dexNo.className = 'dex-number';
-        dexNo.textContent = record.dex?.pokedex_number ? `#${String(record.dex.pokedex_number).padStart(3,'0')}` : 'Uncatalogued';
-        const name = document.createElement('h3');
-        name.className = 'detail-name';
-        name.textContent = getDisplayName(record);
-        const species = document.createElement('div');
-        species.className = 'species-line';
-        species.textContent = record.dex?.species_name || 'No Pokédex data available';
-        const types = document.createElement('div');
-        types.className = 'detail-types';
-        (record.dex?.types || []).forEach(type => types.appendChild(makeTypeChip(type)));
-        const entry = document.createElement('p');
-        entry.className = 'dex-entry';
-        entry.textContent = record.dex?.pokedex_entry && record.dex.pokedex_entry !== '???' ? record.dex.pokedex_entry : 'Pokédex entry not available.';
-        copy.append(dexNo,name,species,types,entry);
-
-        if (record.dex?.abilities) {
-            const abilities = document.createElement('div');
-            abilities.className = 'ability-row';
-            (record.dex.abilities.standard || []).forEach(ability => abilities.appendChild(makeAbilityChip(ability,false)));
-            (record.dex.abilities.hidden || []).forEach(ability => abilities.appendChild(makeAbilityChip(ability,true)));
-            copy.appendChild(abilities);
-        }
-        const evolution = buildEvolutionRow(record);
-        if (evolution) copy.appendChild(evolution);
-        hero.append(imageWrap,copy);
-        elements.modalBody.appendChild(hero);
-
-        if (record.dex?.base_stats) elements.modalBody.appendChild(buildStatsSection(record.dex.base_stats));
-        elements.modalBody.appendChild(buildAssetsSection(record));
-
-        const gallery = getGalleryForBase(record.parsed.baseName);
-        if (gallery.length) elements.modalBody.appendChild(buildPokemonGallerySection(gallery));
-
-        const archives = group ? group.forms.flatMap(form => form.archivedVariants) : record.archivedVariants;
-        if (archives.length) elements.modalBody.appendChild(buildArchiveSection(archives));
+        elements.modalBody.appendChild(content);
     }
 
     function buildStatsSection(stats) {
-        const section = document.createElement('section');
-        section.className = 'detail-section';
-        const header = document.createElement('div'); header.className = 'section-header';
-        const title = document.createElement('h3'); title.className = 'section-title'; title.textContent = 'Base Stats';
-        header.appendChild(title);
-        const grid = document.createElement('div'); grid.className = 'stats-grid';
-        STAT_CONFIG.filter(stat => stat.key !== 'total').forEach(stat => {
-            const value = Number(stats[stat.key]) || 0;
-            const row = document.createElement('div'); row.className = 'stat-row';
-            const label = document.createElement('span'); label.className = 'stat-label'; label.textContent = stat.label;
-            const number = document.createElement('span'); number.className = 'stat-value'; number.textContent = value;
-            const track = document.createElement('div'); track.className = 'stat-track';
-            const fill = document.createElement('div'); fill.className = 'stat-fill'; fill.style.width = `${Math.min(100,(value/150)*100)}%`; track.appendChild(fill);
-            row.append(label,number,track); grid.appendChild(row);
-        });
-        const bst = document.createElement('div'); bst.className = 'bst-row'; bst.innerHTML = `<span>Base Stat Total</span><span>${Number(stats.total) || 0}</span>`;
-        section.append(header,grid,bst);
-        return section;
+        const section=document.createElement('section');section.className='detail-section';
+        const header=document.createElement('div');header.className='section-header';const title=document.createElement('h3');title.className='section-title';title.textContent='Base Stats';header.appendChild(title);
+        const grid=document.createElement('div');grid.className='stats-grid';
+        STAT_CONFIG.filter(stat=>stat.key!=='total').forEach(stat=>{const value=Number(stats[stat.key])||0;const row=document.createElement('div');row.className='stat-row';const label=document.createElement('span');label.className='stat-label';label.textContent=stat.label;const number=document.createElement('span');number.className='stat-value';number.textContent=value;const track=document.createElement('div');track.className='stat-track';const fill=document.createElement('div');fill.className='stat-fill';fill.style.width=`${Math.min(100,(value/150)*100)}%`;track.appendChild(fill);row.append(label,number,track);grid.appendChild(row);});
+        const bst=document.createElement('div');bst.className='bst-row';bst.innerHTML=`<span>Base Stat Total</span><span>${Number(stats.total)||0}</span>`;section.append(header,grid,bst);return section;
     }
 
-    function buildEvolutionRow(record) {
-        if (!record.dex) return null;
-        const speciesId = record.dex.pokemon_id;
-        const previous = [];
-        if (state.snapshot) {
-            state.snapshot.pokemon.forEach(species => species.forms.forEach(form => {
-                if ((form.evolves_into || []).some(evo => evo.id === speciesId)) previous.push({ id: species.id, name: species.name });
-            }));
-        }
-        const next = record.dex.evolves_into || [];
-        if (!previous.length && !next.length) return null;
-        const wrap = document.createElement('div'); wrap.className = 'evolution-row';
-        const addNode = (node,current=false) => {
-            const button = document.createElement('button'); button.type = 'button'; button.className = `evolution-node${current ? ' current' : ''}`; button.textContent = node.name || node.id;
-            if (!current) button.addEventListener('click',() => {
-                const group = state.speciesByBase.get(node.id.toLowerCase());
-                if (group) { state.modal = { type:'pokemon', id:group.primary.id }; renderPokemonModal(group.primary); syncRoute({ replace:true }); updateDocumentMetadata(group.primary,null); }
-            });
-            wrap.appendChild(button);
-        };
-        previous.forEach((node,index) => { addNode(node); const arrow = document.createElement('span'); arrow.className='evolution-arrow'; arrow.textContent='→'; wrap.appendChild(arrow); });
-        addNode({ id: speciesId, name: record.dex.pokemon_name },true);
-        next.forEach(node => { const arrow = document.createElement('span'); arrow.className='evolution-arrow'; arrow.textContent='→'; wrap.appendChild(arrow); addNode(node); });
-        return wrap;
+    function getEvolutionFamily(speciesId) {
+        const start=String(speciesId||'').toUpperCase();if(!start)return null;
+        const family=new Set([start]);const queue=[start];
+        while(queue.length){const id=queue.shift();const neighbors=[...(state.evolutionChildren.get(id)||[]),...(state.evolutionParents.get(id)||[])];neighbors.forEach(next=>{if(!family.has(next)){family.add(next);queue.push(next);}});}
+        const roots=[...family].filter(id=>![...(state.evolutionParents.get(id)||[])].some(parent=>family.has(parent)));
+        return {nodes:family,roots:roots.length?roots:[start]};
+    }
+
+    function buildEvolutionFamilySection(record) {
+        if(!record.dex)return null;
+        const currentId=String(record.dex.pokemon_id||record.parsed.baseName).toUpperCase();
+        const family=getEvolutionFamily(currentId);if(!family||family.nodes.size<=1)return null;
+        const section=document.createElement('section');section.className='detail-section';
+        const header=document.createElement('div');header.className='section-header';const title=document.createElement('h3');title.className='section-title';title.textContent='Evolution Family';const meta=document.createElement('span');meta.className='section-meta';meta.textContent=`${family.nodes.size} species`;header.append(title,meta);section.appendChild(header);
+        const tree=document.createElement('div');tree.className='evolution-tree';
+        family.roots.forEach(root=>tree.appendChild(buildEvolutionBranch(root,currentId,family.nodes,new Set())));
+        section.appendChild(tree);return section;
+    }
+
+    function buildEvolutionBranch(id,currentId,familyNodes,path) {
+        const branch=document.createElement('div');branch.className='evo-branch';
+        const upper=String(id).toUpperCase();
+        const group=state.speciesByBase.get(upper.toLowerCase());const species=state.snapshotSpeciesById.get(upper);const representative=group?.primary||null;
+        const node=document.createElement('button');node.type='button';node.className=`evo-card${upper===currentId?' current':''}`;
+        const thumb=document.createElement('div');thumb.className='evo-thumb checkerboard';const cover=representative?getCoverForRecord(representative):null;if(cover)thumb.appendChild(createImage(cover,species?.name||upper,{pixelated:!isGalleryCover(cover)&&cover!==representative?.assets?.artwork}));
+        const copy=document.createElement('div');const name=document.createElement('div');name.className='evo-name';name.textContent=species?.name || (representative ? getDisplayName(representative) : upper);copy.appendChild(name);
+        const typeWrap=document.createElement('div');typeWrap.className='evo-types';(representative?.dex?.types||species?.forms?.[0]?.types||[]).forEach(type=>typeWrap.appendChild(makeTypeChip(type,{filterable:false})));copy.appendChild(typeWrap);node.append(thumb,copy);
+        if(representative)node.addEventListener('click',()=>{state.modal={type:'pokemon',id:representative.id,tab:'overview'};renderPokemonModal(representative);syncRoute({replace:true});updateDocumentMetadata(representative,null);});
+        branch.appendChild(node);
+        const nextPath=new Set(path);nextPath.add(upper);
+        const children=[...(state.evolutionChildren.get(upper)||[])].filter(child=>familyNodes.has(child)&&!nextPath.has(child));
+        if(children.length){const arrow=document.createElement('span');arrow.className='evo-arrow';arrow.textContent='→';branch.appendChild(arrow);const childWrap=document.createElement('div');childWrap.className='evo-children';children.forEach(child=>childWrap.appendChild(buildEvolutionBranch(child,currentId,familyNodes,nextPath)));branch.appendChild(childWrap);}
+        return branch;
     }
 
     function buildAssetsSection(record) {
@@ -2455,8 +2711,11 @@
         render(); syncRoute({push:true});
     }));
 
-    elements.searchInput.addEventListener('input',render);
-    elements.clearSearch.addEventListener('click',()=>{elements.searchInput.value='';render();elements.searchInput.focus();});
+    document.querySelector('.brand')?.addEventListener('click',()=>{state.currentView='pokemon';state.modal=null;elements.detailModal.classList.add('hidden');document.body.style.overflow='';render();syncRoute({push:true});});
+
+    elements.searchInput.addEventListener('input',()=>{clearTimeout(state.searchTimer);renderSearchSuggestions();state.searchTimer=setTimeout(render,120);});
+    elements.searchInput.addEventListener('focus',renderSearchSuggestions);
+    elements.clearSearch.addEventListener('click',()=>{elements.searchInput.value='';render();renderSearchSuggestions();elements.searchInput.focus();});
     elements.filtersButton.addEventListener('click',()=>openPanel(elements.filtersPanel));
     elements.settingsButton.addEventListener('click',()=>openPanel(elements.settingsPanel));
     elements.panelBackdrop.addEventListener('click',closePanels);
@@ -2467,6 +2726,7 @@
     elements.iconMode.addEventListener('change',()=>{prefs.iconMode=elements.iconMode.value;savePreferences();render();});
     elements.cardStyle.addEventListener('change',()=>{prefs.cardStyle=elements.cardStyle.value;savePreferences();render();});
     elements.progressDisplay.addEventListener('change',()=>{prefs.progressDisplay=elements.progressDisplay.value;savePreferences();render();});
+    if (elements.densityMode) elements.densityMode.addEventListener('change',()=>{prefs.density=elements.densityMode.value;document.documentElement.dataset.density=prefs.density;savePreferences();render();});
     elements.formMode.addEventListener('change',()=>{prefs.formMode=elements.formMode.value;savePreferences();render();});
     elements.archiveMode.addEventListener('change',()=>{prefs.archiveMode=elements.archiveMode.value;savePreferences();render();});
     elements.hideUnusedAssets.addEventListener('change',()=>{prefs.hideUnusedAssets=elements.hideUnusedAssets.checked;savePreferences();render();});
@@ -2474,12 +2734,23 @@
     elements.progressFilter.addEventListener('change',()=>{state.progressFilter=elements.progressFilter.value;render();syncRoute({replace:true});});
     elements.sortMode.addEventListener('change',()=>{state.sortMode=elements.sortMode.value;render();});
     elements.galleryRelationFilter.addEventListener('change',()=>{state.galleryRelation=elements.galleryRelationFilter.value;render();syncRoute({replace:true});});
+    if (elements.addStatFilter) elements.addStatFilter.addEventListener('click',()=>{
+        const key=elements.statBuilderStat.value; const bound=elements.statBuilderOp.value; const value=elements.statBuilderValue.value;
+        if(!key||value==='')return;
+        ensureStatRange(key)[bound]=value; elements.statBuilderValue.value=''; populateFilters(); render(); syncRoute({replace:true});
+    });
+    if (elements.statBuilderValue) elements.statBuilderValue.addEventListener('keydown',event=>{if(event.key==='Enter')elements.addStatFilter.click();});
 
     elements.modalClose.addEventListener('click',()=>closeModal());
     elements.modalCopyLink.addEventListener('click',copyCurrentLink);
     elements.modalShare.addEventListener('click',shareCurrent);
     elements.detailModal.addEventListener('click',event=>{if(event.target===elements.detailModal)closeModal();});
-    document.addEventListener('keydown',event=>{if(event.key==='Escape'){if(!elements.detailModal.classList.contains('hidden'))closeModal();else closePanels();}});
+    document.addEventListener('keydown',event=>{
+        const editable=['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)||document.activeElement?.isContentEditable;
+        if((event.key==='/'&&!editable)||((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='k')){event.preventDefault();elements.searchInput.focus();elements.searchInput.select();renderSearchSuggestions();return;}
+        if(event.key==='Escape'){hideSearchSuggestions();if(!elements.detailModal.classList.contains('hidden'))closeModal();else closePanels();}
+    });
+    document.addEventListener('click',event=>{if(elements.searchSuggestions&&!event.target.closest('.search-wrap'))hideSearchSuggestions();});
     window.addEventListener('popstate',()=>applyRoute());
 
     loadPreferences();
