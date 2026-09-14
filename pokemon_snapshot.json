@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-09-13T00:40:29Z",
+  "generated_at": "2026-09-14T01:24:54Z",
   "source": {
     "repository": "PKMN-Verdigris",
     "files": [
@@ -4096,12 +4096,12 @@
     {
       "pokedex_number": 66,
       "id": "CHALCODET",
-      "name": "Chalcodet?",
+      "name": "Chalcodet",
       "forms": [
         {
           "form_number": 0,
           "form_name": null,
-          "display_name": "Chalcodet?",
+          "display_name": "Chalcodet",
           "types": [
             {
               "id": "STEEL",
@@ -4114,28 +4114,28 @@
           "evolves_into": [
             {
               "id": "SPEARUSSET",
-              "name": "\"Spearusset\""
+              "name": "Spearusset"
             },
             {
               "id": "ARROQUOISE",
-              "name": "\"Arroquoise\""
+              "name": "Arroquoise"
             }
           ],
           "abilities": {
             "standard": [
               {
-                "id": "VITALSPIRIT",
-                "name": "Vital Spirit"
-              },
-              {
                 "id": "STEELYSPIRIT",
                 "name": "Steely Spirit"
+              },
+              {
+                "id": "MAGNETPULL",
+                "name": "Magnet Pull"
               }
             ],
             "hidden": [
               {
-                "id": "STEELYSPIRIT",
-                "name": "Steely Spirit"
+                "id": "VITALSPIRIT",
+                "name": "Vital Spirit"
               }
             ]
           },
@@ -4154,12 +4154,12 @@
     {
       "pokedex_number": 67,
       "id": "SPEARUSSET",
-      "name": "\"Spearusset\"",
+      "name": "Spearusset",
       "forms": [
         {
           "form_number": 0,
           "form_name": null,
-          "display_name": "\"Spearusset\"",
+          "display_name": "Spearusset",
           "types": [
             {
               "id": "STEEL",
@@ -4207,12 +4207,12 @@
     {
       "pokedex_number": 68,
       "id": "ARROQUOISE",
-      "name": "\"Arroquoise\"",
+      "name": "Arroquoise",
       "forms": [
         {
           "form_number": 0,
           "form_name": null,
-          "display_name": "\"Arroquoise\"",
+          "display_name": "Arroquoise",
           "types": [
             {
               "id": "STEEL",
@@ -4259,13 +4259,13 @@
     },
     {
       "pokedex_number": 69,
-      "id": "BRUH",
-      "name": "bruh",
+      "id": "EMPTYSLOTA",
+      "name": "Empty Slot A",
       "forms": [
         {
           "form_number": 0,
           "form_name": null,
-          "display_name": "bruh",
+          "display_name": "Empty Slot A",
           "types": [
             {
               "id": "STEEL",
@@ -4757,8 +4757,8 @@
           "abilities": {
             "standard": [
               {
-                "id": "ELECTROMORPHOSIS",
-                "name": "Electromorphosis"
+                "id": "MOTORDRIVE",
+                "name": "Motor Drive"
               }
             ],
             "hidden": [
@@ -7636,13 +7636,13 @@
     },
     {
       "pokedex_number": 125,
-      "id": "PANDORA",
-      "name": "Pandora",
+      "id": "PANDOLEUM",
+      "name": "Pandoleum",
       "forms": [
         {
           "form_number": 0,
           "form_name": null,
-          "display_name": "Pandora",
+          "display_name": "Pandoleum",
           "types": [
             {
               "id": "DARK",
@@ -9107,8 +9107,8 @@
           "abilities": {
             "standard": [
               {
-                "id": "INFILTRATOR",
-                "name": "Infiltrator"
+                "id": "MALWARE",
+                "name": "Malware"
               },
               {
                 "id": "DOWNLOAD",
@@ -9165,8 +9165,8 @@
                 "name": "Volt Absorb"
               },
               {
-                "id": "STATIC",
-                "name": "Static"
+                "id": "ELECTROMORPHOSIS",
+                "name": "Electromorphosis"
               }
             ],
             "hidden": [
@@ -9223,8 +9223,8 @@
                 "name": "Volt Absorb"
               },
               {
-                "id": "STATIC",
-                "name": "Static"
+                "id": "ELECTROMORPHOSIS",
+                "name": "Electromorphosis"
               }
             ],
             "hidden": [
@@ -9276,8 +9276,8 @@
                 "name": "Volt Absorb"
               },
               {
-                "id": "STATIC",
-                "name": "Static"
+                "id": "ELECTROMORPHOSIS",
+                "name": "Electromorphosis"
               }
             ],
             "hidden": [
@@ -9845,13 +9845,13 @@
           ],
           "species_name": "Big Dipper Pokémon",
           "category": "Big Dipper",
-          "pokedex_entry": "Megaladl",
+          "pokedex_entry": "While normally gentle, Megaladl will magnify its paws with dark energy and pummel anyone who harms its Neoladl without hesitation.",
           "evolves_into": [],
           "abilities": {
             "standard": [
               {
-                "id": "DAZZLING",
-                "name": "Dazzling"
+                "id": "BERSERK",
+                "name": "Berserk"
               },
               {
                 "id": "LONGREACH",
@@ -9977,13 +9977,13 @@
     },
     {
       "pokedex_number": 169,
-      "id": "BRUH2",
-      "name": "bruh2",
+      "id": "EMPTYSLOTB",
+      "name": "Empty Slot B",
       "forms": [
         {
           "form_number": 0,
           "form_name": null,
-          "display_name": "bruh2",
+          "display_name": "Empty Slot B",
           "types": [
             {
               "id": "FAIRY",
@@ -9995,18 +9995,23 @@
           "pokedex_entry": "It often disguises itself as a beggar to trick people for food. The steel spines along its neck jab anyone who exposes its ruse, letting it flee.",
           "evolves_into": [
             {
-              "id": "BRUH",
-              "name": "bruh"
+              "id": "EMPTYSLOTC",
+              "name": "Empty Slot C"
             }
           ],
           "abilities": {
             "standard": [
               {
+                "id": "COLORCHANGE",
+                "name": "Color Change"
+              }
+            ],
+            "hidden": [
+              {
                 "id": "ILLUSION",
                 "name": "Illusion"
               }
-            ],
-            "hidden": []
+            ]
           },
           "base_stats": {
             "hp": 40,
@@ -10022,13 +10027,13 @@
     },
     {
       "pokedex_number": 170,
-      "id": "BRUH3",
-      "name": "bruh3",
+      "id": "EMPTYSLOTC",
+      "name": "Empty Slot C",
       "forms": [
         {
           "form_number": 0,
           "form_name": null,
-          "display_name": "bruh3",
+          "display_name": "Empty Slot C",
           "types": [
             {
               "id": "FAIRY",
@@ -10042,11 +10047,16 @@
           "abilities": {
             "standard": [
               {
+                "id": "PROTEAN",
+                "name": "Protean"
+              }
+            ],
+            "hidden": [
+              {
                 "id": "ILLUSION",
                 "name": "Illusion"
               }
-            ],
-            "hidden": []
+            ]
           },
           "base_stats": {
             "hp": 60,
@@ -10144,8 +10154,8 @@
           "abilities": {
             "standard": [
               {
-                "id": "KEENEYE",
-                "name": "Keen Eye"
+                "id": "DAZZLING",
+                "name": "Dazzling"
               },
               {
                 "id": "COMPETITIVE",
@@ -10154,8 +10164,8 @@
             ],
             "hidden": [
               {
-                "id": "INSOMNIA",
-                "name": "Insomnia"
+                "id": "KEENEYE",
+                "name": "Keen Eye"
               }
             ]
           },
@@ -10190,8 +10200,8 @@
           "abilities": {
             "standard": [
               {
-                "id": "KEENEYE",
-                "name": "Keen Eye"
+                "id": "OPPORTUNIST",
+                "name": "Opportunist"
               },
               {
                 "id": "COMPETITIVE",
@@ -10200,8 +10210,8 @@
             ],
             "hidden": [
               {
-                "id": "PSYCHICSURGE",
-                "name": "Psychic Surge"
+                "id": "KEENEYE",
+                "name": "Keen Eye"
               }
             ]
           },
@@ -11690,12 +11700,12 @@
     {
       "pokedex_number": 200,
       "id": "GNUBIE",
-      "name": "\"Gnubie\"",
+      "name": "Gnubie",
       "forms": [
         {
           "form_number": 0,
           "form_name": null,
-          "display_name": "\"Gnubie\"",
+          "display_name": "Gnubie",
           "types": [
             {
               "id": "DRAGON",
@@ -11708,14 +11718,14 @@
           "evolves_into": [
             {
               "id": "GRILLDEBEEST",
-              "name": "\"Grilldebeest\""
+              "name": "Grilldebeest"
             }
           ],
           "abilities": {
             "standard": [
               {
-                "id": "FLAMEBODY",
-                "name": "Flame Body"
+                "id": "LIMBER",
+                "name": "Limber"
               },
               {
                 "id": "CUDCHEW",
@@ -11730,13 +11740,13 @@
             ]
           },
           "base_stats": {
-            "hp": 100,
+            "hp": 101,
             "attack": 60,
             "defense": 41,
             "speed": 45,
             "special_attack": 60,
             "special_defense": 41,
-            "total": 347
+            "total": 348
           }
         }
       ]
@@ -11744,12 +11754,12 @@
     {
       "pokedex_number": 201,
       "id": "GRILLDEBEEST",
-      "name": "\"Grilldebeest\"",
+      "name": "Grilldebeest",
       "forms": [
         {
           "form_number": 0,
           "form_name": null,
-          "display_name": "\"Grilldebeest\"",
+          "display_name": "Grilldebeest",
           "types": [
             {
               "id": "DRAGON",
