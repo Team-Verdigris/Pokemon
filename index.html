@@ -2862,9 +2862,17 @@
     }
 
     function getCurrentShareUrl() {
-        const url=new URL(window.location.href);
-        if(state.modal?.type==='pokemon') { url.search=''; url.searchParams.set('pokemon',state.modal.id); }
-        else if(state.modal?.type==='gallery') { url.search=''; url.searchParams.set('gallery',state.modal.id); }
+        if (state.modal?.type === 'pokemon') {
+            const id = encodeURIComponent(state.modal.id);
+            const siteRoot = new URL('./', window.location.href);
+            return new URL(`pokemon/${id}/`, siteRoot).toString();
+        }
+
+        const url = new URL(window.location.href);
+        if (state.modal?.type === 'gallery') {
+            url.search = '';
+            url.searchParams.set('gallery', state.modal.id);
+        }
         return url.toString();
     }
 
