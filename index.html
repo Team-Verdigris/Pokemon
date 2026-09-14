@@ -1025,6 +1025,9 @@
     const ARCHIVE_ROOT = 'Archived';
     const BASE_TITLE = 'Verdigris Dex — Pokémon & Asset Library';
     const SITE_VERSION = '2.2';
+    // Repository utility/placeholder sprites that should remain available in
+    // Folder browsing, but should never become Pokémon cards or Dex entries.
+    const POKEMON_VIEW_IGNORED_IDS = new Set(['_RETURN_', '000', 'QMARKY']);
 
     const ASSET_CONFIG = [
         { key: 'artwork', folder: 'Artworks', label: 'Artwork', required: true, utility: false },
@@ -1411,6 +1414,11 @@
         return `${species.id}_${form.form_number}`;
     }
 
+    function isPokemonViewIgnored(record) {
+        const base = String(record?.parsed?.baseName || record?.id || '').toUpperCase();
+        return POKEMON_VIEW_IGNORED_IDS.has(base);
+    }
+
     function buildPokemonRecords() {
         const map = new Map();
 
@@ -1530,7 +1538,7 @@
             });
         }
 
-        state.pokemonRecords.filter(record => !record.parsed.isOld).forEach(record => {
+        state.pokemonRecords.filter(record => !record.parsed.isOld && !isPokemonViewIgnored(record)).forEach(record => {
             (record.dex?.types || []).forEach(type => {
                 const key = String(type.id).toUpperCase();
                 if (!state.recordsByType.has(key)) state.recordsByType.set(key, new Set());
@@ -1553,7 +1561,7 @@
 
     function buildSpeciesGroups() {
         const groups = new Map();
-        state.pokemonRecords.filter(r => !r.parsed.isOld).forEach(record => {
+        state.pokemonRecords.filter(r => !r.parsed.isOld && !isPokemonViewIgnored(r)).forEach(record => {
             const key = record.parsed.baseName.toUpperCase();
             if (!groups.has(key)) groups.set(key, []);
             groups.get(key).push(record);
@@ -2063,7 +2071,7 @@
                     };
                 })
                 .filter(Boolean)
-            : state.pokemonRecords.filter(record => recordMatchesFilters(record,query));
+            : state.pokemonRecords.filter(record => !isPokemonViewIgnored(record) && recordMatchesFilters(record,query));
         items = sortPokemon(items,grouped);
 
         const wrapper = document.createDocumentFragment();
