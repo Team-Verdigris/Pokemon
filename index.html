@@ -424,22 +424,6 @@
         .folder-sidebar button:hover { background: var(--panel-2); color: var(--text); }
         .folder-sidebar button.active { background: var(--accent-soft); color: var(--accent-strong); font-weight: 800; }
         .asset-card-body { color: var(--muted); font-size: 11px; text-align: center; overflow-wrap: anywhere; }
-        .beta-asset-badge {
-            position: absolute;
-            top: 7px;
-            right: 7px;
-            z-index: 2;
-            padding: 3px 6px;
-            border: 1px solid color-mix(in srgb, #e8c84f 58%, var(--border));
-            border-radius: 999px;
-            background: color-mix(in srgb, #e8c84f 16%, var(--panel));
-            color: color-mix(in srgb, #e8c84f 78%, var(--text));
-            font-size: 8px;
-            font-weight: 900;
-            letter-spacing: .06em;
-            text-transform: uppercase;
-        }
-        .modal-asset-preview { position: relative; }
 
         /* Panels */
         .panel-backdrop {
@@ -731,6 +715,9 @@
         .detail-tab.active { color:var(--accent-strong); background:var(--accent-soft); }
         .detail-tab-count { margin-left:4px; opacity:.75; font-size:9px; }
         .detail-empty { padding:30px 14px; border:1px dashed var(--border); border-radius:10px; color:var(--muted); text-align:center; }
+        .detail-scroll-content { padding-bottom:12px; }
+        .detail-scroll-section { scroll-margin-top:64px; }
+        .detail-overview-section { min-width:0; }
         .detail-hero { margin-top:0; }
         .hero-copy .ability-row { margin-top:12px; }
 
@@ -917,13 +904,6 @@
                                 <option value="evolution">Evolution line</option>
                             </select>
                         </div>
-                        <div class="field full">
-                            <label>Beta sprites</label>
-                            <div class="check-row">
-                                <input id="hideBetaSprites" type="checkbox">
-                                <label for="hideBetaSprites">Hide generated beta sprites</label>
-                            </div>
-                        </div>
                     </div>
                 </details>
             </section>
@@ -1044,10 +1024,7 @@
     const GALLERY_ROOT = 'Gallery';
     const ARCHIVE_ROOT = 'Archived';
     const BASE_TITLE = 'Verdigris Dex — Pokémon & Asset Library';
-    const SITE_VERSION = '2.3';
-    const BETA_GENERATOR_MARKER = 'VerdigrisBetaSprite';
-    const BETA_CACHE_KEY = 'verdigrisDex.betaSpriteIndex.v1';
-    const BETA_ASSET_KEYS = new Set(['front', 'frontShiny', 'back', 'backShiny', 'icon']);
+    const SITE_VERSION = '2.2';
 
     const ASSET_CONFIG = [
         { key: 'artwork', folder: 'Artworks', label: 'Artwork', required: true, utility: false },
@@ -1093,7 +1070,6 @@
         sortMode: document.getElementById('sortMode'),
         groupMode: document.getElementById('groupMode'),
         groupModeField: document.getElementById('groupModeField'),
-        hideBetaSprites: document.getElementById('hideBetaSprites'),
         galleryRelationFilter: document.getElementById('galleryRelationFilter'),
         clearFiltersButton: document.getElementById('clearFiltersButton'),
         pokemonFilterSection: document.getElementById('pokemonFilterSection'),
@@ -1140,9 +1116,6 @@
         galleryRelation: 'all',
         sortMode: 'dex',
         groupMode: 'none',
-        hideBetaSprites: false,
-        betaIndexReady: false,
-        betaIndexPromise: null,
         modal: null,
         copyToastTimer: null,
         paletteCache: new Map(),
@@ -1171,154 +1144,6 @@
 
     function stripExtension(filename) {
         return String(filename || '').replace(/\.(png|jpe?g|webp)$/i, '');
-    }
-
-    function loadBetaSpriteCache() {
-        try {
-            const value = JSON.parse(localStorage.getItem(BETA_CACHE_KEY) || '{}');
-            return value && typeof value === 'object' ? value : {};
-        } catch {
-            return {};
-        }
-    }
-
-    const betaSpriteCache = loadBetaSpriteCache();
-
-    function saveBetaSpriteCache() {
-        try {
-            localStorage.setItem(BETA_CACHE_KEY, JSON.stringify(betaSpriteCache));
-        } catch (error) {
-            console.warn('Could not save beta sprite index', error);
-        }
-    }
-
-    function cachedBetaStatus(sha) {
-        if (!sha || !Object.prototype.hasOwnProperty.call(betaSpriteCache, sha)) return null;
-        return betaSpriteCache[sha] === true;
-    }
-
-    function readPngBetaMarker(buffer) {
-        const bytes = new Uint8Array(buffer);
-        const signature = [137,80,78,71,13,10,26,10];
-        if (bytes.length < 8 || signature.some((value,index) => bytes[index] !== value)) return false;
-        const view = new DataView(buffer);
-        const decoder = new TextDecoder('latin1');
-        let offset = 8;
-        while (offset + 12 <= bytes.length) {
-            const length = view.getUint32(offset);
-            const typeStart = offset + 4;
-            const dataStart = offset + 8;
-            const dataEnd = dataStart + length;
-            const chunkEnd = dataEnd + 4;
-            if (chunkEnd > bytes.length) break;
-            const type = decoder.decode(bytes.subarray(typeStart, typeStart + 4));
-            if (type === 'tEXt') {
-                const data = bytes.subarray(dataStart, dataEnd);
-                const separator = data.indexOf(0);
-                if (separator >= 0) {
-                    const key = decoder.decode(data.subarray(0, separator));
-                    const value = decoder.decode(data.subarray(separator + 1));
-                    if (key === BETA_GENERATOR_MARKER && value === '1') return true;
-                }
-            }
-            if (type === 'IDAT' || type === 'IEND') break;
-            offset = chunkEnd;
-        }
-        return false;
-    }
-
-    async function inspectBetaSprite(file) {
-        if (!file || !/\.png$/i.test(file.name || file.path || '')) return false;
-        const cached = cachedBetaStatus(file.sha);
-        if (cached !== null) return cached;
-        try {
-            const response = await fetch(file.download_url, {
-                cache: 'force-cache',
-                headers: { Range: 'bytes=0-65535' }
-            });
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const isBeta = readPngBetaMarker(await response.arrayBuffer());
-            if (file.sha) betaSpriteCache[file.sha] = isBeta;
-            return isBeta;
-        } catch (error) {
-            console.warn(`Could not inspect beta metadata for ${file.path}`, error);
-            return false;
-        }
-    }
-
-    function allBetaCandidateFiles() {
-        const files = [];
-        const seen = new Set();
-        BETA_ASSET_KEYS.forEach(key => {
-            [...(state.rawAssets[key] || []), ...(state.archivedAssets[key] || [])].forEach(file => {
-                const identity = file.sha || file.path;
-                if (!seen.has(identity)) {
-                    seen.add(identity);
-                    files.push(file);
-                }
-            });
-        });
-        return files;
-    }
-
-    async function ensureBetaSpriteIndex() {
-        if (state.betaIndexReady) return;
-        if (state.betaIndexPromise) return state.betaIndexPromise;
-        state.betaIndexPromise = (async () => {
-            const files = allBetaCandidateFiles();
-            let cursor = 0;
-            const worker = async () => {
-                while (cursor < files.length) {
-                    const file = files[cursor++];
-                    if (file.betaChecked) continue;
-                    file.isBeta = await inspectBetaSprite(file);
-                    file.betaChecked = true;
-                }
-            };
-            await Promise.all(Array.from({ length: Math.min(8, Math.max(1, files.length)) }, worker));
-            saveBetaSpriteCache();
-            state.betaIndexReady = true;
-            state.betaIndexPromise = null;
-            if (state.loaded) {
-                render();
-                if (document.activeElement === elements.searchInput) renderSearchSuggestions();
-                if (state.modal?.type === 'pokemon') {
-                    const record = state.pokemonById.get(String(state.modal.id || '').toLowerCase());
-                    if (record) renderPokemonModal(record);
-                }
-            }
-        })().catch(error => {
-            state.betaIndexPromise = null;
-            console.warn('Beta sprite indexing failed', error);
-        });
-        return state.betaIndexPromise;
-    }
-
-    function queryRequestsBeta(value) {
-        return /\b(?:is:)?betas?(?:\s+sprites?)?\b/i.test(String(value || ''));
-    }
-
-    function assetIsVisible(file) {
-        return Boolean(file) && !(state.hideBetaSprites && file.isBeta);
-    }
-
-    function recordHasBetaSprite(record) {
-        return Object.values(record?.assets || {}).some(file => file?.isBeta)
-            || Object.values(record?.additionalArt || {}).flat().some(file => file?.isBeta);
-    }
-
-    function getVisibleRecordAsset(record, key) {
-        const file = record?.assets?.[key];
-        return assetIsVisible(file) ? file : null;
-    }
-
-    function appendBetaBadge(container, file) {
-        if (!file?.isBeta) return;
-        const badge = document.createElement('span');
-        badge.className = 'beta-asset-badge';
-        badge.textContent = 'Beta';
-        badge.title = 'Generated beta sprite';
-        container.appendChild(badge);
     }
 
     function basename(path) {
@@ -1535,15 +1360,11 @@
 
                 if (relative === null || relative.includes('/')) continue;
 
-                const cachedBeta = cachedBetaStatus(item.sha);
                 const file = {
                     name: basename(item.path),
                     path: item.path,
-                    sha: item.sha || '',
                     download_url: rawUrl(item.path),
-                    parsed: parsePokemonFilename(basename(item.path), archivedByPath),
-                    isBeta: cachedBeta === true,
-                    betaChecked: cachedBeta !== null
+                    parsed: parsePokemonFilename(basename(item.path), archivedByPath)
                 };
                 (archivedByPath ? state.archivedAssets : state.rawAssets)[config.key].push(file);
                 break;
@@ -1757,7 +1578,7 @@
 
     function getRecordProgress(record) {
         const required = getRequiredConfig();
-        const complete = required.filter(config => Boolean(getVisibleRecordAsset(record, config.key))).length;
+        const complete = required.filter(config => Boolean(record.assets[config.key])).length;
         return { complete, total: required.length };
     }
 
@@ -1766,20 +1587,10 @@
     }
 
     function getCoverForRecord(record) {
-        const exactSingle = record.gallery.find(item =>
-            item.pokemon.length === 1 &&
-            item.pokemon[0].toUpperCase() === record.parsed.baseName.toUpperCase()
-        );
-    
+        const exactSingle = record.gallery.find(item => item.pokemon.length === 1 && item.pokemon[0].toUpperCase() === record.parsed.baseName.toUpperCase());
         const anyGallery = record.gallery[0];
-    
-        return record.assets.artwork
-            || record.assets.front
-            || record.assets.icon
-            || exactSingle
-            || anyGallery
-            || record.assets.back
-            || null;
+        // Prefer purpose-built Pokémon assets before concept/gallery fallback art.
+        return record.assets.artwork || record.assets.front || record.assets.icon || exactSingle || anyGallery || record.assets.back || null;
     }
 
     function getCoverUrl(cover) {
@@ -1947,10 +1758,9 @@
     }
 
     function parseSearchQuery(query) {
-        const filters = { text: '', types: [], ability: null, stats: [], beta: false };
+        const filters = { text: '', types: [], ability: null, stats: [] };
         let remaining = ` ${query || ''} `;
 
-        remaining = remaining.replace(/\b(?:is:)?betas?(?:\s+sprites?)?\b/gi, () => { filters.beta = true; return ' '; });
         remaining = remaining.replace(/\btype:([^\s]+)/gi, (_, value) => { filters.types.push(value.toUpperCase()); return ' '; });
         remaining = remaining.replace(/\bability:([^\s]+)/gi, (_, value) => { filters.ability = value.replace(/[_-]+/g,' ').toLowerCase(); return ' '; });
 
@@ -1981,7 +1791,6 @@
         }
 
         if (queryFilters.text && !record.searchText.includes(queryFilters.text)) return false;
-        if (queryFilters.beta && !recordHasBetaSprite(record)) return false;
 
         const typeIds = new Set((record.dex?.types || []).map(type => type.id.toUpperCase()));
         const requestedTypes = new Set([...state.selectedTypes, ...queryFilters.types]);
@@ -2012,7 +1821,7 @@
             if (state.progressFilter === 'incomplete' && progress.complete >= progress.total) return false;
             if (state.progressFilter.startsWith('missing:')) {
                 const key = state.progressFilter.slice(8);
-                if (getVisibleRecordAsset(record, key)) return false;
+                if (record.assets[key]) return false;
             }
         }
         return true;
@@ -2052,10 +1861,9 @@
         const meter = document.createElement('div');
         meter.className = 'progress-meter';
         getRequiredConfig().forEach(config => {
-            const file = getVisibleRecordAsset(record, config.key);
             const segment = document.createElement('div');
-            segment.className = `progress-segment${file ? ' complete' : ''}`;
-            segment.title = `${config.label}: ${file ? 'Complete' : 'Missing'}`;
+            segment.className = `progress-segment${record.assets[config.key] ? ' complete' : ''}`;
+            segment.title = `${config.label}: ${record.assets[config.key] ? 'Complete' : 'Missing'}`;
             meter.appendChild(segment);
         });
         const text = document.createElement('div');
@@ -2232,17 +2040,12 @@
         const progress=getRecordProgress(record);
         if(state.progressFilter==='complete')return progress.complete===progress.total;
         if(state.progressFilter==='incomplete')return progress.complete<progress.total;
-        if(state.progressFilter.startsWith('missing:'))return !getVisibleRecordAsset(record,state.progressFilter.slice(8));
+        if(state.progressFilter.startsWith('missing:'))return !record.assets[state.progressFilter.slice(8)];
         return true;
     }
 
     function renderPokemonView() {
         const query = parseSearchQuery(elements.searchInput.value);
-        if (query.beta && !state.betaIndexReady) {
-            ensureBetaSpriteIndex();
-            elements.content.innerHTML = '<div class="status loading-status" role="status"><span class="loading-spinner" aria-hidden="true"></span><strong>Indexing beta sprites…</strong><span>Reading the generator marker from sprite PNG metadata.</span></div>';
-            return;
-        }
         const grouped = prefs.formMode === 'grouped';
         let items = grouped
             ? state.speciesGroups
@@ -2486,9 +2289,9 @@
     function getFolderFiles(key) {
         if (key === 'gallery') return state.galleryItems.map(item => ({ ...item, name: item.file, parsed: { originalStem: item.title } }));
         const raw = state.rawAssets[key] || [];
-        const active = raw.filter(file => !file.parsed?.isOld && assetIsVisible(file));
-        const legacyArchived = raw.filter(file => file.parsed?.isOld && assetIsVisible(file));
-        const archived = [...legacyArchived, ...(state.archivedAssets[key] || []).filter(assetIsVisible)];
+        const active = raw.filter(file => !file.parsed?.isOld);
+        const legacyArchived = raw.filter(file => file.parsed?.isOld);
+        const archived = [...legacyArchived, ...(state.archivedAssets[key] || [])];
         if (prefs.archiveMode === 'all') return [...active,...archived];
         if (prefs.archiveMode === 'search' && elements.searchInput.value.trim()) return [...active,...archived];
         return active;
@@ -2501,7 +2304,6 @@
         preview.className = 'asset-preview checkerboard';
         if (config.key === 'icon' && prefs.iconMode === 'animated') preview.appendChild(createAnimatedIcon(file,145,145,true));
         else preview.appendChild(createImage(file,file.name,{ copyable: true, pixelated: config.key !== 'artwork' && config.key !== 'gallery' }));
-        appendBetaBadge(preview, file);
         const body = document.createElement('div');
         body.className = 'asset-card-body';
         body.textContent = file.parsed?.originalStem || file.title || file.name;
@@ -2515,14 +2317,8 @@
         if (!folderEntries.some(entry => entry.key === state.selectedFolder)) state.selectedFolder = folderEntries[0]?.key || 'artwork';
         const config = state.selectedFolder === 'gallery' ? { key: 'gallery', label: 'Gallery' } : ASSET_CONFIG.find(c => c.key === state.selectedFolder);
         let files = getFolderFiles(state.selectedFolder);
-        const query = parseSearchQuery(elements.searchInput.value);
-        if (query.beta && state.selectedFolder !== 'gallery' && !state.betaIndexReady) {
-            ensureBetaSpriteIndex();
-            elements.content.innerHTML = '<div class="status loading-status" role="status"><span class="loading-spinner" aria-hidden="true"></span><strong>Indexing beta sprites…</strong><span>Reading the generator marker from sprite PNG metadata.</span></div>';
-            return;
-        }
-        if (query.beta) files = files.filter(file => file.isBeta === true);
-        if (query.text) files = files.filter(file => escapeSearchText([file.name,file.path,file.title,file.categoryPath,file.parsed?.baseName,file.parsed?.originalStem].filter(Boolean).join(' ')).includes(query.text));
+        const query = elements.searchInput.value.trim().toLowerCase();
+        if (query) files = files.filter(file => escapeSearchText([file.name,file.path,file.title,file.categoryPath,file.parsed?.baseName,file.parsed?.originalStem].filter(Boolean).join(' ')).includes(query));
         files = files.filter(folderFileMatchesProgress);
         files = sortFolderFiles(files);
 
@@ -2563,17 +2359,15 @@
         const raw=elements.searchInput.value.trim();
         elements.searchSuggestions.replaceChildren();
         if (!raw) {
-            const help=document.createElement('div');help.className='search-help';help.innerHTML='<strong>Search everything</strong><br>Names, types, abilities, Pokédex text, Gallery, and files. Power filters: <code>type:steel</code>, <code>atk&gt;=100</code>, <code>bst&gt;=500</code>, <code>beta</code>.';
+            const help=document.createElement('div');help.className='search-help';help.innerHTML='<strong>Search everything</strong><br>Names, types, abilities, Pokédex text, Gallery, and files. Power filters: <code>type:steel</code>, <code>atk&gt;=100</code>, <code>bst&gt;=500</code>.';
             elements.searchSuggestions.appendChild(help);elements.searchSuggestions.classList.remove('hidden');return;
         }
-        const parsedQuery=parseSearchQuery(raw);
-        if(parsedQuery.beta&&!state.betaIndexReady){ensureBetaSpriteIndex();const loading=document.createElement('div');loading.className='search-help';loading.textContent='Indexing generated beta sprites…';elements.searchSuggestions.appendChild(loading);elements.searchSuggestions.classList.remove('hidden');return;}
-        const q=parsedQuery.text;let added=0;
+        const q=raw.toLowerCase();let added=0;
         const addLabel=text=>{const label=document.createElement('div');label.className='suggestion-group-label';label.textContent=text;elements.searchSuggestions.appendChild(label);};
         const addSuggestion=(title,meta,kind,thumbFile,onClick)=>{const button=document.createElement('button');button.type='button';button.className='search-suggestion';const thumb=document.createElement('div');thumb.className='suggestion-thumb checkerboard';if(thumbFile)thumb.appendChild(createImage(thumbFile,title));const copy=document.createElement('div');const t=document.createElement('div');t.className='suggestion-title';t.textContent=title;const m=document.createElement('div');m.className='suggestion-meta';m.textContent=meta||'';copy.append(t,m);const k=document.createElement('div');k.className='suggestion-kind';k.textContent=kind;button.append(thumb,copy,k);button.addEventListener('click',()=>{hideSearchSuggestions();onClick();});elements.searchSuggestions.appendChild(button);added++;};
         if(state.currentView==='pokemon'){
             const typeMatches=[...state.recordsByType.keys()].filter(type=>type.toLowerCase().includes(q)).slice(0,3);if(typeMatches.length){addLabel('Types');typeMatches.forEach(type=>addSuggestion(type,`${state.recordsByType.get(type).size} matching records`,'Type',null,()=>{state.selectedTypes.add(type);elements.searchInput.value='';populateFilters();syncRoute({push:true});render();}));}
-            const pokemon=state.speciesGroups.filter(group=>group.forms.some(record=>(!parsedQuery.beta||recordHasBetaSprite(record))&&(!q||record.searchText.includes(q)))).slice(0,6);if(pokemon.length){addLabel(parsedQuery.beta?'Beta Pokémon':'Pokémon');pokemon.forEach(group=>{const record=group.forms.find(r=>(!parsedQuery.beta||recordHasBetaSprite(r))&&(!q||r.searchText.includes(q)))||group.primary;addSuggestion(getDisplayName(record),(parsedQuery.beta?'Has generated beta sprite · ':'')+((record.dex?.types||[]).map(t=>t.name).join(' · ')||record.dex?.species_name||''),'Pokémon',getCoverForRecord(record),()=>openPokemon(record));});}
+            const pokemon=state.speciesGroups.filter(group=>group.forms.some(record=>record.searchText.includes(q))).slice(0,6);if(pokemon.length){addLabel('Pokémon');pokemon.forEach(group=>{const record=group.forms.find(r=>r.searchText.includes(q))||group.primary;addSuggestion(getDisplayName(record),(record.dex?.types||[]).map(t=>t.name).join(' · ')||record.dex?.species_name,'Pokémon',getCoverForRecord(record),()=>openPokemon(record));});}
         } else if(state.currentView==='gallery') {
             const gallery=state.galleryItems.filter(item=>item.searchText.includes(q)).slice(0,8);if(gallery.length){addLabel('Gallery');gallery.forEach(item=>addSuggestion(item.title,item.categoryPath||'Uncategorized','Gallery',item,()=>openGallery(item)));}
         }
@@ -2619,7 +2413,6 @@
             if (range.max !== '' && range.max != null) chips.push({ label: `${stat.label} ≤ ${range.max}`, clear: () => { range.max = ''; syncStatInputs(); } });
         });
         if (state.progressFilter !== 'all') chips.push({ label: `Assets: ${state.progressFilter}`, clear: () => { state.progressFilter = 'all'; elements.progressFilter.value = 'all'; } });
-        if (state.hideBetaSprites) chips.push({ label: 'Beta sprites hidden', clear: () => { state.hideBetaSprites = false; elements.hideBetaSprites.checked = false; } });
         if (state.currentView === 'gallery' && state.galleryRelation !== 'all') chips.push({ label: state.galleryRelation === 'pokemon' ? 'Pokémon-related' : 'General Gallery', clear: () => { state.galleryRelation = 'all'; elements.galleryRelationFilter.value = 'all'; } });
         if (state.currentView === 'gallery' && state.selectedGalleryCategory) chips.push({ label: state.selectedGalleryCategory, clear: () => state.selectedGalleryCategory = '' });
 
@@ -2727,7 +2520,6 @@
         elements.galleryRelationFilter.value = state.galleryRelation;
         elements.sortMode.value = state.sortMode;
         if(elements.groupMode)elements.groupMode.value=state.groupMode;
-        if(elements.hideBetaSprites)elements.hideBetaSprites.checked=state.hideBetaSprites;
         syncStatInputs();
     }
 
@@ -2775,35 +2567,134 @@
         hero.append(imageWrap,copy);return hero;
     }
 
+    function getPokemonDetailSectionId(key) {
+        return `pokemon-detail-${key}`;
+    }
+
+    function setPokemonDetailNavActive(key) {
+        if (state.modal?.type !== 'pokemon') return;
+        state.modal.tab = key;
+        elements.modalBody.querySelectorAll('.detail-tab').forEach(button => {
+            button.classList.toggle('active', button.dataset.detailSection === key);
+        });
+    }
+
+    function scrollPokemonDetailToSection(key, { smooth = true } = {}) {
+        const target = document.getElementById(getPokemonDetailSectionId(key));
+        if (!target) return;
+        const nav = elements.modalBody.querySelector('.detail-tabs');
+        const bodyRect = elements.modalBody.getBoundingClientRect();
+        const targetRect = target.getBoundingClientRect();
+        const navHeight = nav?.offsetHeight || 0;
+        const top = elements.modalBody.scrollTop + (targetRect.top - bodyRect.top) - navHeight - 8;
+        setPokemonDetailNavActive(key);
+        elements.modalBody.scrollTo({ top: Math.max(0, top), behavior: smooth ? 'smooth' : 'auto' });
+    }
+
+    function syncPokemonDetailNavFromScroll() {
+        if (state.modal?.type !== 'pokemon') return;
+        const nav = elements.modalBody.querySelector('.detail-tabs');
+        const bodyRect = elements.modalBody.getBoundingClientRect();
+        const threshold = bodyRect.top + (nav?.offsetHeight || 0) + 20;
+        const keys = ['overview','assets','gallery','archive'];
+        let active = 'overview';
+        keys.forEach(key => {
+            const section = document.getElementById(getPokemonDetailSectionId(key));
+            if (section && section.getBoundingClientRect().top <= threshold) active = key;
+        });
+        setPokemonDetailNavActive(active);
+    }
+
+    function buildEmptyDetailSection(key, titleText, message) {
+        const section = document.createElement('section');
+        section.className = 'detail-section detail-scroll-section';
+        section.id = getPokemonDetailSectionId(key);
+        const header = document.createElement('div'); header.className = 'section-header';
+        const title = document.createElement('h3'); title.className = 'section-title'; title.textContent = titleText;
+        header.appendChild(title);
+        const empty = document.createElement('div'); empty.className = 'detail-empty'; empty.textContent = message;
+        section.append(header, empty);
+        return section;
+    }
+
     function renderPokemonModal(record) {
         const group=getSpeciesGroup(record);
         const gallery=getGalleryForBase(record.parsed.baseName);
         const archives=group?[...new Map(group.forms.flatMap(form=>form.archivedVariants).map(item=>[item.id,item])).values()]:record.archivedVariants;
-        const activeTab=state.modal?.tab||'overview';
+        const activeSection=state.modal?.tab||'overview';
         elements.modalKicker.textContent=record.dex?.pokedex_number?`Pokédex #${String(record.dex.pokedex_number).padStart(3,'0')}`:'Pokémon asset record';
         elements.modalTitle.textContent=getDisplayName(record);
         elements.modalBody.replaceChildren();
+        elements.modalBody.onscroll=null;
 
-        if(group&&group.forms.length>1){const tabs=document.createElement('div');tabs.className='form-tabs';group.forms.forEach(form=>{const button=document.createElement('button');button.type='button';button.className=`form-tab${form.id===record.id?' active':''}`;button.textContent=form.dex?.form_name||(form===group.primary?'Base':getVariantLabel(form)||form.id);button.addEventListener('click',()=>{state.modal={type:'pokemon',id:form.id,tab:activeTab};renderPokemonModal(form);elements.modalBody.scrollTop=0;syncRoute({replace:true});updateDocumentMetadata(form,null);});tabs.appendChild(button);});elements.modalBody.appendChild(tabs);}
+        if(group&&group.forms.length>1){
+            const tabs=document.createElement('div');tabs.className='form-tabs';
+            group.forms.forEach(form=>{
+                const button=document.createElement('button');button.type='button';button.className=`form-tab${form.id===record.id?' active':''}`;
+                button.textContent=form.dex?.form_name||(form===group.primary?'Base':getVariantLabel(form)||form.id);
+                button.addEventListener('click',()=>{
+                    state.modal={type:'pokemon',id:form.id,tab:activeSection};
+                    renderPokemonModal(form);
+                    requestAnimationFrame(()=>scrollPokemonDetailToSection(activeSection,{smooth:false}));
+                    syncRoute({replace:true});
+                    updateDocumentMetadata(form,null);
+                });
+                tabs.appendChild(button);
+            });
+            elements.modalBody.appendChild(tabs);
+        }
 
         const nav=document.createElement('div');nav.className='detail-tabs';
         const assetTabCount=prefs.progressDisplay==='none'?'':getRecordProgress(record).complete+'/'+getRecordProgress(record).total;
         const tabDefs=[['overview','Overview',''],['assets','Assets',assetTabCount],['gallery','Gallery',gallery.length||''],['archive','Archive',archives.length||'']];
-        tabDefs.forEach(([key,label,count])=>{const button=document.createElement('button');button.type='button';button.className=`detail-tab${activeTab===key?' active':''}`;button.append(document.createTextNode(label));if(count){const badge=document.createElement('span');badge.className='detail-tab-count';badge.textContent=count;button.appendChild(badge);}button.addEventListener('click',()=>{state.modal.tab=key;renderPokemonModal(record);elements.modalBody.scrollTop=0;});nav.appendChild(button);});elements.modalBody.appendChild(nav);
+        tabDefs.forEach(([key,label,count])=>{
+            const button=document.createElement('button');button.type='button';button.dataset.detailSection=key;
+            button.className=`detail-tab${activeSection===key?' active':''}`;
+            button.append(document.createTextNode(label));
+            if(count){const badge=document.createElement('span');badge.className='detail-tab-count';badge.textContent=count;button.appendChild(badge);}
+            button.addEventListener('click',()=>scrollPokemonDetailToSection(key));
+            nav.appendChild(button);
+        });
+        elements.modalBody.appendChild(nav);
 
-        const content=document.createElement('div');content.className='detail-tab-content';
-        if(activeTab==='overview'){
-            content.appendChild(buildPokemonHero(record));
-            const evolution=buildEvolutionFamilySection(record);if(evolution)content.appendChild(evolution);
-        }else if(activeTab==='assets')content.appendChild(buildAssetsSection(record));
-        else if(activeTab==='gallery'){
-            if(gallery.length)content.appendChild(buildPokemonGallerySection(gallery));
-            else{const empty=document.createElement('div');empty.className='detail-empty';empty.textContent='No Gallery items are linked to this species yet.';content.appendChild(empty);}
-        }else if(activeTab==='archive'){
-            if(archives.length)content.appendChild(buildArchiveSection(archives));
-            else{const empty=document.createElement('div');empty.className='detail-empty';empty.textContent='No archived asset versions are available for this species.';content.appendChild(empty);}
+        const content=document.createElement('div');content.className='detail-tab-content detail-scroll-content';
+
+        const overview=document.createElement('div');
+        overview.className='detail-scroll-section detail-overview-section';
+        overview.id=getPokemonDetailSectionId('overview');
+        overview.appendChild(buildPokemonHero(record));
+        const evolution=buildEvolutionFamilySection(record);if(evolution)overview.appendChild(evolution);
+        content.appendChild(overview);
+
+        const assets=buildAssetsSection(record);
+        assets.classList.add('detail-scroll-section');
+        assets.id=getPokemonDetailSectionId('assets');
+        content.appendChild(assets);
+
+        if(gallery.length){
+            const gallerySection=buildPokemonGallerySection(gallery);
+            gallerySection.classList.add('detail-scroll-section');
+            gallerySection.id=getPokemonDetailSectionId('gallery');
+            content.appendChild(gallerySection);
+        }else{
+            content.appendChild(buildEmptyDetailSection('gallery','Gallery','No Gallery items are linked to this species yet.'));
         }
+
+        if(archives.length){
+            const archiveSection=buildArchiveSection(archives);
+            archiveSection.classList.add('detail-scroll-section');
+            archiveSection.id=getPokemonDetailSectionId('archive');
+            content.appendChild(archiveSection);
+        }else{
+            content.appendChild(buildEmptyDetailSection('archive','Archive','No archived asset versions are available for this species.'));
+        }
+
         elements.modalBody.appendChild(content);
+        elements.modalBody.onscroll=syncPokemonDetailNavFromScroll;
+        requestAnimationFrame(()=>{
+            if(activeSection!=='overview')scrollPokemonDetailToSection(activeSection,{smooth:false});
+            else setPokemonDetailNavActive('overview');
+        });
     }
 
     function buildStatsSection(stats,{embedded=false}={}) {
@@ -2861,11 +2752,10 @@
         getActiveAssetConfig().forEach(config => {
             const item = document.createElement('div'); item.className='modal-asset';
             const preview = document.createElement('div'); preview.className='modal-asset-preview checkerboard';
-            const file = getVisibleRecordAsset(record, config.key);
+            const file = record.assets[config.key];
             if (file) {
                 if (config.key === 'icon' && prefs.iconMode === 'animated') preview.appendChild(createAnimatedIcon(file,155,155,true));
                 else preview.appendChild(createImage(file,`${getDisplayName(record)} ${config.label}`,{ copyable:true, pixelated: config.key !== 'artwork' }));
-                appendBetaBadge(preview, file);
             } else {
                 const missing = document.createElement('span'); missing.className='missing-asset'; missing.textContent='Not available'; preview.appendChild(missing);
             }
@@ -2874,14 +2764,14 @@
         });
         section.append(header,grid);
 
-        const additional = getActiveAssetConfig().flatMap(config => (record.additionalArt[config.key] || []).filter(assetIsVisible).map(file => ({config,file})));
+        const additional = getActiveAssetConfig().flatMap(config => (record.additionalArt[config.key] || []).map(file => ({config,file})));
         if (additional.length) {
             const sub = document.createElement('div'); sub.className='section-header'; sub.style.marginTop='14px';
             const t = document.createElement('h4'); t.className='section-title'; t.textContent=`Additional Art (${additional.length})`; sub.appendChild(t); section.appendChild(sub);
             const extraGrid = document.createElement('div'); extraGrid.className='modal-asset-grid';
             additional.forEach(({config,file}) => {
                 const item=document.createElement('div'); item.className='modal-asset';
-                const preview=document.createElement('div'); preview.className='modal-asset-preview checkerboard'; preview.appendChild(createImage(file,file.name,{copyable:true,pixelated:config.key!=='artwork'})); appendBetaBadge(preview,file);
+                const preview=document.createElement('div'); preview.className='modal-asset-preview checkerboard'; preview.appendChild(createImage(file,file.name,{copyable:true,pixelated:config.key!=='artwork'}));
                 const label=document.createElement('div'); label.className='modal-asset-label'; label.textContent=`${config.label} · ${file.parsed.additionalArtLabel || file.parsed.originalStem}`;
                 item.append(preview,label); extraGrid.appendChild(item);
             });
@@ -2918,6 +2808,7 @@
 
     function openGallery(item,{updateUrl=true}={}) {
         state.modal={type:'gallery',id:item.id};
+        elements.modalBody.onscroll=null;
         elements.modalKicker.textContent=item.categoryPath || 'Gallery';
         elements.modalTitle.textContent=item.title;
         elements.modalBody.replaceChildren();
@@ -3076,7 +2967,7 @@
     }
 
     function clearAllFilters() {
-        state.selectedTypes.clear(); state.ability=''; state.progressFilter='all'; state.galleryRelation='all'; state.selectedGalleryCategory=''; state.groupMode='none'; state.hideBetaSprites=false;
+        state.selectedTypes.clear(); state.ability=''; state.progressFilter='all'; state.galleryRelation='all'; state.selectedGalleryCategory=''; state.groupMode='none';
         STAT_CONFIG.forEach(stat=>state.statRanges[stat.key]={min:'',max:''});
         syncControlsFromState(); populateFilters(); render(); syncRoute({replace:true});
     }
@@ -3090,7 +2981,7 @@
 
     document.querySelector('.brand')?.addEventListener('click',()=>{state.currentView='pokemon';state.modal=null;elements.detailModal.classList.add('hidden');document.body.style.overflow='';render();syncRoute({push:true});});
 
-    elements.searchInput.addEventListener('input',()=>{clearTimeout(state.searchTimer);if(queryRequestsBeta(elements.searchInput.value))ensureBetaSpriteIndex();renderSearchSuggestions();state.searchTimer=setTimeout(render,120);});
+    elements.searchInput.addEventListener('input',()=>{clearTimeout(state.searchTimer);renderSearchSuggestions();state.searchTimer=setTimeout(render,120);});
     elements.searchInput.addEventListener('focus',renderSearchSuggestions);
     elements.clearSearch.addEventListener('click',()=>{elements.searchInput.value='';render();renderSearchSuggestions();elements.searchInput.focus();});
     elements.filtersButton.addEventListener('click',()=>openPanel(elements.filtersPanel));
@@ -3108,21 +2999,6 @@
     elements.hideUnusedAssets.addEventListener('change',()=>{prefs.hideUnusedAssets=elements.hideUnusedAssets.checked;savePreferences();render();});
     elements.abilityFilter.addEventListener('change',()=>{state.ability=elements.abilityFilter.value;render();syncRoute({replace:true});});
     elements.progressFilter.addEventListener('change',()=>{state.progressFilter=elements.progressFilter.value;render();syncRoute({replace:true});});
-    elements.hideBetaSprites.addEventListener('change',async()=>{
-        const requested=elements.hideBetaSprites.checked;
-        if(requested&&!state.betaIndexReady){
-            elements.hideBetaSprites.disabled=true;
-            await ensureBetaSpriteIndex();
-            elements.hideBetaSprites.disabled=false;
-        }
-        state.hideBetaSprites=requested;
-        syncControlsFromState();
-        render();
-        if(state.modal?.type==='pokemon'){
-            const record=state.pokemonById.get(String(state.modal.id||'').toLowerCase());
-            if(record)renderPokemonModal(record);
-        }
-    });
     elements.sortMode.addEventListener('change',()=>{state.sortMode=elements.sortMode.value;render();syncRoute({replace:true});});
     if(elements.groupMode)elements.groupMode.addEventListener('change',()=>{state.groupMode=elements.groupMode.value;render();syncRoute({replace:true});});
     elements.galleryRelationFilter.addEventListener('change',()=>{state.galleryRelation=elements.galleryRelationFilter.value;render();syncRoute({replace:true});});
