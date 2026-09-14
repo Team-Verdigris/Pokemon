@@ -1766,14 +1766,19 @@
     }
 
     function getCoverForRecord(record) {
-        const exactSingle = record.gallery.find(item => item.pokemon.length === 1 && item.pokemon[0].toUpperCase() === record.parsed.baseName.toUpperCase());
+        const exactSingle = record.gallery.find(item =>
+            item.pokemon.length === 1 &&
+            item.pokemon[0].toUpperCase() === record.parsed.baseName.toUpperCase()
+        );
+    
         const anyGallery = record.gallery[0];
-        return getVisibleRecordAsset(record, 'artwork')
+    
+        return record.assets.artwork
+            || record.assets.front
+            || record.assets.icon
             || exactSingle
-            || getVisibleRecordAsset(record, 'front')
             || anyGallery
-            || getVisibleRecordAsset(record, 'icon')
-            || getVisibleRecordAsset(record, 'back')
+            || record.assets.back
             || null;
     }
 
