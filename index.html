@@ -1059,6 +1059,8 @@
     const ARCHIVE_ROOT = 'Archived';
     const BASE_TITLE = 'Verdigris Dex — Pokémon & Asset Library';
     const SITE_VERSION = '2.3';
+    // Repository utility/placeholder sprites remain available in Folder browsing.
+    const POKEMON_VIEW_IGNORED_IDS = new Set(['_RETURN_', '000', 'QMARKY']);
 
     const ASSET_CONFIG = [
         { key: 'artwork', folder: 'Artworks', label: 'Artwork', required: true, utility: false },
