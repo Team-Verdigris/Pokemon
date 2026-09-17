@@ -4,11 +4,14 @@ from __future__ import annotations
 from pathlib import Path
 from urllib.parse import quote
 import html
+import json
 import re
 
 ROOT = Path(__file__).resolve().parent
 SITE_BASE = "https://team-verdigris.github.io/Pokemon/"
 OUTPUT_ROOT = ROOT / "pokemon"
+MOVE_OUTPUT_ROOT = ROOT / "moves"
+ABILITY_OUTPUT_ROOT = ROOT / "abilities"
 
 FOLDERS = [
     ("artwork", "Artworks"),
@@ -220,6 +223,107 @@ def build_page(record: dict) -> str:
 """
 
 
+def load_snapshot() -> dict | None:
+    candidates = sorted(ROOT.glob("pokemon_snapshot*.json"))
+    if not candidates:
+        return None
+
+    snapshots = []
+    for path in candidates:
+        try:
+            data = json.loads(path.read_text(encoding="utf-8-sig"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if isinstance(data, dict) and isinstance(data.get("pokemon"), list):
+            snapshots.append((path, data))
+    if not snapshots:
+        return None
+    # Prefer the canonical filename when it is present, matching the website.
+    canonical = next((data for path, data in snapshots if path.name == "pokemon_snapshot.json"), None)
+    if canonical is not None:
+        return canonical
+    return max(snapshots, key=lambda item: str(item[1].get("generated_at", "")))[1]
+
+
+def catalog_description(kind: str, entry: dict) -> str:
+    description = str(entry.get("description") or "").strip()
+    if kind == "move":
+        type_name = (entry.get("type") or {}).get("name")
+        category = entry.get("category")
+        details = " · ".join(value for value in (type_name, category) if value)
+        if details and description:
+            return f"{details}. {description}"
+        return details or description or "A custom Team Verdigris move."
+    return description or "A custom Team Verdigris ability."
+
+
+def build_catalog_page(kind: str, entry: dict) -> str:
+    plural = "moves" if kind == "move" else "abilities"
+    label = "Move" if kind == "move" else "Ability"
+    entry_id = str(entry["id"])
+    name = str(entry.get("name") or entry_id)
+    description = catalog_description(kind, entry)
+    route_url = SITE_BASE + plural + "/" + quote(entry_id, safe="") + "/"
+    relative_viewer_url = f"../../?view={plural}&entry=" + quote(entry_id, safe="")
+    title = f"{name} — Verdigris {label}"
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{html.escape(title)}</title>
+    <meta name="description" content="{html.escape(description, quote=True)}">
+    <link rel="canonical" href="{html.escape(route_url, quote=True)}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Verdigris Dex">
+    <meta property="og:title" content="{html.escape(title, quote=True)}">
+    <meta property="og:description" content="{html.escape(description, quote=True)}">
+    <meta property="og:url" content="{html.escape(route_url, quote=True)}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{html.escape(title, quote=True)}">
+    <meta name="twitter:description" content="{html.escape(description, quote=True)}">
+    <script>window.location.replace({relative_viewer_url!r});</script>
+</head>
+<body>
+    <p>Opening <a href="{html.escape(relative_viewer_url, quote=True)}">{html.escape(name)}</a> in the Verdigris Dex.</p>
+</body>
+</html>
+"""
+
+
+def write_catalog_routes(snapshot: dict | None) -> tuple[int, int]:
+    if not snapshot:
+        return 0, 0
+
+    counts = []
+    for kind, key, output_root in (
+        ("move", "moves", MOVE_OUTPUT_ROOT),
+        ("ability", "abilities", ABILITY_OUTPUT_ROOT),
+    ):
+        entries = snapshot.get(key) or []
+        if entries:
+            output_root.mkdir(parents=True, exist_ok=True)
+        written = 0
+        for entry in sorted(entries, key=lambda item: str(item.get("id", "")).lower()):
+            entry_id = str(entry.get("id") or "").strip()
+            if not entry_id:
+                continue
+            route_dir = output_root / entry_id
+            route_dir.mkdir(parents=True, exist_ok=True)
+            (route_dir / "index.html").write_text(
+                build_catalog_page(kind, entry), encoding="utf-8"
+            )
+            written += 1
+        if entries:
+            (output_root / "routes-ready.txt").write_text(
+                f"Team Verdigris {key} preview routes are generated.\n",
+                encoding="utf-8",
+            )
+        counts.append(written)
+    return counts[0], counts[1]
+
+
 def main() -> None:
     records = collect_records()
 
@@ -251,7 +355,11 @@ def main() -> None:
         encoding="utf-8",
     )
 
-    print(f"Generated {written} Pokémon preview routes in {OUTPUT_ROOT}")
+    move_count, ability_count = write_catalog_routes(load_snapshot())
+    print(
+        f"Generated {written} Pokémon, {move_count} move, and "
+        f"{ability_count} ability preview routes."
+    )
 
 
 if __name__ == "__main__":

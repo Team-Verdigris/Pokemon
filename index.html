@@ -524,6 +524,34 @@
         .modal-asset-preview { display: flex; height: 170px; align-items: center; justify-content: center; padding: 9px; overflow: hidden; }
         .modal-asset-preview img { max-width: 100%; max-height: 100%; object-fit: contain; image-rendering: pixelated; }
         .modal-asset-label { padding: 8px 9px; border-top: 1px solid var(--border); font-size: 10px; font-weight: 800; }
+        .catalog-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; }
+        .catalog-card { display:flex; min-height:210px; flex-direction:column; gap:13px; padding:16px; border:1px solid var(--border); border-radius:12px; background:var(--panel); color:var(--text); text-align:left; cursor:pointer; transition:transform var(--ease),border-color var(--ease),background var(--ease); }
+        .catalog-card:hover,.catalog-card:focus-visible { transform:translateY(-2px); border-color:var(--accent); background:var(--panel-2); outline:none; }
+        .catalog-card-header { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+        .catalog-card-title { margin:0; font-size:18px; line-height:1.2; }
+        .catalog-card-id { margin-top:3px; color:var(--muted); font:700 9px/1.2 ui-monospace,SFMono-Regular,Consolas,monospace; letter-spacing:.04em; }
+        .catalog-description { margin:0; color:var(--muted); font-size:12px; line-height:1.55; }
+        .move-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:7px; margin-top:auto; }
+        .move-metric { padding:8px 6px; border:1px solid var(--border); border-radius:8px; background:var(--field); text-align:center; }
+        .move-metric span { display:block; color:var(--muted); font-size:8px; font-weight:850; text-transform:uppercase; letter-spacing:.06em; }
+        .move-metric strong { display:block; margin-top:2px; font-size:14px; }
+        .catalog-controls { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+        .catalog-controls select { min-width:125px; }
+        .detail-description { margin:0 0 18px; color:var(--muted); font-size:14px; line-height:1.65; }
+        .detail-facts { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:9px; margin-bottom:18px; }
+        .detail-fact { padding:11px; border:1px solid var(--border); border-radius:9px; background:var(--panel-2); }
+        .detail-fact-label { color:var(--muted); font-size:9px; font-weight:850; text-transform:uppercase; letter-spacing:.06em; }
+        .detail-fact-value { margin-top:4px; font-size:14px; font-weight:800; overflow-wrap:anywhere; }
+        .learner-groups,.learnset-groups { display:grid; gap:14px; }
+        .learner-group h4,.learnset-group h4 { margin:0 0 8px; font-size:12px; }
+        .learner-list,.move-list { display:flex; flex-wrap:wrap; gap:7px; }
+        .learner-chip,.move-chip { min-height:31px; padding:6px 9px; border:1px solid var(--border); border-radius:8px; background:var(--field); color:var(--text); font-size:11px; font-weight:750; }
+        button.learner-chip,button.move-chip { cursor:pointer; }
+        button.learner-chip:hover,button.move-chip:hover { border-color:var(--accent); }
+        .move-level { margin-left:5px; color:var(--muted); font-size:9px; }
+        .custom-entry-mark { margin-left:5px; color:var(--accent); font-size:9px; font-weight:900; }
+        .technical-details { margin-top:16px; border-top:1px solid var(--border); padding-top:12px; }
+        .technical-details summary { cursor:pointer; color:var(--muted); font-size:11px; font-weight:800; }
         .missing-asset { color: var(--muted); font-size: 11px; }
         .gallery-strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
         .gallery-mini { overflow: hidden; border: 1px solid var(--border); border-radius: 9px; background: var(--panel-2); cursor: pointer; }
@@ -759,7 +787,7 @@
             .header-actions { gap:2px; }
             .active-filter-bar { width:calc(100% - 18px); padding-bottom:6px; overflow-x:auto; flex-wrap:nowrap; }
             main { width:calc(100% - 18px); padding-top:12px; }
-            .mobile-nav { position:fixed; left:0; right:0; bottom:0; z-index:120; display:grid; grid-template-columns:repeat(3,1fr); min-height:58px; padding:max(4px,env(safe-area-inset-bottom)) 8px 5px; border-top:1px solid var(--border); background:color-mix(in srgb,var(--panel) 96%,transparent); backdrop-filter:blur(14px); }
+            .mobile-nav { position:fixed; left:0; right:0; bottom:0; z-index:120; display:grid; grid-template-columns:repeat(5,1fr); min-height:58px; padding:max(4px,env(safe-area-inset-bottom)) 8px 5px; border-top:1px solid var(--border); background:color-mix(in srgb,var(--panel) 96%,transparent); backdrop-filter:blur(14px); }
             .mobile-nav-button { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; border-radius:8px; }
             .mobile-nav-button span { font-size:15px; }
             .mobile-nav-button small { font-size:9px; }
@@ -779,6 +807,8 @@
             .view-controls { width:100%; flex-wrap:wrap; }
             .view-controls > * { max-width:100%; }
             .gallery-grid, .pokemon-grid, .asset-grid { grid-template-columns:repeat(auto-fill,minmax(min(155px,100%),1fr)); }
+            .catalog-grid { grid-template-columns:1fr; }
+            .move-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
             .gallery-detail-image { min-height:0; }
             .gallery-detail-image img { max-height:none; width:auto; height:auto; }
             .stat-filter-builder { grid-template-columns:1fr 54px 68px; }
@@ -797,6 +827,8 @@
 
             <nav class="main-nav" aria-label="Primary navigation">
                 <button class="nav-button active" data-view="pokemon" type="button">Pokémon</button>
+                <button class="nav-button" data-view="moves" type="button">Moves</button>
+                <button class="nav-button" data-view="abilities" type="button">Abilities</button>
                 <button class="nav-button" data-view="gallery" type="button">Gallery</button>
                 <button class="nav-button" data-view="folder" type="button">Folders</button>
             </nav>
@@ -822,6 +854,8 @@
 
     <nav class="mobile-nav" aria-label="Mobile navigation">
         <button class="nav-button mobile-nav-button active" data-view="pokemon" type="button"><span>◉</span><small>Pokémon</small></button>
+        <button class="nav-button mobile-nav-button" data-view="moves" type="button"><span>✦</span><small>Moves</small></button>
+        <button class="nav-button mobile-nav-button" data-view="abilities" type="button"><span>◆</span><small>Abilities</small></button>
         <button class="nav-button mobile-nav-button" data-view="gallery" type="button"><span>▧</span><small>Gallery</small></button>
         <button class="nav-button mobile-nav-button" data-view="folder" type="button"><span>▤</span><small>Folders</small></button>
     </nav>
@@ -1024,7 +1058,7 @@
     const GALLERY_ROOT = 'Gallery';
     const ARCHIVE_ROOT = 'Archived';
     const BASE_TITLE = 'Verdigris Dex — Pokémon & Asset Library';
-    const SITE_VERSION = '2.2';
+    const SITE_VERSION = '2.3';
 
     const ASSET_CONFIG = [
         { key: 'artwork', folder: 'Artworks', label: 'Artwork', required: true, utility: false },
@@ -1098,6 +1132,10 @@
         snapshot: null,
         snapshotPath: null,
         snapshotGeneratedAt: null,
+        customMoves: [],
+        customAbilities: [],
+        customMoveById: new Map(),
+        customAbilityById: new Map(),
         pokemonRecords: [],
         pokemonById: new Map(),
         speciesGroups: [],
@@ -1116,6 +1154,9 @@
         galleryRelation: 'all',
         sortMode: 'dex',
         groupMode: 'none',
+        moveType: '',
+        moveCategory: '',
+        moveSort: 'name',
         modal: null,
         copyToastTimer: null,
         paletteCache: new Map(),
@@ -1124,6 +1165,7 @@
         evolutionParents: new Map(),
         recordsByType: new Map(),
         recordsByAbility: new Map(),
+        recordsByMove: new Map(),
         searchTimer: null
     };
 
@@ -1487,6 +1529,11 @@
         state.pokemonRecords.forEach(record => {
             const dex = record.dex;
             const abilities = dex ? [...(dex.abilities?.standard || []), ...(dex.abilities?.hidden || [])] : [];
+            const moves = dex ? [
+                ...(dex.moves?.level_up || []),
+                ...(dex.moves?.tutor || []),
+                ...(dex.moves?.egg || [])
+            ] : [];
             record.searchText = escapeSearchText([
                 record.id,
                 record.parsed.baseName,
@@ -1496,6 +1543,7 @@
                 dex?.category,
                 ...(dex?.types || []).flatMap(type => [type.id, type.name]),
                 ...abilities.flatMap(ability => [ability.id, ability.name]),
+                ...moves.flatMap(move => [move.id, move.name]),
                 ...(dex?.evolves_into || []).flatMap(evo => [evo.id, evo.name]),
                 ...Object.values(record.assets).flatMap(file => [file.name, file.path]),
                 ...Object.values(record.additionalArt).flat().flatMap(file => [file.name, file.path]),
@@ -1513,6 +1561,11 @@
         state.evolutionParents = new Map();
         state.recordsByType = new Map();
         state.recordsByAbility = new Map();
+        state.recordsByMove = new Map();
+        state.customMoves = Array.isArray(state.snapshot?.moves) ? state.snapshot.moves : [];
+        state.customAbilities = Array.isArray(state.snapshot?.abilities) ? state.snapshot.abilities : [];
+        state.customMoveById = new Map(state.customMoves.map(move => [String(move.id).toUpperCase(), move]));
+        state.customAbilityById = new Map(state.customAbilities.map(ability => [String(ability.id).toUpperCase(), ability]));
 
         if (state.snapshot?.pokemon) {
             state.snapshot.pokemon.forEach(species => {
@@ -1541,6 +1594,21 @@
                 if (!state.recordsByAbility.has(key)) state.recordsByAbility.set(key, new Set());
                 state.recordsByAbility.get(key).add(record);
             });
+            const learnsets = record.dex?.moves || {};
+            const addMove = (move, method) => {
+                const key = String(move.id).toUpperCase();
+                if (!state.recordsByMove.has(key)) state.recordsByMove.set(key, new Map());
+                const byRecord = state.recordsByMove.get(key);
+                if (!byRecord.has(record.id)) {
+                    byRecord.set(record.id, { record, level_up: new Set(), tutor: false, egg: false });
+                }
+                const usage = byRecord.get(record.id);
+                if (method === 'level_up') usage.level_up.add(Number(move.level));
+                else usage[method] = true;
+            };
+            (learnsets.level_up || []).forEach(move => addMove(move, 'level_up'));
+            (learnsets.tutor || []).forEach(move => addMove(move, 'tutor'));
+            (learnsets.egg || []).forEach(move => addMove(move, 'egg'));
         });
     }
 
@@ -1745,8 +1813,14 @@
         const button = document.createElement('button');
         button.type = 'button';
         button.className = `ability-chip${hidden ? ' hidden-ability' : ''}`;
+        const custom = state.customAbilityById.get(String(ability.id).toUpperCase());
         button.textContent = ability.name;
-        button.addEventListener('click', () => {
+        if (custom) {
+            const mark=document.createElement('span');mark.className='custom-entry-mark';mark.textContent='↗';button.appendChild(mark);
+            button.title='View custom Ability details';
+            button.addEventListener('click', event => { event.stopPropagation(); openAbility(custom); });
+        } else button.addEventListener('click', event => {
+            event.stopPropagation();
             state.ability = ability.id;
             state.currentView = 'pokemon';
             closeModal({ updateUrl: false });
@@ -2086,6 +2160,90 @@
         elements.content.replaceChildren(wrapper);
     }
 
+    function passiveTypeChip(type) {
+        const chip=document.createElement('span');chip.className='type-chip';chip.dataset.type=String(type?.id||type?.name||'').toUpperCase();chip.textContent=type?.name||type?.id||'Unknown';return chip;
+    }
+
+    function moveMetric(label,value) {
+        const metric=document.createElement('div');metric.className='move-metric';
+        const caption=document.createElement('span');caption.textContent=label;
+        const number=document.createElement('strong');number.textContent=value;
+        metric.append(caption,number);return metric;
+    }
+
+    function displayMoveNumber(value,{accuracy=false}={}) {
+        if(value===null||value===undefined||value==='')return '—';
+        if(accuracy&&Number(value)===0)return '—';
+        return String(value);
+    }
+
+    function makeMoveCard(move) {
+        const card=document.createElement('article');card.className='catalog-card';card.tabIndex=0;card.setAttribute('role','button');
+        const header=document.createElement('div');header.className='catalog-card-header';
+        const copy=document.createElement('div');const title=document.createElement('h2');title.className='catalog-card-title';title.textContent=move.name||move.id;
+        const id=document.createElement('div');id.className='catalog-card-id';id.textContent=move.id;copy.append(title,id);header.appendChild(copy);
+        if(move.type)header.appendChild(passiveTypeChip(move.type));
+        const description=document.createElement('p');description.className='catalog-description';description.textContent=move.description||'No description available.';
+        const metrics=document.createElement('div');metrics.className='move-metrics';
+        metrics.append(
+            moveMetric('Class',move.category||'—'),
+            moveMetric('Power',displayMoveNumber(move.power)),
+            moveMetric('Accuracy',displayMoveNumber(move.accuracy,{accuracy:true})),
+            moveMetric('PP',displayMoveNumber(move.pp))
+        );
+        card.append(header,description,metrics);
+        const open=()=>openMove(move);card.addEventListener('click',open);card.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open();}});return card;
+    }
+
+    function makeAbilityCard(ability) {
+        const card=document.createElement('article');card.className='catalog-card';card.tabIndex=0;card.setAttribute('role','button');
+        const header=document.createElement('div');header.className='catalog-card-header';
+        const copy=document.createElement('div');const title=document.createElement('h2');title.className='catalog-card-title';title.textContent=ability.name||ability.id;
+        const id=document.createElement('div');id.className='catalog-card-id';id.textContent=ability.id;copy.append(title,id);header.appendChild(copy);
+        const count=document.createElement('span');count.className='form-count';const used=state.recordsByAbility.get(String(ability.id).toUpperCase())?.size||0;count.textContent=`${used} Pokémon`;header.appendChild(count);
+        const description=document.createElement('p');description.className='catalog-description';description.textContent=ability.description||'No description available.';
+        card.append(header,description);
+        const open=()=>openAbility(ability);card.addEventListener('click',open);card.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open();}});return card;
+    }
+
+    function renderMovesView() {
+        const query=elements.searchInput.value.trim().toLowerCase();
+        const types=[...new Map(state.customMoves.filter(move=>move.type).map(move=>[move.type.id,move.type])).values()].sort((a,b)=>compareText(a.name,b.name));
+        const categories=[...new Set(state.customMoves.map(move=>move.category).filter(Boolean))].sort(compareText);
+        let moves=state.customMoves.filter(move=>{
+            if(state.moveType&&String(move.type?.id)!==state.moveType)return false;
+            if(state.moveCategory&&String(move.category)!==state.moveCategory)return false;
+            const search=escapeSearchText([move.id,move.name,move.description,move.type?.id,move.type?.name,move.category,move.target,move.function_code,...(move.flags||[])].filter(Boolean).join(' '));
+            return !query||search.includes(query);
+        });
+        moves=[...moves].sort((a,b)=>{
+            if(state.moveSort==='type')return compareText(a.type?.name,b.type?.name)||compareText(a.name,b.name);
+            if(state.moveSort==='power')return (Number(b.power)||-1)-(Number(a.power)||-1)||compareText(a.name,b.name);
+            if(state.moveSort==='pp')return (Number(b.pp)||-1)-(Number(a.pp)||-1)||compareText(a.name,b.name);
+            return compareText(a.name,b.name);
+        });
+        const controls=document.createElement('div');controls.className='catalog-controls';
+        const typeSelect=document.createElement('select');typeSelect.className='compact-select';typeSelect.innerHTML='<option value="">All types</option>';types.forEach(type=>{const option=document.createElement('option');option.value=type.id;option.textContent=type.name;typeSelect.appendChild(option);});typeSelect.value=state.moveType;typeSelect.addEventListener('change',()=>{state.moveType=typeSelect.value;render();syncRoute({replace:true});});
+        const categorySelect=document.createElement('select');categorySelect.className='compact-select';categorySelect.innerHTML='<option value="">All categories</option>';categories.forEach(category=>{const option=document.createElement('option');option.value=category;option.textContent=category;categorySelect.appendChild(option);});categorySelect.value=state.moveCategory;categorySelect.addEventListener('change',()=>{state.moveCategory=categorySelect.value;render();syncRoute({replace:true});});
+        const sortSelect=document.createElement('select');sortSelect.className='compact-select';sortSelect.innerHTML='<option value="name">Name A–Z</option><option value="type">Type</option><option value="power">Power: highest</option><option value="pp">PP: highest</option>';sortSelect.value=state.moveSort;sortSelect.addEventListener('change',()=>{state.moveSort=sortSelect.value;render();syncRoute({replace:true});});
+        controls.append(typeSelect,categorySelect,sortSelect);
+        const wrapper=document.createDocumentFragment();wrapper.appendChild(makeViewHeading('Moves',`${moves.length} of ${state.customMoves.length} Verdigris move${state.customMoves.length===1?'':'s'}`,controls));
+        if(!state.customMoves.length){const status=document.createElement('div');status.className='status';status.textContent='No Verdigris move definitions are present in this snapshot. Regenerate it with schema v2.';wrapper.appendChild(status);}
+        else if(!moves.length){const status=document.createElement('div');status.className='status';status.textContent='No custom moves match the current search and filters.';wrapper.appendChild(status);}
+        else{const grid=document.createElement('div');grid.className='catalog-grid';moves.forEach(move=>grid.appendChild(makeMoveCard(move)));wrapper.appendChild(grid);}
+        elements.content.replaceChildren(wrapper);
+    }
+
+    function renderAbilitiesView() {
+        const query=elements.searchInput.value.trim().toLowerCase();
+        const abilities=state.customAbilities.filter(ability=>!query||escapeSearchText([ability.id,ability.name,ability.description,...(ability.flags||[])].filter(Boolean).join(' ')).includes(query)).sort((a,b)=>compareText(a.name,b.name));
+        const wrapper=document.createDocumentFragment();wrapper.appendChild(makeViewHeading('Abilities',`${abilities.length} of ${state.customAbilities.length} Verdigris Abilit${state.customAbilities.length===1?'y':'ies'}`));
+        if(!state.customAbilities.length){const status=document.createElement('div');status.className='status';status.textContent='No Verdigris Ability definitions are present in this snapshot. Regenerate it with schema v2.';wrapper.appendChild(status);}
+        else if(!abilities.length){const status=document.createElement('div');status.className='status';status.textContent='No custom Abilities match the current search.';wrapper.appendChild(status);}
+        else{const grid=document.createElement('div');grid.className='catalog-grid';abilities.forEach(ability=>grid.appendChild(makeAbilityCard(ability)));wrapper.appendChild(grid);}
+        elements.content.replaceChildren(wrapper);
+    }
+
     function formatRefreshDate(value) {
         if (!value) return '';
         const date = new Date(value);
@@ -2368,6 +2526,10 @@
         if(state.currentView==='pokemon'){
             const typeMatches=[...state.recordsByType.keys()].filter(type=>type.toLowerCase().includes(q)).slice(0,3);if(typeMatches.length){addLabel('Types');typeMatches.forEach(type=>addSuggestion(type,`${state.recordsByType.get(type).size} matching records`,'Type',null,()=>{state.selectedTypes.add(type);elements.searchInput.value='';populateFilters();syncRoute({push:true});render();}));}
             const pokemon=state.speciesGroups.filter(group=>group.forms.some(record=>record.searchText.includes(q))).slice(0,6);if(pokemon.length){addLabel('Pokémon');pokemon.forEach(group=>{const record=group.forms.find(r=>r.searchText.includes(q))||group.primary;addSuggestion(getDisplayName(record),(record.dex?.types||[]).map(t=>t.name).join(' · ')||record.dex?.species_name,'Pokémon',getCoverForRecord(record),()=>openPokemon(record));});}
+        } else if(state.currentView==='moves') {
+            const moves=state.customMoves.filter(move=>escapeSearchText([move.id,move.name,move.description,move.type?.name,move.category].filter(Boolean).join(' ')).includes(q)).slice(0,8);if(moves.length){addLabel('Moves');moves.forEach(move=>addSuggestion(move.name,[move.type?.name,move.category].filter(Boolean).join(' · '),'Move',null,()=>openMove(move)));}
+        } else if(state.currentView==='abilities') {
+            const abilities=state.customAbilities.filter(ability=>escapeSearchText([ability.id,ability.name,ability.description].filter(Boolean).join(' ')).includes(q)).slice(0,8);if(abilities.length){addLabel('Abilities');abilities.forEach(ability=>addSuggestion(ability.name,`${state.recordsByAbility.get(String(ability.id).toUpperCase())?.size||0} Pokémon`,'Ability',null,()=>openAbility(ability)));}
         } else if(state.currentView==='gallery') {
             const gallery=state.galleryItems.filter(item=>item.searchText.includes(q)).slice(0,8);if(gallery.length){addLabel('Gallery');gallery.forEach(item=>addSuggestion(item.title,item.categoryPath||'Uncategorized','Gallery',item,()=>openGallery(item)));}
         }
@@ -2382,6 +2544,8 @@
         if (!state.loaded) return;
         if (state.currentView === 'gallery') renderGalleryView();
         else if (state.currentView === 'folder') renderFolderView();
+        else if (state.currentView === 'moves') renderMovesView();
+        else if (state.currentView === 'abilities') renderAbilitiesView();
         else renderPokemonView();
     }
 
@@ -2391,30 +2555,39 @@
             ? 'Search Gallery…'
             : state.currentView === 'folder'
                 ? 'Search this folder…'
-                : 'Search Pokémon, types, abilities, stats…';
+                : state.currentView === 'moves'
+                    ? 'Search custom moves…'
+                    : state.currentView === 'abilities'
+                        ? 'Search custom Abilities…'
+                        : 'Search Pokémon, types, abilities, moves, stats…';
     }
 
     function updateFilterPanels() {
         const pokemon = state.currentView === 'pokemon';
         elements.pokemonFilterSection.classList.toggle('hidden',!pokemon);
         elements.statFilterSection.classList.toggle('hidden',!pokemon);
-        elements.assetFilterSection.classList.toggle('hidden',state.currentView === 'gallery');
+        elements.assetFilterSection.classList.toggle('hidden',!['pokemon','folder'].includes(state.currentView));
         elements.galleryFilterSection.classList.toggle('hidden',state.currentView !== 'gallery');
+        elements.filtersButton.classList.toggle('hidden',!['pokemon','gallery','folder'].includes(state.currentView));
         if(elements.groupModeField)elements.groupModeField.classList.toggle('hidden',state.currentView !== 'pokemon');
     }
 
     function renderActiveFilterBar() {
         const chips = [];
-        state.selectedTypes.forEach(type => chips.push({ label: `Type: ${type}`, clear: () => state.selectedTypes.delete(type) }));
-        if (state.ability) chips.push({ label: `Ability: ${state.ability}`, clear: () => { state.ability = ''; elements.abilityFilter.value = ''; } });
-        STAT_CONFIG.forEach(stat => {
-            const range = state.statRanges[stat.key] || {};
-            if (range.min !== '' && range.min != null) chips.push({ label: `${stat.label} ≥ ${range.min}`, clear: () => { range.min = ''; syncStatInputs(); } });
-            if (range.max !== '' && range.max != null) chips.push({ label: `${stat.label} ≤ ${range.max}`, clear: () => { range.max = ''; syncStatInputs(); } });
-        });
-        if (state.progressFilter !== 'all') chips.push({ label: `Assets: ${state.progressFilter}`, clear: () => { state.progressFilter = 'all'; elements.progressFilter.value = 'all'; } });
+        if(state.currentView==='pokemon') {
+            state.selectedTypes.forEach(type => chips.push({ label: `Type: ${type}`, clear: () => state.selectedTypes.delete(type) }));
+            if (state.ability) chips.push({ label: `Ability: ${state.ability}`, clear: () => { state.ability = ''; elements.abilityFilter.value = ''; } });
+            STAT_CONFIG.forEach(stat => {
+                const range = state.statRanges[stat.key] || {};
+                if (range.min !== '' && range.min != null) chips.push({ label: `${stat.label} ≥ ${range.min}`, clear: () => { range.min = ''; syncStatInputs(); } });
+                if (range.max !== '' && range.max != null) chips.push({ label: `${stat.label} ≤ ${range.max}`, clear: () => { range.max = ''; syncStatInputs(); } });
+            });
+        }
+        if (['pokemon','folder'].includes(state.currentView) && state.progressFilter !== 'all') chips.push({ label: `Assets: ${state.progressFilter}`, clear: () => { state.progressFilter = 'all'; elements.progressFilter.value = 'all'; } });
         if (state.currentView === 'gallery' && state.galleryRelation !== 'all') chips.push({ label: state.galleryRelation === 'pokemon' ? 'Pokémon-related' : 'General Gallery', clear: () => { state.galleryRelation = 'all'; elements.galleryRelationFilter.value = 'all'; } });
         if (state.currentView === 'gallery' && state.selectedGalleryCategory) chips.push({ label: state.selectedGalleryCategory, clear: () => state.selectedGalleryCategory = '' });
+        if (state.currentView === 'moves' && state.moveType) chips.push({ label: `Move type: ${state.moveType}`, clear: () => state.moveType = '' });
+        if (state.currentView === 'moves' && state.moveCategory) chips.push({ label: `Category: ${state.moveCategory}`, clear: () => state.moveCategory = '' });
 
         elements.activeFilterBar.replaceChildren();
         chips.forEach(item => {
@@ -2596,7 +2769,7 @@
         const nav = elements.modalBody.querySelector('.detail-tabs');
         const bodyRect = elements.modalBody.getBoundingClientRect();
         const threshold = bodyRect.top + (nav?.offsetHeight || 0) + 20;
-        const keys = ['overview','assets','gallery','archive'];
+        const keys = ['overview','moves','assets','gallery','archive'];
         let active = 'overview';
         keys.forEach(key => {
             const section = document.getElementById(getPokemonDetailSectionId(key));
@@ -2646,7 +2819,9 @@
 
         const nav=document.createElement('div');nav.className='detail-tabs';
         const assetTabCount=prefs.progressDisplay==='none'?'':getRecordProgress(record).complete+'/'+getRecordProgress(record).total;
-        const tabDefs=[['overview','Overview',''],['assets','Assets',assetTabCount],['gallery','Gallery',gallery.length||''],['archive','Archive',archives.length||'']];
+        const learnset=record.dex?.moves||{};
+        const moveCount=new Set([...(learnset.level_up||[]),...(learnset.tutor||[]),...(learnset.egg||[])].map(move=>String(move.id).toUpperCase())).size;
+        const tabDefs=[['overview','Overview',''],['moves','Moves',moveCount||''],['assets','Assets',assetTabCount],['gallery','Gallery',gallery.length||''],['archive','Archive',archives.length||'']];
         tabDefs.forEach(([key,label,count])=>{
             const button=document.createElement('button');button.type='button';button.dataset.detailSection=key;
             button.className=`detail-tab${activeSection===key?' active':''}`;
@@ -2665,6 +2840,11 @@
         overview.appendChild(buildPokemonHero(record));
         const evolution=buildEvolutionFamilySection(record);if(evolution)overview.appendChild(evolution);
         content.appendChild(overview);
+
+        const moves=buildPokemonMovesSection(record);
+        moves.classList.add('detail-scroll-section');
+        moves.id=getPokemonDetailSectionId('moves');
+        content.appendChild(moves);
 
         const assets=buildAssetsSection(record);
         assets.classList.add('detail-scroll-section');
@@ -2695,6 +2875,31 @@
             if(activeSection!=='overview')scrollPokemonDetailToSection(activeSection,{smooth:false});
             else setPokemonDetailNavActive('overview');
         });
+    }
+
+    function makeLearnsetMoveChip(move,{level=null}={}) {
+        const custom=state.customMoveById.get(String(move.id).toUpperCase());
+        const chip=document.createElement(custom?'button':'span');
+        if(custom)chip.type='button';
+        chip.className='move-chip';chip.textContent=move.name||move.id;
+        if(level!==null){const note=document.createElement('span');note.className='move-level';note.textContent=`Lv. ${level}`;chip.appendChild(note);}
+        if(custom){const mark=document.createElement('span');mark.className='custom-entry-mark';mark.textContent='↗';chip.appendChild(mark);chip.title='View custom move details';chip.addEventListener('click',()=>openMove(custom));}
+        return chip;
+    }
+
+    function buildPokemonMovesSection(record) {
+        const section=document.createElement('section');section.className='detail-section';
+        const header=document.createElement('div');header.className='section-header';const title=document.createElement('h3');title.className='section-title';title.textContent='Learnset';header.appendChild(title);section.appendChild(header);
+        const learnset=record.dex?.moves||{};
+        const groups=[['Level Up',learnset.level_up||[],'level_up'],['Tutor / TM',learnset.tutor||[],'tutor'],['Egg',learnset.egg||[],'egg']];
+        const body=document.createElement('div');body.className='learnset-groups';let populated=false;
+        groups.forEach(([label,moves,method])=>{
+            if(!moves.length)return;populated=true;
+            const group=document.createElement('div');group.className='learnset-group';const heading=document.createElement('h4');heading.textContent=`${label} (${moves.length})`;
+            const list=document.createElement('div');list.className='move-list';moves.forEach(move=>list.appendChild(makeLearnsetMoveChip(move,{level:method==='level_up'?move.level:null})));group.append(heading,list);body.appendChild(group);
+        });
+        if(populated)section.appendChild(body);else{const empty=document.createElement('div');empty.className='detail-empty';empty.textContent=record.dex?'No learnset entries are available for this form.':'Regenerate the snapshot with schema v2 to include learnsets.';section.appendChild(empty);}
+        return section;
     }
 
     function buildStatsSection(stats,{embedded=false}={}) {
@@ -2806,6 +3011,53 @@
         section.append(header,list); return section;
     }
 
+    function detailFact(labelText,valueText) {
+        const fact=document.createElement('div');fact.className='detail-fact';
+        const label=document.createElement('div');label.className='detail-fact-label';label.textContent=labelText;
+        const value=document.createElement('div');value.className='detail-fact-value';value.textContent=valueText;
+        fact.append(label,value);return fact;
+    }
+
+    function makeLearnerChip(record,suffix='') {
+        const button=document.createElement('button');button.type='button';button.className='learner-chip';button.textContent=getDisplayName(record);
+        if(suffix){const note=document.createElement('span');note.className='move-level';note.textContent=suffix;button.appendChild(note);}
+        button.addEventListener('click',()=>openPokemon(record));return button;
+    }
+
+    function appendLearnerSection(container,titleText,entries,suffixForEntry=()=> '') {
+        if(!entries.length)return;
+        const group=document.createElement('div');group.className='learner-group';const title=document.createElement('h4');title.textContent=`${titleText} (${entries.length})`;
+        const list=document.createElement('div');list.className='learner-list';entries.forEach(entry=>list.appendChild(makeLearnerChip(entry.record,suffixForEntry(entry))));group.append(title,list);container.appendChild(group);
+    }
+
+    function openMove(move,{updateUrl=true}={}) {
+        const viewChanged=state.currentView!=='moves';state.currentView='moves';if(viewChanged)render();state.modal={type:'move',id:move.id};
+        elements.modalBody.onscroll=null;elements.modalKicker.textContent=[move.type?.name,move.category,'Move'].filter(Boolean).join(' · ');elements.modalTitle.textContent=move.name||move.id;elements.modalBody.replaceChildren();
+        const description=document.createElement('p');description.className='detail-description';description.textContent=move.description||'No description available.';
+        const facts=document.createElement('div');facts.className='detail-facts';
+        facts.append(detailFact('Type',move.type?.name||'—'),detailFact('Category',move.category||'—'),detailFact('Power',displayMoveNumber(move.power)),detailFact('Accuracy',displayMoveNumber(move.accuracy,{accuracy:true})),detailFact('PP',displayMoveNumber(move.pp)),detailFact('Priority',displayMoveNumber(move.priority)));
+        elements.modalBody.append(description,facts);
+        const learned=document.createElement('section');learned.className='detail-section';const header=document.createElement('div');header.className='section-header';const heading=document.createElement('h3');heading.className='section-title';heading.textContent='Learned By';header.appendChild(heading);learned.appendChild(header);
+        const groups=document.createElement('div');groups.className='learner-groups';const usages=[...(state.recordsByMove.get(String(move.id).toUpperCase())?.values()||[])].sort((a,b)=>(a.record.dex?.pokedex_number??999999)-(b.record.dex?.pokedex_number??999999)||compareText(getDisplayName(a.record),getDisplayName(b.record)));
+        const level=usages.filter(usage=>usage.level_up.size);const tutor=usages.filter(usage=>usage.tutor);const egg=usages.filter(usage=>usage.egg);
+        appendLearnerSection(groups,'Level Up',level,usage=>`Lv. ${[...usage.level_up].sort((a,b)=>a-b).join(', ')}`);appendLearnerSection(groups,'Tutor / TM',tutor);appendLearnerSection(groups,'Egg',egg);
+        if(groups.children.length)learned.appendChild(groups);else{const empty=document.createElement('div');empty.className='detail-empty';empty.textContent='No Pokémon in this snapshot currently learn this move.';learned.appendChild(empty);}elements.modalBody.appendChild(learned);
+        const technical=document.createElement('details');technical.className='technical-details';const summary=document.createElement('summary');summary.textContent='Technical details';technical.appendChild(summary);
+        const technicalFacts=document.createElement('div');technicalFacts.className='detail-facts';technicalFacts.style.marginTop='10px';technicalFacts.append(detailFact('ID',move.id),detailFact('Target',move.target||'—'),detailFact('Function Code',move.function_code||'—'),detailFact('Effect Chance',move.effect_chance==null?'—':`${move.effect_chance}%`),detailFact('Flags',(move.flags||[]).join(', ')||'—'));technical.appendChild(technicalFacts);elements.modalBody.appendChild(technical);
+        elements.detailModal.classList.remove('hidden');document.body.style.overflow='hidden';if(updateUrl)syncRoute({push:true});updateCatalogMetadata('move',move);
+    }
+
+    function openAbility(ability,{updateUrl=true}={}) {
+        const viewChanged=state.currentView!=='abilities';state.currentView='abilities';if(viewChanged)render();state.modal={type:'ability',id:ability.id};
+        elements.modalBody.onscroll=null;elements.modalKicker.textContent='Custom Ability';elements.modalTitle.textContent=ability.name||ability.id;elements.modalBody.replaceChildren();
+        const description=document.createElement('p');description.className='detail-description';description.textContent=ability.description||'No description available.';elements.modalBody.appendChild(description);
+        const section=document.createElement('section');section.className='detail-section';const header=document.createElement('div');header.className='section-header';const title=document.createElement('h3');title.className='section-title';title.textContent='Pokémon with this Ability';header.appendChild(title);section.appendChild(header);
+        const records=[...(state.recordsByAbility.get(String(ability.id).toUpperCase())||[])].sort((a,b)=>(a.dex?.pokedex_number??999999)-(b.dex?.pokedex_number??999999)||compareText(getDisplayName(a),getDisplayName(b)));
+        if(records.length){const list=document.createElement('div');list.className='learner-list';records.forEach(record=>list.appendChild(makeLearnerChip(record)));section.appendChild(list);}else{const empty=document.createElement('div');empty.className='detail-empty';empty.textContent='No Pokémon in this snapshot currently use this Ability.';section.appendChild(empty);}elements.modalBody.appendChild(section);
+        const technical=document.createElement('details');technical.className='technical-details';const summary=document.createElement('summary');summary.textContent='Technical details';technical.appendChild(summary);const facts=document.createElement('div');facts.className='detail-facts';facts.style.marginTop='10px';facts.append(detailFact('ID',ability.id),detailFact('Flags',(ability.flags||[]).join(', ')||'—'));technical.appendChild(facts);elements.modalBody.appendChild(technical);
+        elements.detailModal.classList.remove('hidden');document.body.style.overflow='hidden';if(updateUrl)syncRoute({push:true});updateCatalogMetadata('ability',ability);
+    }
+
     function openGallery(item,{updateUrl=true}={}) {
         state.modal={type:'gallery',id:item.id};
         elements.modalBody.onscroll=null;
@@ -2857,6 +3109,8 @@
         const url=new URL(window.location.href);
         if(state.modal?.type==='pokemon') { url.search=''; url.searchParams.set('pokemon',state.modal.id); }
         else if(state.modal?.type==='gallery') { url.search=''; url.searchParams.set('gallery',state.modal.id); }
+        else if(state.modal?.type==='move') { url.search=''; url.searchParams.set('view','moves'); url.searchParams.set('entry',state.modal.id); }
+        else if(state.modal?.type==='ability') { url.search=''; url.searchParams.set('view','abilities'); url.searchParams.set('entry',state.modal.id); }
         return url.toString();
     }
 
@@ -2892,6 +3146,11 @@
         if(image)setMeta('meta[property="og:image"]','content',image,true);
     }
 
+    function updateCatalogMetadata(kind,entry) {
+        const label=kind==='move'?'Move':'Ability';const title=`${entry.name||entry.id} — Verdigris ${label}`;const description=entry.description||`Custom Team Verdigris ${label.toLowerCase()}.`;
+        document.title=title;setMeta('meta[property="og:title"]','content',title);setMeta('meta[property="og:description"]','content',description);setMeta('meta[name="description"]','content',description);
+    }
+
     function setMeta(selector,attribute,value,create=false) {
         let element=document.querySelector(selector);
         if(!element && create) {
@@ -2908,11 +3167,16 @@
         url.search='';
         if(state.modal?.type==='pokemon') url.searchParams.set('pokemon',state.modal.id);
         else if(state.modal?.type==='gallery') url.searchParams.set('gallery',state.modal.id);
+        else if(state.modal?.type==='move') { url.searchParams.set('view','moves'); url.searchParams.set('entry',state.modal.id); }
+        else if(state.modal?.type==='ability') { url.searchParams.set('view','abilities'); url.searchParams.set('entry',state.modal.id); }
         else {
             if(state.currentView!=='pokemon')url.searchParams.set('view',state.currentView);
             if(state.currentView==='folder')url.searchParams.set('folder',state.selectedFolder);
             if(state.currentView==='gallery'&&state.selectedGalleryCategory)url.searchParams.set('category',state.selectedGalleryCategory);
             if(state.currentView==='gallery'&&state.galleryRelation!=='all')url.searchParams.set('relation',state.galleryRelation);
+            if(state.currentView==='moves'&&state.moveType)url.searchParams.set('moveType',state.moveType);
+            if(state.currentView==='moves'&&state.moveCategory)url.searchParams.set('moveCategory',state.moveCategory);
+            if(state.currentView==='moves'&&state.moveSort!=='name')url.searchParams.set('moveSort',state.moveSort);
             state.selectedTypes.forEach(type=>url.searchParams.append('type',type));
             if(state.ability)url.searchParams.set('ability',state.ability);
             if(state.currentView==='pokemon'&&state.groupMode!=='none')url.searchParams.set('group',state.groupMode);
@@ -2930,18 +3194,29 @@
         state.selectedGalleryCategory=params.get('category')||'';
         state.galleryRelation=params.get('relation')||'all';
         state.selectedFolder=params.get('folder')||state.selectedFolder;
+        state.moveType=params.get('moveType')||'';
+        state.moveCategory=params.get('moveCategory')||'';
+        state.moveSort=['name','type','power','pp'].includes(params.get('moveSort'))?params.get('moveSort'):'name';
         STAT_CONFIG.forEach(stat=>{const range=ensureStatRange(stat.key);range.min=params.get(`min_${stat.alias}`)||'';range.max=params.get(`max_${stat.alias}`)||'';});
 
         const pokemon=params.get('pokemon');
         const gallery=params.get('gallery');
+        const view=['pokemon','moves','abilities','gallery','folder'].includes(params.get('view'))?params.get('view'):'pokemon';
+        const entry=params.get('entry');
         if(pokemon) {
             const record=state.pokemonById.get(pokemon.toLowerCase());
             if(record){state.currentView='pokemon';openPokemon(record,{updateUrl:false});}
         } else if(gallery) {
             const item=state.galleryById.get(gallery);
             if(item){state.currentView='gallery';openGallery(item,{updateUrl:false});}
+        } else if(view==='moves'&&entry) {
+            const move=state.customMoveById.get(entry.toUpperCase());
+            if(move)openMove(move,{updateUrl:false});else{state.currentView='moves';if(!initial)closeModal({updateUrl:false});}
+        } else if(view==='abilities'&&entry) {
+            const ability=state.customAbilityById.get(entry.toUpperCase());
+            if(ability)openAbility(ability,{updateUrl:false});else{state.currentView='abilities';if(!initial)closeModal({updateUrl:false});}
         } else {
-            state.currentView=['pokemon','gallery','folder'].includes(params.get('view'))?params.get('view'):'pokemon';
+            state.currentView=view;
             if(!initial)closeModal({updateUrl:false});
         }
         syncControlsFromState();
@@ -2967,7 +3242,7 @@
     }
 
     function clearAllFilters() {
-        state.selectedTypes.clear(); state.ability=''; state.progressFilter='all'; state.galleryRelation='all'; state.selectedGalleryCategory=''; state.groupMode='none';
+        state.selectedTypes.clear(); state.ability=''; state.progressFilter='all'; state.galleryRelation='all'; state.selectedGalleryCategory=''; state.groupMode='none'; state.moveType=''; state.moveCategory=''; state.moveSort='name';
         STAT_CONFIG.forEach(stat=>state.statRanges[stat.key]={min:'',max:''});
         syncControlsFromState(); populateFilters(); render(); syncRoute({replace:true});
     }
@@ -2975,7 +3250,7 @@
     document.querySelectorAll('.nav-button').forEach(button=>button.addEventListener('click',()=>{
         state.currentView=button.dataset.view;
         state.modal=null;
-        elements.detailModal.classList.add('hidden'); document.body.style.overflow='';
+        elements.detailModal.classList.add('hidden'); document.body.style.overflow=''; closePanels(); updateDocumentMetadata(null,null);
         render(); syncRoute({push:true});
     }));
 
